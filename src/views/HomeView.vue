@@ -1,10 +1,8 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="bg-background/50">
-    <div
-      class="flex flex-row-reverse items-center justify-between gap-10 px-4 mx-auto md:flex-row sm:px-6 lg:px-8"
-    >
+  <div class="px-4 mx-auto bg-background/50 sm:px-6 lg:px-8">
+    <div class="flex flex-row-reverse items-center justify-between gap-10 md:flex-row">
       <div>
         <h1 class="mb-4 text-lg font-semibold leading-tight md:text-4xl text-content">
           Hello, I'm <strong class="font-bold text-primary">Rizqiansyah Ramadhan</strong>
@@ -27,6 +25,9 @@
           class="object-cover size-32 md:size-72 ring-2 ring-primary/20 rounded-xs"
         />
       </div>
+    </div>
+    <div>
+      <RouterLink to="/about">More about me</RouterLink>
     </div>
   </div>
 </template>
