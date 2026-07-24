@@ -1,18 +1,20 @@
+import type { BaseQueryParams } from "./api";
+
 export interface User {
   id: string; // * Tipe snowflake string di backend
   nickname: string;
-  fullName: string;
+  fullName: string | null;
   email: string;
-  password: string;
+  password: string | null;
   role: Role;
   provider: AuthProvider;
-  profilePict: string;
-  placeOfBirth: string;
-  dateOfBirth: Date;
-  gender: Gender;
-  phoneNumber: string;
-  bio: string;
-  address: string;
+  profilePict: string | null;
+  placeOfBirth: string | null;
+  dateOfBirth: string | null;
+  gender: Gender | null;
+  phoneNumber: string | null;
+  bio: string | null;
+  address: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -32,6 +34,29 @@ export enum Gender {
   FEMALE,
   OTHER,
   PREFER_NOT_TO_SAY,
+}
+
+export interface UserRequest {
+  nickname: string;
+  fullName?: string | null;
+  email: string;
+  password?: string | null;
+  role?: Role | null;
+  provider?: AuthProvider | null;
+  profilePictUrl?: string | null;
+  placeOfBirth?: string | null;
+  dateOfBirth?: string | null;
+  gender?: Gender | null;
+  phoneNumber?: string | null;
+  bio?: string | null;
+  address?: string | null;
+}
+
+export interface UserQueryParams extends BaseQueryParams {
+  search?: string;
+  role?: string;
+  provider?: string;
+  gender?: string;
 }
 
 export type { User as default };

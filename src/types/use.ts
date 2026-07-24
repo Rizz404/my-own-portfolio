@@ -1,11 +1,13 @@
+import type { BaseQueryParams } from "./api";
+
 export interface Use {
   id: string; // * Tipe snowflake string di backend
   itemName: string;
   category: Category;
-  logoUrl: string;
-  pictures: string[];
-  reasons: string;
-  links: string[];
+  logoUrl: string | null;
+  pictures: string[] | null;
+  reasons: string | null;
+  links: string[] | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -13,6 +15,21 @@ export interface Use {
 export enum Category {
   software,
   hardware,
+}
+
+export interface UseRequest {
+  itemName: string;
+  category: string;
+  logoUrl?: string | null;
+  pictures?: string[] | null;
+  reasons?: string | null;
+  links?: string[] | null;
+  deletedPictures?: string[] | null;
+}
+
+export interface UseQueryParams extends BaseQueryParams {
+  search?: string;
+  category?: string;
 }
 
 export type { Use as default };
