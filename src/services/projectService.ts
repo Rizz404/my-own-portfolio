@@ -1,6 +1,12 @@
 import axiosClient from "@/api/axiosClient";
 import type { SuccessResponse, PagedResponse } from "@/types/api";
-import type { Project, ProjectQueryParams, ProjectRequest } from "@/types/project";
+import type {
+  Project,
+  ProjectMultipartRequest,
+  ProjectQueryParams,
+  ProjectRequest,
+  UpdateProjectMultipartRequest,
+} from "@/types/project";
 
 const PROJECT_URL = "/projects";
 
@@ -11,15 +17,18 @@ export const projectService = {
     return response.data;
   },
 
-  async createProjectMultipart(request: ProjectRequest, logoFile?: File, imageFiles?: File[]) {
+  async createProjectMultipart(request: ProjectMultipartRequest) {
     const formData = new FormData();
-    formData.append("data", new Blob([JSON.stringify(request)], { type: "application/json" }));
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(request.projectRequest)], { type: "application/json" }),
+    );
 
-    if (logoFile) {
-      formData.append("logoFile", logoFile);
+    if (request.logoFile) {
+      formData.append("logoFile", request.logoFile);
     }
 
-    imageFiles?.forEach((file) => {
+    request.imageFiles?.forEach((file) => {
       formData.append("imageFiles", file);
     });
 
@@ -49,34 +58,32 @@ export const projectService = {
     return response.data;
   },
 
-  async updateProject(id: string, request: ProjectRequest) {
+  async updateProject({ id, data }: { id: string; data: ProjectRequest }) {
     const response = await axiosClient.patch<SuccessResponse<Project>>(
       `${PROJECT_URL}/${id}`,
-      request,
+      data,
     );
 
     return response.data;
   },
 
-  async updateProjectMultipart(
-    id: string,
-    request: ProjectRequest,
-    logoFile?: File,
-    newImageFiles?: File[],
-  ) {
+  async updateProjectMultipart(request: UpdateProjectMultipartRequest) {
     const formData = new FormData();
-    formData.append("data", new Blob([JSON.stringify(request)], { type: "application/json" }));
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(request.projectRequest)], { type: "application/json" }),
+    );
 
-    if (logoFile) {
-      formData.append("logoFile", logoFile);
+    if (request.logoFile) {
+      formData.append("logoFile", request.logoFile);
     }
 
-    newImageFiles?.forEach((file) => {
+    request.newImageFiles?.forEach((file) => {
       formData.append("newImageFiles", file);
     });
 
     const response = await axiosClient.patch<SuccessResponse<Project>>(
-      `${PROJECT_URL}/${id}`,
+      `${PROJECT_URL}/${request.id}`,
       formData,
     );
 

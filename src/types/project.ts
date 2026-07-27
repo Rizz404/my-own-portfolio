@@ -23,6 +23,17 @@ export interface ProjectRequest {
   deletedImageUrls?: string[] | null;
 }
 
+export interface ProjectMultipartRequest {
+  projectRequest: ProjectRequest;
+  logoFile?: File;
+  imageFiles?: File[];
+}
+
+export interface UpdateProjectMultipartRequest extends ProjectMultipartRequest {
+  id: string;
+  newImageFiles?: File[];
+}
+
 export interface ProjectQueryParams extends BaseQueryParams {
   search?: string;
   status?: string;
