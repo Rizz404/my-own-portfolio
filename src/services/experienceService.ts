@@ -6,10 +6,7 @@ const EXPERIENCE_URL = "/experiences";
 
 export const experienceService = {
   async createExperience(request: ExperienceRequest) {
-    const response = await axiosClient.post<SuccessResponse<Experience>>(
-      EXPERIENCE_URL,
-      request,
-    );
+    const response = await axiosClient.post<SuccessResponse<Experience>>(EXPERIENCE_URL, request);
 
     return response.data;
   },
@@ -32,26 +29,22 @@ export const experienceService = {
   },
 
   async getExperience(id: string) {
-    const response = await axiosClient.get<SuccessResponse<Experience>>(
-      `${EXPERIENCE_URL}/${id}`,
-    );
+    const response = await axiosClient.get<SuccessResponse<Experience>>(`${EXPERIENCE_URL}/${id}`);
 
     return response.data;
   },
 
-  async updateExperience(id: string, request: ExperienceRequest) {
+  async updateExperience({ id, data }: { id: string; data: ExperienceRequest }) {
     const response = await axiosClient.patch<SuccessResponse<Experience>>(
       `${EXPERIENCE_URL}/${id}`,
-      request,
+      data,
     );
 
     return response.data;
   },
 
   async deleteExperience(id: string) {
-    const response = await axiosClient.delete<SuccessResponse<string>>(
-      `${EXPERIENCE_URL}/${id}`,
-    );
+    const response = await axiosClient.delete<SuccessResponse<string>>(`${EXPERIENCE_URL}/${id}`);
 
     return response.data;
   },

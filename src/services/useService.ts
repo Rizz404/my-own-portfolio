@@ -58,8 +58,8 @@ export const useService = {
     return response.data;
   },
 
-  async updateUse({ id, request }: { id: string; request: UseRequest }) {
-    const response = await axiosClient.patch<SuccessResponse<Use>>(`${USE_URL}/${id}`, request);
+  async updateUse({ id, data }: { id: string; data: UseRequest }) {
+    const response = await axiosClient.patch<SuccessResponse<Use>>(`${USE_URL}/${id}`, data);
 
     return response.data;
   },

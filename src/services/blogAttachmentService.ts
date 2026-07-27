@@ -39,10 +39,10 @@ export const blogAttachmentService = {
     return response.data;
   },
 
-  async updateBlogAttachment(id: string, request: BlogAttachmentRequest) {
+  async updateBlogAttachment({ id, data }: { id: string; data: BlogAttachmentRequest }) {
     const response = await axiosClient.patch<SuccessResponse<BlogAttachment>>(
       `${BLOG_ATTACHMENT_URL}/${id}`,
-      request,
+      data,
     );
 
     return response.data;
