@@ -59,4 +59,13 @@ export interface UserQueryParams extends BaseQueryParams {
   gender?: string;
 }
 
+export interface UserMultipartRequest {
+  userRequest: UserRequest;
+  profilePictFile?: File;
+}
+
+export interface UpdateUserMultipartRequest extends UserMultipartRequest {
+  id: string;
+}
+
 export type { User as default };

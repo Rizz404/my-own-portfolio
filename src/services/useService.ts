@@ -1,6 +1,12 @@
 import axiosClient from "@/api/axiosClient";
 import type { SuccessResponse, PagedResponse } from "@/types/api";
-import type { Use, UseQueryParams, UseRequest } from "@/types/use";
+import type {
+  UpdateUseMultipartRequest,
+  Use,
+  UseMultipartRequest,
+  UseQueryParams,
+  UseRequest,
+} from "@/types/use";
 
 const USE_URL = "/uses";
 
@@ -11,15 +17,18 @@ export const useService = {
     return response.data;
   },
 
-  async createUseMultipart(request: UseRequest, logoFile?: File, pictureFiles?: File[]) {
+  async createUseMultipart(request: UseMultipartRequest) {
     const formData = new FormData();
-    formData.append("data", new Blob([JSON.stringify(request)], { type: "application/json" }));
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(request.useRequest)], { type: "application/json" }),
+    );
 
-    if (logoFile) {
-      formData.append("logoFile", logoFile);
+    if (request.logoFile) {
+      formData.append("logoFile", request.logoFile);
     }
 
-    pictureFiles?.forEach((file) => {
+    request.pictureFiles?.forEach((file) => {
       formData.append("pictureFiles", file);
     });
 
@@ -49,30 +58,31 @@ export const useService = {
     return response.data;
   },
 
-  async updateUse(id: string, request: UseRequest) {
+  async updateUse({ id, request }: { id: string; request: UseRequest }) {
     const response = await axiosClient.patch<SuccessResponse<Use>>(`${USE_URL}/${id}`, request);
 
     return response.data;
   },
 
-  async updateUseMultipart(
-    id: string,
-    request: UseRequest,
-    logoFile?: File,
-    newPictureFiles?: File[],
-  ) {
+  async updateUseMultipart(request: UpdateUseMultipartRequest) {
     const formData = new FormData();
-    formData.append("data", new Blob([JSON.stringify(request)], { type: "application/json" }));
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(request.useRequest)], { type: "application/json" }),
+    );
 
-    if (logoFile) {
-      formData.append("logoFile", logoFile);
+    if (request.logoFile) {
+      formData.append("logoFile", request.logoFile);
     }
 
-    newPictureFiles?.forEach((file) => {
+    request.newPictureFiles?.forEach((file) => {
       formData.append("newPictureFiles", file);
     });
 
-    const response = await axiosClient.patch<SuccessResponse<Use>>(`${USE_URL}/${id}`, formData);
+    const response = await axiosClient.patch<SuccessResponse<Use>>(
+      `${USE_URL}/${request.id}`,
+      formData,
+    );
 
     return response.data;
   },

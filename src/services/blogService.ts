@@ -1,6 +1,12 @@
 import axiosClient from "@/api/axiosClient";
 import type { SuccessResponse, PagedResponse } from "@/types/api";
-import type { Blog, BlogQueryParams, BlogRequest } from "@/types/blog";
+import type {
+  Blog,
+  BlogMultipartRequest,
+  BlogQueryParams,
+  BlogRequest,
+  UpdateBlogMultipartRequest,
+} from "@/types/blog";
 
 const BLOG_URL = "/blogs";
 
@@ -11,19 +17,18 @@ export const blogService = {
     return response.data;
   },
 
-  async createBlogMultipart(
-    request: BlogRequest,
-    featuredImageFile?: File,
-    attachments?: File[],
-  ) {
+  async createBlogMultipart(request: BlogMultipartRequest) {
     const formData = new FormData();
-    formData.append("data", new Blob([JSON.stringify(request)], { type: "application/json" }));
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(request.blogRequest)], { type: "application/json" }),
+    );
 
-    if (featuredImageFile) {
-      formData.append("featuredImageFile", featuredImageFile);
+    if (request.featuredImageFile) {
+      formData.append("featuredImageFile", request.featuredImageFile);
     }
 
-    attachments?.forEach((file) => {
+    request.attachments?.forEach((file) => {
       formData.append("attachments", file);
     });
 
@@ -52,31 +57,29 @@ export const blogService = {
     return response.data;
   },
 
-  async updateBlog(id: string, request: BlogRequest) {
-    const response = await axiosClient.patch<SuccessResponse<Blog>>(`${BLOG_URL}/${id}`, request);
+  async updateBlog({ id, data }: { id: string; data: BlogRequest }) {
+    const response = await axiosClient.patch<SuccessResponse<Blog>>(`${BLOG_URL}/${id}`, data);
 
     return response.data;
   },
 
-  async updateBlogMultipart(
-    id: string,
-    request: BlogRequest,
-    featuredImageFile?: File,
-    newAttachments?: File[],
-  ) {
+  async updateBlogMultipart(request: UpdateBlogMultipartRequest) {
     const formData = new FormData();
-    formData.append("data", new Blob([JSON.stringify(request)], { type: "application/json" }));
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(request.blogRequest)], { type: "application/json" }),
+    );
 
-    if (featuredImageFile) {
-      formData.append("featuredImageFile", featuredImageFile);
+    if (request.featuredImageFile) {
+      formData.append("featuredImageFile", request.featuredImageFile);
     }
 
-    newAttachments?.forEach((file) => {
+    request.newAttachments?.forEach((file) => {
       formData.append("newAttachments", file);
     });
 
     const response = await axiosClient.patch<SuccessResponse<Blog>>(
-      `${BLOG_URL}/${id}`,
+      `${BLOG_URL}/${request.id}`,
       formData,
     );
 

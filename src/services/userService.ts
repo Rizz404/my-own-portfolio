@@ -1,6 +1,12 @@
 import axiosClient from "@/api/axiosClient";
 import type { SuccessResponse, PagedResponse } from "@/types/api";
-import type { User, UserQueryParams, UserRequest } from "@/types/user";
+import type {
+  UpdateUserMultipartRequest,
+  User,
+  UserMultipartRequest,
+  UserQueryParams,
+  UserRequest,
+} from "@/types/user";
 
 const USER_URL = "/users";
 
@@ -11,12 +17,15 @@ export const userService = {
     return response.data;
   },
 
-  async createUserMultipart(request: UserRequest, profilePictFile?: File) {
+  async createUserMultipart(request: UserMultipartRequest) {
     const formData = new FormData();
-    formData.append("data", new Blob([JSON.stringify(request)], { type: "application/json" }));
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(request.userRequest)], { type: "application/json" }),
+    );
 
-    if (profilePictFile) {
-      formData.append("profilePictFile", profilePictFile);
+    if (request.profilePictFile) {
+      formData.append("profilePictFile", request.profilePictFile);
     }
 
     const response = await axiosClient.post<SuccessResponse<User>>(USER_URL, formData);
@@ -47,22 +56,25 @@ export const userService = {
     return response.data;
   },
 
-  async updateUser(id: string, request: UserRequest) {
-    const response = await axiosClient.patch<SuccessResponse<User>>(`${USER_URL}/${id}`, request);
+  async updateUser({ id, data }: { id: string; data: UserRequest }) {
+    const response = await axiosClient.patch<SuccessResponse<User>>(`${USER_URL}/${id}`, data);
 
     return response.data;
   },
 
-  async updateUserMultipart(id: string, request: UserRequest, profilePictFile?: File) {
+  async updateUserMultipart(request: UpdateUserMultipartRequest) {
     const formData = new FormData();
-    formData.append("data", new Blob([JSON.stringify(request)], { type: "application/json" }));
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(request.userRequest)], { type: "application/json" }),
+    );
 
-    if (profilePictFile) {
-      formData.append("profilePictFile", profilePictFile);
+    if (request.profilePictFile) {
+      formData.append("profilePictFile", request.profilePictFile);
     }
 
     const response = await axiosClient.patch<SuccessResponse<User>>(
-      `${USER_URL}/${id}`,
+      `${USER_URL}/${request.id}`,
       formData,
     );
 

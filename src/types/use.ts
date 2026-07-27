@@ -32,4 +32,15 @@ export interface UseQueryParams extends BaseQueryParams {
   category?: string;
 }
 
+export interface UseMultipartRequest {
+  useRequest: UseRequest;
+  logoFile?: File;
+  pictureFiles?: File[];
+}
+
+export interface UpdateUseMultipartRequest extends UseMultipartRequest {
+  id: string;
+  newPictureFiles?: File[];
+}
+
 export type { Use as default };

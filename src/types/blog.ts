@@ -27,6 +27,17 @@ export interface BlogRequest {
   deletedAttachmentIds?: string[] | null;
 }
 
+export interface BlogMultipartRequest {
+  blogRequest: BlogRequest;
+  featuredImageFile?: File;
+  attachments?: File[];
+}
+
+export interface UpdateBlogMultipartRequest extends BlogMultipartRequest {
+  id: string;
+  newAttachments?: File[];
+}
+
 export interface BlogQueryParams extends BaseQueryParams {
   search?: string;
 }
