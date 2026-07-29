@@ -26,48 +26,48 @@ onUnmounted(() => {
 
 <template>
   <footer class="w-full border-t border-border bg-background/80">
-    <div class="mx-auto grid grid-cols-4 max-w-7xl items-center px-4 sm:px-6 lg:px-8 py-4">
+    <div class="grid items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
       <div class="col-span-2">
-        <h3 class="text-content text-lg font-medium">Rizqiansyah Ramadhan</h3>
+        <h3 class="text-lg font-medium text-content">Rizqiansyah Ramadhan</h3>
         <p class="text-sm text-content/80">
           Software Engineering student specializing in backend development, with experience in
           building and managing APIs
         </p>
       </div>
       <div>
-        <h4 class="font-medium mb-2">Navigate</h4>
+        <h4 class="mb-2 font-medium">Navigate</h4>
         <nav class="flex flex-wrap gap-4">
           <RouterLink
-            class="text-sm font-medium text-content transition-colors hover:text-primary"
+            class="text-sm font-medium transition-colors text-content hover:text-primary"
             to="/"
           >
             Home
           </RouterLink>
           <RouterLink
             to="/about"
-            class="text-sm font-medium text-content transition-colors hover:text-primary"
+            class="text-sm font-medium transition-colors text-content hover:text-primary"
           >
             About
           </RouterLink>
           <RouterLink
             to="/projects"
-            class="text-sm font-medium text-content transition-colors hover:text-primary"
+            class="text-sm font-medium transition-colors text-content hover:text-primary"
           >
             Projects
           </RouterLink>
           <RouterLink
             to="/uses"
-            class="text-sm font-medium text-content transition-colors hover:text-primary"
+            class="text-sm font-medium transition-colors text-content hover:text-primary"
           >
             Uses
           </RouterLink>
         </nav>
       </div>
       <div>
-        <h4 class="font-medium mb-2">Explore</h4>
+        <h4 class="mb-2 font-medium">Explore</h4>
         <nav class="flex flex-wrap gap-4">
           <!-- <RouterLink
-            class="text-sm font-medium text-content transition-colors hover:text-primary"
+            class="text-sm font-medium transition-colors text-content hover:text-primary"
             to="/"
           >
             Contact
@@ -77,7 +77,7 @@ onUnmounted(() => {
       </div>
     </div>
     <div
-      class="mx-auto max-w-7xl flex justify-between items-center text-sm text-content/60 px-4 sm:px-6 lg:px-8 py-4"
+      class="flex items-center justify-between px-4 py-4 mx-auto text-sm text-content/60 sm:px-6 lg:px-8"
     >
       <span>&copy; {{ currentYear }}</span>
       <span class="flex items-center gap-1.5" v-if="timeWib">

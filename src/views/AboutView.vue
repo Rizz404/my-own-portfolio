@@ -1,10 +1,10 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="px-4 lg:px-8 sm:px-6 max-w-7xl">
+  <div class="px-4 lg:px-8 sm:px-6">
     <h1 class="font-bold md:text-4xl text-content">About</h1>
     <div class="flex items-center justify-between gap-12 mt-4">
-      <div class="flex items-center justify-between gap-4 shrink-0">
+      <div class="flex flex-wrap items-center justify-between gap-4 shrink-0">
         <img
           src="https://i.pinimg.com/originals/e8/fe/59/e8fe595d3fcec5c93bb57a21dbf67081.gif"
           alt=""

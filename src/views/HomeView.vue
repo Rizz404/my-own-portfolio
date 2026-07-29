@@ -1,8 +1,8 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="px-4 mx-auto bg-background/50 sm:px-6 lg:px-8">
-    <div class="flex flex-row-reverse items-center justify-between gap-10 md:flex-row">
+  <div class="bg-background/50">
+    <div class="flex flex-col-reverse items-center justify-between gap-10 md:flex-row">
       <div>
         <h1 class="mb-4 text-lg font-semibold leading-tight md:text-4xl text-content">
           Hello, I'm <strong class="font-bold text-primary">Rizqiansyah Ramadhan</strong>

@@ -5,9 +5,9 @@ import AppButton from "./AppButton.vue";
 
 <template>
   <header
-    class="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md transition-colors duration-300"
+    class="sticky top-0 z-50 w-full transition-colors duration-300 border-b border-border bg-background/80 backdrop-blur-md"
   >
-    <div class="mx-auto flex h-16 max-w-7xl justify-between items-center px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
       <RouterLink to="/" class="flex items-center gap-3">
         <img
           src="https://i.pinimg.com/736x/05/68/42/0568424eab5583658cf6641c69573b78.jpg"
@@ -18,26 +18,26 @@ import AppButton from "./AppButton.vue";
       </RouterLink>
       <nav class="flex gap-6">
         <RouterLink
-          class="text-sm font-medium text-content transition-colors hover:text-primary"
+          class="text-sm font-medium transition-colors text-content hover:text-primary"
           to="/"
         >
           Home
         </RouterLink>
         <RouterLink
           to="/about"
-          class="text-sm font-medium text-content transition-colors hover:text-primary"
+          class="text-sm font-medium transition-colors text-content hover:text-primary"
         >
           About
         </RouterLink>
         <RouterLink
           to="/projects"
-          class="text-sm font-medium text-content transition-colors hover:text-primary"
+          class="text-sm font-medium transition-colors text-content hover:text-primary"
         >
           Projects
         </RouterLink>
         <RouterLink
           to="/uses"
-          class="text-sm font-medium text-content transition-colors hover:text-primary"
+          class="text-sm font-medium transition-colors text-content hover:text-primary"
         >
           Uses
         </RouterLink>
