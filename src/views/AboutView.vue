@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="px-4 lg:px-8 sm:px-6">
+  <section class="">
     <h1 class="font-bold md:text-4xl text-content">About</h1>
     <div class="flex items-center justify-between gap-12 mt-4">
       <div class="flex flex-wrap items-center justify-between gap-4 shrink-0">
@@ -44,5 +44,7 @@
         </p>
       </div>
     </div>
-  </div>
+  </section>
+
+  <SocialsWidget />
 </template>

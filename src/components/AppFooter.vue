@@ -26,7 +26,7 @@ onUnmounted(() => {
 
 <template>
   <footer class="w-full border-t border-border bg-background/80">
-    <div class="grid items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+    <div class="grid items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-4">
       <div class="col-span-2">
         <h3 class="text-lg font-medium text-content">Rizqiansyah Ramadhan</h3>
         <p class="text-sm text-content/80">
@@ -76,9 +76,7 @@ onUnmounted(() => {
         </nav>
       </div>
     </div>
-    <div
-      class="flex items-center justify-between px-4 py-4 mx-auto text-sm text-content/60 sm:px-6 lg:px-8"
-    >
+    <div class="flex items-center justify-between text-sm text-content/60 mt-4 md:mt-6">
       <span>&copy; {{ currentYear }}</span>
       <span class="flex items-center gap-1.5" v-if="timeWib">
         <IconClock class="w-4 h-4" />

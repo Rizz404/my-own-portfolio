@@ -24,6 +24,7 @@ function paramsSerializer(params: Record<string, unknown>) {
 const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   paramsSerializer,
+  withCredentials: true,
 });
 
 axiosClient.interceptors.request.use(
