@@ -29,21 +29,17 @@ const socials = [
 </script>
 
 <template>
-  <section class="mt-20 md:mt-32">
-    <h3 class="">Conect</h3>
-    <div class="flex items-center gap-4 mt-4">
-      <a
-        v-for="social in socials"
-        :key="social.name"
-        :href="social.url"
-        target="_blank"
-        rel="noopener noreferer"
-      >
-        <div class="flex gap-2">
-          <component :is="social.icon" class="size-6" />
-          <span class="border-b border-dashed">{{ social.name }}</span>
-        </div>
-      </a>
-    </div>
-  </section>
+  <div class="flex flex-wrap items-center gap-6 mt-8">
+    <a
+      v-for="social in socials"
+      :key="social.name"
+      :href="social.url"
+      target="_blank"
+      rel="noopener noreferer"
+      class="flex items-center gap-2 transition-colors text-content/60 hover:text-primary group"
+    >
+      <component :is="social.icon" class="transition-transform size-5 group-hover:-translate-y-1" />
+      <span class="text-sm font-medium">{{ social.name }}</span>
+    </a>
+  </div>
 </template>
