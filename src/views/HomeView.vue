@@ -5,10 +5,11 @@ import SocialsWidget from "@/components/SocialsWidget.vue";
 import { ref } from "vue";
 import type { ProjectQueryParams } from "@/types/project";
 import type { BlogQueryParams } from "@/types/blog";
-import IconCalendar from "~icons/lucide/calendar";
-import IconEye from "~icons/lucide/eye";
+import AppSkeleton from "@/components/AppSkeleton.vue";
+import AppError from "@/components/AppError.vue";
 import AppButton from "@/components/AppButton.vue";
-import { formatDate } from "@/utils/dateUtil";
+import BlogCard from "@/components/BlogCard.vue";
+import ProjectCard from "@/components/ProjectCard.vue";
 
 const blogQueryParams = ref<BlogQueryParams>({ page: 1, size: 4 });
 const {
@@ -66,10 +67,9 @@ const {
         />
       </div>
     </div>
-  </section>
 
-  <!-- * Social -->
-  <SocialsWidget />
+    <SocialsWidget />
+  </section>
 
   <!-- * Latest Blog -->
   <section class="mt-20 md:mt-32">
@@ -84,78 +84,18 @@ const {
     </div>
 
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <template v-if="isBlogLoading">
-        <div
-          v-for="i in 4"
-          :key="i"
-          class="flex gap-4 p-4 transition-all border border-transparent cursor-wait md:flex-col rounded-xl bg-surface/50 animate-pulse"
-        >
-          <div
-            class="rounded-md shrink-0 size-24 md:w-full md:h-auto md:aspect-video bg-surface-raised"
-          ></div>
-          <div class="w-full space-y-3">
-            <div class="w-1/2 h-3 rounded bg-surface-raised"></div>
-            <div class="w-3/4 h-5 rounded bg-surface-raised"></div>
-            <div class="w-full h-4 rounded bg-surface-raised"></div>
-            <div class="w-full h-4 rounded bg-surface-raised"></div>
-          </div>
-        </div>
-      </template>
-
-      <div
+      <AppSkeleton v-if="isBlogLoading" variant="card" :count="4" />
+      <AppError
         v-else-if="isBlogError"
-        class="flex flex-col items-center justify-center col-span-1 py-12 text-center border md:col-span-2 lg:col-span-4 rounded-xl bg-danger/10 border-danger/20"
-      >
-        <span class="mb-2 text-3xl">⚠️</span>
-        <h3 class="font-semibold text-danger">Failed to load blogs</h3>
-        <p class="text-sm text-danger/80">
-          {{ blogError?.message || "Something went wrong on our end." }}
-        </p>
-      </div>
-
-      <template v-else>
-        <div
-          v-for="blog in blogResponse?.data"
-          :key="blog.id"
-          class="flex gap-4 p-4 transition-all border border-transparent cursor-pointer group md:flex-col rounded-xl hover:border-border/30 hover:bg-surface-raised hover:-translate-y-1"
-        >
-          <img
-            :src="
-              blog.featuredImage ||
-              'https://i.pinimg.com/736x/76/0f/8e/760f8e5ff6cfa1b22ac33a8ae3705dbb.jpg'
-            "
-            :alt="blog.title"
-            class="object-cover rounded-md shrink-0 size-24 md:w-full md:h-auto md:aspect-video"
-          />
-          <div class="flex flex-col">
-            <div
-              class="flex items-center gap-3 mb-2 text-xs font-medium md:text-sm text-content/50"
-            >
-              <span class="flex items-center gap-1"
-                ><IconCalendar class="size-3" /> {{ formatDate(blog.createdAt) }}</span
-              >
-              <span class="flex items-center gap-1"
-                ><IconEye class="size-3" /> {{ blog.viewsCount }}</span
-              >
-            </div>
-            <h3
-              class="mb-2 text-lg font-semibold transition-colors text-content group-hover:text-primary"
-            >
-              {{ blog.title }}
-            </h3>
-            <p
-              class="text-base font-normal leading-relaxed md:text-sm text-content/70 line-clamp-3"
-            >
-              {{ blog.content }}
-            </p>
-          </div>
-        </div>
-      </template>
+        title="Failed to load blogs"
+        :message="blogError?.message"
+      />
+      <BlogCard v-else v-for="blog in blogResponse?.data" :key="blog.id" :blog="blog" />
     </div>
   </section>
 
   <!-- * Selected Project -->
-  <section class="mt-20 md:mt-32 mb-20">
+  <section class="mt-20 mb-20 md:mt-32">
     <div class="flex items-end justify-between mb-6">
       <h2 class="text-2xl font-bold md:text-3xl">Selected Projects</h2>
       <RouterLink
@@ -167,71 +107,18 @@ const {
     </div>
 
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <template v-if="isProjectLoading">
-        <div
-          v-for="i in 4"
-          :key="i"
-          class="flex gap-4 p-4 transition-all border border-transparent cursor-wait md:flex-col rounded-xl bg-surface/50 animate-pulse"
-        >
-          <div
-            class="shrink-0 size-24 md:w-full md:h-auto md:aspect-video rounded-md bg-surface-raised"
-          ></div>
-          <div class="w-full space-y-3">
-            <div class="w-3/4 h-5 rounded bg-surface-raised"></div>
-            <div class="w-full h-4 rounded bg-surface-raised"></div>
-            <div class="w-full h-4 rounded bg-surface-raised"></div>
-          </div>
-        </div>
-      </template>
-
-      <div
+      <AppSkeleton v-if="isProjectLoading" variant="card" :count="4" />
+      <AppError
         v-else-if="isProjectError"
-        class="flex flex-col items-center justify-center py-12 text-center col-span-1 md:col-span-2 lg:col-span-4 rounded-xl bg-danger/10 border border-danger/20"
-      >
-        <span class="mb-2 text-3xl">⚠️</span>
-        <h3 class="font-semibold text-danger">Failed to load projects</h3>
-        <p class="text-sm text-danger/80">
-          {{ projectError?.message || "Cannot fetch projects at the moment." }}
-        </p>
-      </div>
-
-      <template v-else>
-        <div
-          v-for="project in projectResponse?.data"
-          :key="project.id"
-          class="flex gap-4 p-4 transition-all border border-transparent cursor-pointer group md:flex-col rounded-xl hover:border-border/30 hover:bg-surface-raised hover:-translate-y-1"
-        >
-          <div
-            class="relative shrink-0 size-24 md:w-full md:h-auto md:aspect-video rounded-md overflow-hidden"
-          >
-            <img
-              :src="
-                project.logoUrl ||
-                'https://i.pinimg.com/736x/76/0f/8e/760f8e5ff6cfa1b22ac33a8ae3705dbb.jpg'
-              "
-              :alt="project.name"
-              class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
-            />
-            <span
-              class="absolute top-2 right-2 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white rounded-md bg-background/80 backdrop-blur-sm border border-border/50"
-            >
-              {{ project.status || "Completed" }}
-            </span>
-          </div>
-          <div class="flex flex-col mt-1">
-            <h3
-              class="mb-2 text-lg font-semibold transition-colors text-content group-hover:text-primary"
-            >
-              {{ project.name }}
-            </h3>
-            <p
-              class="font-normal leading-relaxed text-base md:text-sm text-content/70 line-clamp-3"
-            >
-              {{ project.description }}
-            </p>
-          </div>
-        </div>
-      </template>
+        title="Failed to load projects"
+        :message="projectError?.message"
+      />
+      <ProjectCard
+        v-else
+        v-for="project in projectResponse?.data"
+        :key="project.id"
+        :project="project"
+      />
     </div>
   </section>
 </template>
