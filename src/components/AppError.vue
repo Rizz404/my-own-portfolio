@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IconWarning from "~icons/lucide/warning";
+import IconWarning from "~icons/lucide/triangle-alert";
 
 withDefaults(
   defineProps<{

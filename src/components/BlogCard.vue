@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import type Blog from "@/types/blog";
+import type { Blog } from "@/types/blog";
+import IconCalendar from "~icons/lucide/calendar";
+import IconEye from "~icons/lucide/eye";
 import { formatDate } from "@/utils/dateUtil";
 
 defineProps<{ blog: Blog }>();
