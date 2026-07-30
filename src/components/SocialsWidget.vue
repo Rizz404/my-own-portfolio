@@ -29,7 +29,7 @@ const socials = [
 </script>
 
 <template>
-  <section class="mt-8">
+  <section class="mt-20 md:mt-32">
     <h3 class="">Conect</h3>
     <div class="flex items-center gap-4 mt-4">
       <a

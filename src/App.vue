@@ -6,7 +6,7 @@ import AppFooter from "@/components/AppFooter.vue";
 
 <template>
   <div class="flex items-center justify-center min-h-screen px-4 py-4 sm:px-6 lg:px-8">
-    <main class="container min-h-[94vh] flex flex-col relative">
+    <main class="container min-h-[94vh] flex flex-col relative max-w-7xl w-full">
       <AppHeader />
       <section class="grow">
         <RouterView />

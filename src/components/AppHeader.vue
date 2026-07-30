@@ -33,6 +33,12 @@ import AppButton from "./AppButton.vue";
           to="/projects"
           class="text-sm font-medium transition-colors text-content hover:text-primary"
         >
+          Blog
+        </RouterLink>
+        <RouterLink
+          to="/blogs"
+          class="text-sm font-medium transition-colors text-content hover:text-primary"
+        >
           Projects
         </RouterLink>
         <RouterLink

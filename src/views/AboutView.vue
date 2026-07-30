@@ -1,4 +1,13 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import AppButton from "@/components/AppButton.vue";
+import SocialsWidget from "@/components/SocialsWidget.vue";
+import { useExperiencesQuery } from "@/composables/queries/useExperiences";
+import type { ExperienceQueryParams } from "@/types/experience";
+import { ref } from "vue";
+
+const params = ref<ExperienceQueryParams>({ page: 1, size: 4 });
+const { data, isLoading, isError, error } = useExperiencesQuery(params);
+</script>
 
 <template>
   <section class="">
@@ -47,4 +56,21 @@
   </section>
 
   <SocialsWidget />
+
+  <!-- * Experiences -->
+  <section class="mt-8">
+    <div class="flex justify-between items-center">
+      <h2>Experience</h2>
+      <AppButton>Resume</AppButton>
+    </div>
+    <div class="" v-if="isLoading">Memuat blogs...</div>
+    <div class="" v-else-if="isError">Terjadi kesalahan: {{ error?.message }}</div>
+    <div class="mt-4 flex flex-col gap-4">
+      <div v-for="experience in data?.data" :key="experience.id" class="">
+        <h2>{{ experience.companyName }}</h2>
+        <p>{{ experience.description }}</p>
+        <p></p>
+      </div>
+    </div>
+  </section>
 </template>
