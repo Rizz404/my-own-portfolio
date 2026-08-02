@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type Project from "@/types/project";
+import { RouterLink } from "vue-router";
 
 defineProps<{ project: Project }>();
 </script>
 
 <template>
-  <div
+  <RouterLink
+    :to="`/projects/${project.id}`"
     class="flex gap-4 p-4 transition-all border border-transparent cursor-pointer group md:flex-col rounded-xl hover:border-border/30 hover:bg-surface-raised hover:-translate-y-1"
   >
     <div
@@ -35,5 +37,5 @@ defineProps<{ project: Project }>();
         {{ project.description }}
       </p>
     </div>
-  </div>
+  </RouterLink>
 </template>

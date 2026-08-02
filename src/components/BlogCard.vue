@@ -3,12 +3,14 @@ import type { Blog } from "@/types/blog";
 import IconCalendar from "~icons/lucide/calendar";
 import IconEye from "~icons/lucide/eye";
 import { formatDate } from "@/utils/dateUtil";
+import { RouterLink } from "vue-router";
 
 defineProps<{ blog: Blog }>();
 </script>
 
 <template>
-  <div
+  <RouterLink
+    :to="`/blogs/${blog.id}`"
     class="flex gap-4 p-4 transition-all border border-transparent cursor-pointer group md:flex-col rounded-xl hover:border-border/30 hover:bg-surface-raised hover:-translate-y-1"
   >
     <img
@@ -37,5 +39,5 @@ defineProps<{ blog: Blog }>();
         {{ blog.content }}
       </p>
     </div>
-  </div>
+  </RouterLink>
 </template>
