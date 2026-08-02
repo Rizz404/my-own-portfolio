@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { refDebounced } from "@vueuse/core";
-import { useProjectsQuery } from "@/composables/queries/useProjects";
-import type { ProjectQueryParams } from "@/types/project";
-import ProjectCard from "@/components/ProjectCard.vue";
+import { useBlogsQuery } from "@/composables/queries/useBlogs";
+import type { BlogQueryParams } from "@/types/blog";
+import BlogCard from "@/components/BlogCard.vue";
 import AppSkeleton from "@/components/AppSkeleton.vue";
 import AppError from "@/components/AppError.vue";
 import AppButton from "@/components/AppButton.vue";
@@ -12,7 +12,7 @@ import IconSearch from "~icons/lucide/search";
 const searchInput = ref("");
 const debouncedSearch = refDebounced(searchInput, 500);
 
-const queryParams = ref<ProjectQueryParams>({
+const queryParams = ref<BlogQueryParams>({
   page: 1,
   size: 12,
   search: "",
@@ -25,13 +25,7 @@ watch(debouncedSearch, (newVal) => {
   queryParams.value.page = 1;
 });
 
-const {
-  data: projectResponse,
-  isLoading,
-  isError,
-  isFetching,
-  error,
-} = useProjectsQuery(queryParams);
+const { data: blogResponse, isLoading, isError, isFetching, error } = useBlogsQuery(queryParams);
 
 const handleSortChange = (event: Event) => {
   const value = (event.target as HTMLSelectElement).value;
@@ -50,14 +44,14 @@ const handleSortChange = (event: Event) => {
 };
 
 const prevPage = () => {
-  if (projectResponse.value?.pagination.hasPrevPage) {
+  if (blogResponse.value?.pagination.hasPrevPage) {
     queryParams.value.page!--;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 };
 
 const nextPage = () => {
-  if (projectResponse.value?.pagination.hasNextPage) {
+  if (blogResponse.value?.pagination.hasNextPage) {
     queryParams.value.page!++;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -68,10 +62,10 @@ const nextPage = () => {
   <section class="mt-8 mb-20 md:mt-12">
     <div class="flex flex-col gap-6 mb-10 md:flex-row md:items-end md:justify-between">
       <div>
-        <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">Project</h1>
+        <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">Blog</h1>
         <p class="max-w-2xl text-lg text-content/80">
-          It's more than just lines of code. It's a showcase of my dedication, artistry, and hard
-          work in crafting software into a meaningful masterpiece.
+          Thoughts, tutorials, and insights about software engineering, backend architecture, and my
+          tech journey.
         </p>
       </div>
 
@@ -107,7 +101,7 @@ const nextPage = () => {
       <AppError v-else-if="isError" title="Failed to load articles" :message="error?.message" />
 
       <div
-        v-else-if="projectResponse?.data.length === 0"
+        v-else-if="blogResponse?.data.length === 0"
         class="py-16 text-center border border-dashed col-span-full rounded-2xl border-border/50 text-content/60"
       >
         <IconSearch class="w-12 h-12 mx-auto mb-4 opacity-20" />
@@ -115,22 +109,17 @@ const nextPage = () => {
         <p class="text-sm">Try adjusting your search keywords.</p>
       </div>
 
-      <ProjectCard
-        v-else
-        v-for="project in projectResponse?.data"
-        :key="project.id"
-        :project="project"
-      />
+      <BlogCard v-else v-for="blog in blogResponse?.data" :key="blog.id" :blog="blog" />
     </div>
 
     <div
-      v-if="projectResponse?.pagination && projectResponse.pagination.totalPages > 1"
+      v-if="blogResponse?.pagination && blogResponse.pagination.totalPages > 1"
       class="flex items-center justify-center gap-6 mt-16"
     >
       <AppButton
         variant="secondary"
         size="md"
-        :disabled="!projectResponse.pagination.hasPrevPage || isFetching"
+        :disabled="!blogResponse.pagination.hasPrevPage || isFetching"
         @click="prevPage"
         class="min-w-25"
       >
@@ -138,14 +127,13 @@ const nextPage = () => {
       </AppButton>
 
       <span class="text-sm font-medium text-content/70">
-        Page {{ projectResponse.pagination.currentPage }} of
-        {{ projectResponse.pagination.totalPages }}
+        Page {{ blogResponse.pagination.currentPage }} of {{ blogResponse.pagination.totalPages }}
       </span>
 
       <AppButton
         variant="secondary"
         size="md"
-        :disabled="!projectResponse.pagination.hasNextPage || isFetching"
+        :disabled="!blogResponse.pagination.hasNextPage || isFetching"
         @click="nextPage"
         class="min-w-25"
       >
