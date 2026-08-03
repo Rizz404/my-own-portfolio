@@ -3,10 +3,10 @@ import type { BaseQueryParams } from "./api";
 export interface Use {
   id: string; // * Tipe snowflake string di backend
   itemName: string;
+  reasons: string | null;
   category: Category;
   logoUrl: string | null;
   pictures: string[] | null;
-  reasons: string | null;
   links: string[] | null;
   createdAt: string;
   updatedAt: string;

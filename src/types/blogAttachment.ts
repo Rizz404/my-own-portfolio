@@ -5,9 +5,18 @@ export interface BlogAttachment {
   blogId: string;
   fileName: string;
   fileUrl: string;
-  fileType: string;
+  fileType: FileType;
   createdAt: string;
   updatedAt: string;
+}
+
+export enum FileType {
+  image,
+  document,
+  video,
+  audio,
+  archive,
+  other,
 }
 
 export interface BlogAttachmentRequest {

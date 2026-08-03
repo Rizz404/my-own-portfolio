@@ -13,11 +13,6 @@ export interface Experience {
   updatedAt: string;
 }
 
-export enum Category {
-  software,
-  hardware,
-}
-
 export interface ExperienceRequest {
   companyName: string;
   position: string;

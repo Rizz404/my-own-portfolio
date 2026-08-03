@@ -5,12 +5,52 @@ export interface Project {
   slug: string;
   name: string;
   description: string | null;
-  status: string;
+  status: ProjectStatus;
   logoUrl: string | null;
   imageUrls: string[] | null;
-  projectLinks: Record<string, string> | null;
+  techStack: Record<string, string> | null;
+  projectTypes: ProjectType[];
+  projectLinks: Record<LinkType, string> | null;
   createdAt: string;
   updatedAt: string;
+}
+
+export enum ProjectStatus {
+  active,
+  inactive,
+  development,
+  maintenance,
+  archived,
+}
+
+export enum ProjectType {
+  frontend,
+  backend,
+  fullstack,
+  mobile,
+  desktop,
+  api,
+  library,
+  other,
+}
+
+export enum LinkType {
+  github,
+  gitlab,
+  bitbucket,
+  source_code,
+  demo,
+  website,
+  figma,
+  documentation,
+  api_docs,
+  video,
+  playstore,
+  appstore,
+  npm,
+  dockerhub,
+  staging,
+  other,
 }
 
 export interface ProjectRequest {

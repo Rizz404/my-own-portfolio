@@ -6,11 +6,11 @@ export interface Blog {
   slug: string;
   title: string;
   content: string;
+  isPublished: boolean | null;
   featuredImage: string | null;
   viewsCount: number;
   likesCount: number;
   dislikesCount: number;
-  isPublished: boolean | null;
   blogAttachments: BlogAttachment[];
   createdAt: string;
   updatedAt: string;
