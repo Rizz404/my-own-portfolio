@@ -85,7 +85,7 @@ const nextPage = () => {
           <input
             v-model="searchInput"
             type="text"
-            placeholder="Search articles..."
+            placeholder="Search projects..."
             class="w-full sm:w-64 pl-10 pr-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-content placeholder:text-content/40"
           />
         </div>
@@ -104,14 +104,14 @@ const nextPage = () => {
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
       <AppSkeleton v-if="isLoading" variant="card" :count="8" />
 
-      <AppError v-else-if="isError" title="Failed to load articles" :message="error?.message" />
+      <AppError v-else-if="isError" title="Failed to load projects" :message="error?.message" />
 
       <div
         v-else-if="projectResponse?.data.length === 0"
         class="py-16 text-center border border-dashed col-span-full rounded-2xl border-border/50 text-content/60"
       >
         <IconSearch class="w-12 h-12 mx-auto mb-4 opacity-20" />
-        <p class="text-lg font-medium">No articles found.</p>
+        <p class="text-lg font-medium">No projects found.</p>
         <p class="text-sm">Try adjusting your search keywords.</p>
       </div>
 
