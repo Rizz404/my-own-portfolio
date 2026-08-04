@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -59,11 +59,11 @@
   --radius-card: 0.75rem;
 
   /* Typography */
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
-/* Dark Mode: Otomatis adaptasi modifier */
+/* Dark Mode: Otomatis adaptasi modifier
 @media (prefers-color-scheme: dark) {
   :root {
     --color-background: oklch(0.1 0.01 250);
@@ -74,7 +74,7 @@
     --color-content: oklch(0.95 0 0);
     --color-border: oklch(0.28 0.01 250);
   }
-}
+} */
 
 :root.dark {
   --color-background: oklch(0.1 0.01 250);

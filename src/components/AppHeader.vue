@@ -2,7 +2,10 @@
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
 import IconLanguages from "~icons/lucide/languages";
+import IconSun from "~icons/lucide/sun";
 import IconMoon from "~icons/lucide/moon";
+import IconMonitor from "~icons/lucide/monitor";
+import { useThemeStore } from "@/stores/themeStores";
 
 const navLinks = ref([
   { name: "Home", path: "/" },
@@ -11,6 +14,8 @@ const navLinks = ref([
   { name: "Projects", path: "/projects" },
   { name: "Uses", path: "/uses" },
 ]);
+
+const themeStore = useThemeStore();
 </script>
 
 <template>
@@ -52,10 +57,13 @@ const navLinks = ref([
           <IconLanguages class="w-5 h-5" />
         </button>
         <button
+          @click="themeStore.toggleTheme()"
           aria-label="Toggle Theme"
           class="p-2 transition-colors rounded-lg text-content/70 hover:bg-surface hover:text-primary focus:outline-none"
         >
-          <IconMoon class="w-5 h-5" />
+          <IconSun v-if="themeStore.currentTheme === 'light'" class="w-5 h-5" />
+          <IconMoon v-else-if="themeStore.currentTheme === 'dark'" class="w-5 h-5" />
+          <IconMonitor v-else class="w-5 h-5" />
         </button>
       </div>
     </div>
