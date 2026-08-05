@@ -125,3 +125,31 @@ samp {
   font-family: var(--font-mono);
   font-size: 0.9em;
 }
+
+/* Page transition (see App.vue's <Transition name="page">) */
+.page-enter-active,
+.page-leave-active {
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* Respect the user's OS-level motion preference. This is a safety net for
+   plain CSS transitions (hover states, page/icon transitions above); motion
+   driven by @vueuse/motion (grid/list entrance, scroll reveal) is instead
+   guarded inside src/composables/useMotionPresets.ts. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
