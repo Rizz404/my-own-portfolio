@@ -1,5 +1,14 @@
 import axios from "axios";
 
+// * Locale terkini disimpan di sini (bukan import store Pinia langsung) biar axiosClient
+// tetap jadi modul HTTP polos yang gak depend ke layer presentation/state management.
+// Yang push nilainya ke sini adalah i18nStores.ts lewat setAcceptLanguage().
+let currentAcceptLanguage: string | undefined;
+
+export function setAcceptLanguage(locale: string) {
+  currentAcceptLanguage = locale;
+}
+
 // * Spring @RequestParam List<String> butuh "sortBy=a&sortBy=b", bukan "sortBy[]=a&sortBy[]=b" (default axios)
 function paramsSerializer(params: Record<string, unknown>) {
   const searchParams = new URLSearchParams();
@@ -33,6 +42,11 @@ axiosClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    if (currentAcceptLanguage) {
+      config.headers["Accept-Language"] = currentAcceptLanguage;
+    }
+
     return config;
   },
   (error) => {
