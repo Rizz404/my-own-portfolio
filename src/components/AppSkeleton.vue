@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
+
 withDefaults(
   defineProps<{
     variant?: "card" | "tile";
@@ -15,6 +17,7 @@ withDefaults(
   <template v-for="i in count" :key="i">
     <div
       v-if="variant === 'card'"
+      v-motion="fadeUp(staggerDelay(i - 1))"
       class="flex gap-4 p-4 transition-all border border-transparent md:flex-col rounded-xl bg-surface/50 animate-pulse"
     >
       <div
@@ -30,6 +33,7 @@ withDefaults(
 
     <div
       v-else-if="variant === 'tile'"
+      v-motion="fadeUp(staggerDelay(i - 1))"
       class="flex items-start gap-4 p-4 border border-transparent rounded-xl bg-surface/50 animate-pulse"
     >
       <div class="rounded-lg shrink-0 size-12 bg-surface-raised"></div>

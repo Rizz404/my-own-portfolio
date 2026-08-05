@@ -4,6 +4,7 @@ import { useUseQuery } from "@/composables/queries/useUses";
 import AppError from "@/components/AppError.vue";
 import IconArrowLeft from "~icons/lucide/arrow-left";
 import IconExternalLink from "~icons/lucide/external-link";
+import { fadeUp } from "@/composables/useMotionPresets";
 
 const route = useRoute();
 const useId = route.params.id as string;
@@ -34,7 +35,7 @@ const getDomain = (url: string) => {
       <IconArrowLeft class="w-4 h-4" /> Back to all gear
     </RouterLink>
 
-    <div v-if="isLoading" class="space-y-6">
+    <div v-if="isLoading" v-motion="fadeUp()" class="space-y-6">
       <div class="w-32 h-4 rounded bg-surface/50 animate-pulse"></div>
       <div class="flex gap-4">
         <div class="size-16 rounded-xl bg-surface/50 animate-pulse"></div>
@@ -48,7 +49,7 @@ const getDomain = (url: string) => {
 
     <AppError v-else-if="isError" title="Item not found" :message="error?.message" />
 
-    <article v-else-if="response?.data">
+    <article v-else-if="response?.data" v-motion="fadeUp()">
       <header class="flex flex-col gap-6 mb-10 md:flex-row md:items-center md:justify-between">
         <div class="flex items-center gap-4">
           <div

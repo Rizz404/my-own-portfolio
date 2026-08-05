@@ -17,7 +17,7 @@ const emit = defineEmits<{
 
 const buttonClasses = computed(() => {
   const baseClasses =
-    "inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none focus:ring-2";
+    "inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2";
 
   const variantClasses = {
     primary:

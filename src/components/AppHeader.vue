@@ -61,9 +61,11 @@ const themeStore = useThemeStore();
           aria-label="Toggle Theme"
           class="p-2 transition-colors rounded-lg text-content/70 hover:bg-surface hover:text-primary focus:outline-none"
         >
-          <IconSun v-if="themeStore.currentTheme === 'light'" class="w-5 h-5" />
-          <IconMoon v-else-if="themeStore.currentTheme === 'dark'" class="w-5 h-5" />
-          <IconMonitor v-else class="w-5 h-5" />
+          <Transition name="icon-swap" mode="out-in">
+            <IconSun v-if="themeStore.currentTheme === 'light'" key="sun" class="w-5 h-5" />
+            <IconMoon v-else-if="themeStore.currentTheme === 'dark'" key="moon" class="w-5 h-5" />
+            <IconMonitor v-else key="monitor" class="w-5 h-5" />
+          </Transition>
         </button>
       </div>
     </div>
@@ -84,5 +86,18 @@ const themeStore = useThemeStore();
 .nav-link.router-link-exact-active {
   color: var(--color-primary);
   font-weight: 700;
+}
+
+/* Swap icon tema (Sun/Moon/Monitor) */
+.icon-swap-enter-active,
+.icon-swap-leave-active {
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+.icon-swap-enter-from,
+.icon-swap-leave-to {
+  opacity: 0;
+  transform: scale(0.7) rotate(45deg);
 }
 </style>

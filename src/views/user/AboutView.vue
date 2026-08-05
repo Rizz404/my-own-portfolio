@@ -7,6 +7,7 @@ import AppError from "@/components/AppError.vue";
 import { useExperiencesQuery } from "@/composables/queries/useExperiences";
 import type { ExperienceQueryParams } from "@/types/experience";
 import { ref } from "vue";
+import { fadeUp, revealUp, staggerDelay } from "@/composables/useMotionPresets";
 
 const params = ref<ExperienceQueryParams>({ page: 1, size: 10 });
 const { data, isLoading, isError, error } = useExperiencesQuery(params);
@@ -60,7 +61,10 @@ const { data, isLoading, isError, error } = useExperiencesQuery(params);
         </p>
       </div>
 
-      <div class="grid grid-cols-2 gap-4 mt-8 lg:mt-0 lg:sticky lg:top-24">
+      <div
+        v-motion="fadeUp(0.15)"
+        class="grid grid-cols-2 gap-4 mt-8 lg:mt-0 lg:sticky lg:top-24"
+      >
         <img
           src="https://i.pinimg.com/originals/e8/fe/59/e8fe595d3fcec5c93bb57a21dbf67081.gif"
           class="object-cover w-full h-56 transition-transform duration-500 shadow-lg rounded-xl md:h-72 hover:scale-105"
@@ -80,7 +84,7 @@ const { data, isLoading, isError, error } = useExperiencesQuery(params);
     </section>
 
     <section class="grid grid-cols-1 gap-12 mt-24 mb-20 lg:grid-cols-3">
-      <div class="lg:col-span-2">
+      <div v-motion="revealUp()" class="lg:col-span-2">
         <div class="flex items-center justify-between mb-8">
           <h2 class="text-2xl font-bold md:text-3xl text-content">Experience</h2>
           <AppButton size="sm" variant="secondary" class="rounded-full shadow-sm hover:shadow-md">
@@ -97,14 +101,15 @@ const { data, isLoading, isError, error } = useExperiencesQuery(params);
 
         <div class="flex flex-col gap-3" v-else>
           <ExperienceTile
-            v-for="experience in data?.data"
+            v-for="(experience, index) in data?.data"
             :key="experience.id"
+            v-motion="fadeUp(staggerDelay(index))"
             :experience="experience"
           />
         </div>
       </div>
 
-      <div class="lg:col-span-1">
+      <div v-motion="revealUp(0.1)" class="lg:col-span-1">
         <div class="p-6 border border-border/30 rounded-2xl bg-surface/30">
           <h2 class="mb-2 text-xl font-bold text-content">Let's Connect</h2>
           <p class="mb-6 text-sm text-content/70">

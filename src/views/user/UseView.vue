@@ -5,6 +5,7 @@ import AppSkeleton from "@/components/AppSkeleton.vue";
 import AppError from "@/components/AppError.vue";
 import UseCard from "@/components/UseCard.vue";
 import UseTile from "@/components/UseTile.vue";
+import { fadeUp, revealUp, staggerDelay } from "@/composables/useMotionPresets";
 
 const { data: response, isLoading, isError, error } = useUsesQuery({ size: 100 });
 
@@ -36,17 +37,35 @@ const softwareList = computed(() => {
     <AppError v-else-if="isError" title="Failed to load gear" :message="error?.message" />
 
     <div v-else class="space-y-20">
-      <div v-if="hardwareList.length > 0" class="p-6 rounded-3xl bg-surface/20 md:p-8">
+      <div
+        v-if="hardwareList.length > 0"
+        v-motion="revealUp()"
+        class="p-6 rounded-3xl bg-surface/20 md:p-8"
+      >
         <h2 class="mb-6 text-2xl font-bold text-content">Hardware</h2>
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <UseCard v-for="item in hardwareList" :key="item.id" :item="item" />
+          <UseCard
+            v-for="(item, index) in hardwareList"
+            :key="item.id"
+            v-motion="fadeUp(staggerDelay(index))"
+            :item="item"
+          />
         </div>
       </div>
 
-      <div v-if="softwareList.length > 0" class="p-6 rounded-3xl bg-surface/20 md:p-8">
+      <div
+        v-if="softwareList.length > 0"
+        v-motion="revealUp()"
+        class="p-6 rounded-3xl bg-surface/20 md:p-8"
+      >
         <h2 class="mb-6 text-2xl font-bold text-content">Software</h2>
         <div class="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
-          <UseTile v-for="item in softwareList" :key="item.id" :item="item" />
+          <UseTile
+            v-for="(item, index) in softwareList"
+            :key="item.id"
+            v-motion="fadeUp(staggerDelay(index))"
+            :item="item"
+          />
         </div>
       </div>
     </div>

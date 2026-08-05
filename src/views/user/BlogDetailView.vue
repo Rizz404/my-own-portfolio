@@ -7,6 +7,7 @@ import IconEye from "~icons/lucide/eye";
 import IconArrowLeft from "~icons/lucide/arrow-left";
 import IconPaperclip from "~icons/lucide/paperclip";
 import { formatDate } from "@/utils/dateUtil";
+import { fadeUp } from "@/composables/useMotionPresets";
 
 const route = useRoute();
 const blogId = route.params.id as string;
@@ -23,7 +24,7 @@ const { data: response, isLoading, isError, error } = useBlogQuery(blogId);
       <IconArrowLeft class="w-4 h-4" /> Back to all articles
     </RouterLink>
 
-    <div v-if="isLoading" class="space-y-6">
+    <div v-if="isLoading" v-motion="fadeUp()" class="space-y-6">
       <div class="w-32 h-4 rounded bg-surface/50 animate-pulse"></div>
       <div class="w-3/4 h-12 rounded bg-surface/50 animate-pulse"></div>
       <div class="w-full h-64 rounded-xl bg-surface/50 animate-pulse"></div>
@@ -34,7 +35,7 @@ const { data: response, isLoading, isError, error } = useBlogQuery(blogId);
 
     <AppError v-else-if="isError" title="Article not found" :message="error?.message" />
 
-    <article v-else-if="response?.data">
+    <article v-else-if="response?.data" v-motion="fadeUp()">
       <header class="mb-10 text-center md:text-left">
         <div
           class="flex items-center justify-center gap-4 mb-4 text-sm font-medium md:justify-start text-content/60"

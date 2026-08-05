@@ -8,6 +8,7 @@ import AppSkeleton from "@/components/AppSkeleton.vue";
 import AppError from "@/components/AppError.vue";
 import AppButton from "@/components/AppButton.vue";
 import IconSearch from "~icons/lucide/search";
+import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
 
 const searchInput = ref("");
 const debouncedSearch = refDebounced(searchInput, 500);
@@ -102,6 +103,7 @@ const nextPage = () => {
 
       <div
         v-else-if="blogResponse?.data.length === 0"
+        v-motion="fadeUp()"
         class="py-16 text-center border border-dashed col-span-full rounded-2xl border-border/50 text-content/60"
       >
         <IconSearch class="w-12 h-12 mx-auto mb-4 opacity-20" />
@@ -109,7 +111,13 @@ const nextPage = () => {
         <p class="text-sm">Try adjusting your search keywords.</p>
       </div>
 
-      <BlogCard v-else v-for="blog in blogResponse?.data" :key="blog.id" :blog="blog" />
+      <BlogCard
+        v-else
+        v-for="(blog, index) in blogResponse?.data"
+        :key="blog.id"
+        v-motion="fadeUp(staggerDelay(index))"
+        :blog="blog"
+      />
     </div>
 
     <div
