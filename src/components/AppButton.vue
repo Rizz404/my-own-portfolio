@@ -23,9 +23,9 @@ const buttonClasses = computed(() => {
     primary:
       "bg-primary text-white shadow-sm hover:brightness-110 hover:shadow-md focus:ring-primary/50 focus:border-primary",
     success:
-      "bg-success text-white shadow-sm hover:brightness-110 focus:ring-success/50 focus:border-success",
+      "bg-success brightness-90 text-white shadow-sm hover:brightness-110 focus:ring-success/50 focus:border-success",
     danger:
-      "bg-danger text-white shadow-sm hover:brightness-110 focus:ring-danger/50 focus:border-danger",
+      "bg-danger brightness-90 saturate-125 text-white shadow-sm hover:brightness-110 focus:ring-danger/50 focus:border-danger",
     secondary:
       "bg-secondary text-content border border-border/50 shadow-sm hover:bg-surface-raised focus:ring-secondary/50 focus:border-secondary",
     warning:

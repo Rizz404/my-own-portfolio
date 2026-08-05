@@ -10,6 +10,7 @@ import AppError from "@/components/AppError.vue";
 import AppButton from "@/components/AppButton.vue";
 import BlogCard from "@/components/BlogCard.vue";
 import ProjectCard from "@/components/ProjectCard.vue";
+import IconArrowRight from "~icons/lucide/arrow-right";
 
 const blogQueryParams = ref<BlogQueryParams>({ page: 1, size: 4 });
 const {
@@ -29,7 +30,7 @@ const {
 </script>
 
 <template>
-  <section class="mt-8 md:mt-12 bg-background/50">
+  <section class="p-6 mt-8 rounded-3xl bg-surface/30 md:mt-12 md:p-10">
     <div class="flex flex-col-reverse items-center justify-between gap-10 md:flex-row">
       <div>
         <h1 class="mb-2 text-lg font-semibold leading-tight md:text-3xl text-content">
@@ -77,9 +78,10 @@ const {
       <h2 class="text-2xl font-bold md:text-3xl">Latest Blogs</h2>
       <RouterLink
         to="/blogs"
-        class="text-sm font-medium transition-colors text-primary hover:brightness-110"
+        class="inline-flex items-center gap-1.5 text-sm font-medium transition-colors group text-primary hover:brightness-110"
       >
-        View all &rarr;
+        View all
+        <IconArrowRight class="transition-transform size-4 group-hover:translate-x-1" />
       </RouterLink>
     </div>
 
@@ -95,14 +97,15 @@ const {
   </section>
 
   <!-- * Selected Project -->
-  <section class="mt-20 mb-20 md:mt-32">
+  <section class="p-6 mt-20 mb-20 rounded-3xl bg-surface/20 md:mt-32 md:p-10">
     <div class="flex items-end justify-between mb-6">
       <h2 class="text-2xl font-bold md:text-3xl">Selected Projects</h2>
       <RouterLink
         to="/projects"
-        class="text-sm font-medium transition-colors text-primary hover:brightness-110"
+        class="inline-flex items-center gap-1.5 text-sm font-medium transition-colors group text-primary hover:brightness-110"
       >
-        View all &rarr;
+        View all
+        <IconArrowRight class="transition-transform size-4 group-hover:translate-x-1" />
       </RouterLink>
     </div>
 
