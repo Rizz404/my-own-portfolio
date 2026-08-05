@@ -11,7 +11,11 @@ import AppFooter from "@/components/AppFooter.vue";
     <main class="container min-h-[94vh] flex flex-col relative max-w-7xl w-full">
       <AppHeader />
       <section class="grow">
-        <RouterView />
+        <RouterView v-slot="{ Component, route }">
+          <Transition name="page" mode="out-in">
+            <component :is="Component" :key="route.path" />
+          </Transition>
+        </RouterView>
       </section>
       <AppFooter />
     </main>
