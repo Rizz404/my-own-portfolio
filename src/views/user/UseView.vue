@@ -6,6 +6,11 @@ import AppError from "@/components/shared/AppError.vue";
 import UseCard from "@/components/user/UseCard.vue";
 import UseTile from "@/components/user/UseTile.vue";
 import { fadeUp, revealUp, staggerDelay } from "@/composables/useMotionPresets";
+import { useT } from "@/composables/useT";
+
+// * Namespace translation buat view ini, ikutin path file JSON-nya:
+// src/locales/<locale>/views/user/UseView.json
+const t = useT("views.user.UseView");
 
 const { data: response, isLoading, isError, error } = useUsesQuery({ size: 100 });
 
@@ -23,10 +28,9 @@ const softwareList = computed(() => {
 <template>
   <section class="mt-8 mb-20 md:mt-12">
     <div class="mb-12">
-      <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">Uses</h1>
+      <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">{{ t("title") }}</h1>
       <p class="max-w-2xl mb-8 text-lg text-content/80">
-        A curated list of the tech stack, gadgets, and software I use every day to build code and
-        stay productive.
+        {{ t("subtitle") }}
       </p>
     </div>
 
@@ -34,7 +38,7 @@ const softwareList = computed(() => {
       <AppSkeleton variant="card" :count="4" />
     </div>
 
-    <AppError v-else-if="isError" title="Failed to load gear" :message="error?.message" />
+    <AppError v-else-if="isError" :title="t('errorLoad')" :message="error?.message" />
 
     <div v-else class="space-y-20">
       <div
@@ -42,7 +46,7 @@ const softwareList = computed(() => {
         v-motion="revealUp()"
         class="p-6 rounded-3xl bg-surface/20 md:p-8"
       >
-        <h2 class="mb-6 text-2xl font-bold text-content">Hardware</h2>
+        <h2 class="mb-6 text-2xl font-bold text-content">{{ t("hardware") }}</h2>
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <UseCard
             v-for="(item, index) in hardwareList"
@@ -58,7 +62,7 @@ const softwareList = computed(() => {
         v-motion="revealUp()"
         class="p-6 rounded-3xl bg-surface/20 md:p-8"
       >
-        <h2 class="mb-6 text-2xl font-bold text-content">Software</h2>
+        <h2 class="mb-6 text-2xl font-bold text-content">{{ t("software") }}</h2>
         <div class="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
           <UseTile
             v-for="(item, index) in softwareList"

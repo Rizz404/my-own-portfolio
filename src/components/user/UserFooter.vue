@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import IconClock from "~icons/lucide/clock";
 import SocialsWidget from "@/components/user/SocialsWidget.vue";
+import { useT } from "@/composables/useT";
 
 const currentYear = new Date().getFullYear();
 
@@ -28,17 +29,19 @@ const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
-const navigateLinks = ref([
-  { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
-  { name: "Blog", path: "/blogs" },
-  { name: "Projects", path: "/projects" },
-  { name: "Uses", path: "/uses" },
+const t = useT("components.user.UserFooter");
+
+const navigateLinks = computed(() => [
+  { name: t("nav.home"), path: "/" },
+  { name: t("nav.about"), path: "/about" },
+  { name: t("nav.blog"), path: "/blogs" },
+  { name: t("nav.projects"), path: "/projects" },
+  { name: t("nav.uses"), path: "/uses" },
 ]);
 
-const exploreLinks = ref([
-  { name: "Colophon", path: "/colophon" },
-  { name: "Contact", path: "/contact" },
+const exploreLinks = computed(() => [
+  { name: t("colophon"), path: "/colophon" },
+  { name: t("contact"), path: "/contact" },
 ]);
 </script>
 
@@ -60,8 +63,7 @@ const exploreLinks = ref([
             </div>
             <!-- max-w-md dihapus agar teks mengalir mengisi lebar kolom -->
             <p class="text-base leading-relaxed text-content/70">
-              Software Engineering student specializing in backend development, with experience in
-              building and managing APIs. Building scalable systems with code and coffee.
+              {{ t("description") }}
             </p>
           </div>
 
@@ -72,7 +74,9 @@ const exploreLinks = ref([
         <div class="grid grid-cols-2 gap-8 lg:col-span-5 sm:gap-12">
           <!-- Navigate Links -->
           <div>
-            <h4 class="mb-6 text-sm font-bold tracking-wider uppercase text-content">Navigate</h4>
+            <h4 class="mb-6 text-sm font-bold tracking-wider uppercase text-content">
+              {{ t("navigate") }}
+            </h4>
             <nav class="flex flex-col gap-3">
               <RouterLink
                 v-for="navigateLink in navigateLinks"
@@ -87,7 +91,9 @@ const exploreLinks = ref([
 
           <!-- Explore Links & Actions -->
           <div>
-            <h4 class="mb-6 text-sm font-bold tracking-wider uppercase text-content">Explore</h4>
+            <h4 class="mb-6 text-sm font-bold tracking-wider uppercase text-content">
+              {{ t("explore") }}
+            </h4>
             <nav class="flex flex-col items-start gap-3">
               <RouterLink
                 v-for="exploreLink in exploreLinks"
@@ -101,7 +107,7 @@ const exploreLinks = ref([
                 @click="scrollToTop"
                 class="flex items-center gap-2 text-base font-medium transition-colors text-content/70 hover:text-primary focus:outline-none"
               >
-                <span class="text-content/40">&bull;</span> Scroll to Top
+                <span class="text-content/40">&bull;</span> {{ t("scrollToTop") }}
               </button>
             </nav>
           </div>
@@ -112,7 +118,7 @@ const exploreLinks = ref([
     <!-- Bottom Bar (Copyright & Time) -->
     <div class="py-6 border-t border-border/50">
       <div class="flex flex-col items-center justify-between gap-4 md:flex-row text-content/60">
-        <span class="text-sm font-medium">&copy; {{ currentYear }} All rights reserved.</span>
+        <span class="text-sm font-medium">&copy; {{ currentYear }} {{ t("rightsReserved") }}</span>
         <span class="flex items-center gap-2 text-sm font-medium" v-if="timeWib">
           <IconClock class="w-4 h-4 text-primary" />
           {{ timeWib }} WIB

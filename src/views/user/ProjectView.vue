@@ -9,6 +9,11 @@ import AppError from "@/components/shared/AppError.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import IconSearch from "~icons/lucide/search";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
+import { useT } from "@/composables/useT";
+
+// * Namespace translation buat view ini, ikutin path file JSON-nya:
+// src/locales/<locale>/views/user/ProjectView.json
+const t = useT("views.user.ProjectView");
 
 const searchInput = ref("");
 const debouncedSearch = refDebounced(searchInput, 500);
@@ -69,10 +74,9 @@ const nextPage = () => {
   <section class="mt-8 mb-20 md:mt-12">
     <div class="flex flex-col gap-6 mb-10 md:flex-row md:items-end md:justify-between">
       <div>
-        <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">Project</h1>
+        <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">{{ t("title") }}</h1>
         <p class="max-w-2xl text-lg text-content/80">
-          It's more than just lines of code. It's a showcase of my dedication, artistry, and hard
-          work in crafting software into a meaningful masterpiece.
+          {{ t("subtitle") }}
         </p>
       </div>
 
@@ -86,7 +90,7 @@ const nextPage = () => {
           <input
             v-model="searchInput"
             type="text"
-            placeholder="Search projects..."
+            :placeholder="t('searchPlaceholder')"
             class="w-full sm:w-64 pl-10 pr-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all text-content placeholder:text-content/40"
           />
         </div>
@@ -95,9 +99,9 @@ const nextPage = () => {
           @change="handleSortChange"
           class="px-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all text-content cursor-pointer appearance-none"
         >
-          <option value="newest">Newest First</option>
-          <option value="oldest">Oldest First</option>
-          <option value="popular">Most Popular</option>
+          <option value="newest">{{ t("sort.newest") }}</option>
+          <option value="oldest">{{ t("sort.oldest") }}</option>
+          <option value="popular">{{ t("sort.popular") }}</option>
         </select>
       </div>
     </div>
@@ -105,7 +109,7 @@ const nextPage = () => {
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
       <AppSkeleton v-if="isLoading" variant="card" :count="8" />
 
-      <AppError v-else-if="isError" title="Failed to load projects" :message="error?.message" />
+      <AppError v-else-if="isError" :title="t('errorLoad')" :message="error?.message" />
 
       <div
         v-else-if="projectResponse?.data.length === 0"
@@ -113,8 +117,8 @@ const nextPage = () => {
         class="py-16 text-center border border-dashed col-span-full rounded-2xl border-border/50 text-content/60"
       >
         <IconSearch class="w-12 h-12 mx-auto mb-4 opacity-20" />
-        <p class="text-lg font-medium">No projects found.</p>
-        <p class="text-sm">Try adjusting your search keywords.</p>
+        <p class="text-lg font-medium">{{ t("empty.title") }}</p>
+        <p class="text-sm">{{ t("empty.subtitle") }}</p>
       </div>
 
       <ProjectCard
@@ -137,12 +141,12 @@ const nextPage = () => {
         @click="prevPage"
         class="min-w-25"
       >
-        &larr; Prev
+        &larr; {{ t("pagination.prev") }}
       </AppButton>
 
       <span class="text-sm font-medium text-content/70">
-        Page {{ projectResponse.pagination.currentPage }} of
-        {{ projectResponse.pagination.totalPages }}
+        {{ t("pagination.page") }} {{ projectResponse.pagination.currentPage }}
+        {{ t("pagination.of") }} {{ projectResponse.pagination.totalPages }}
       </span>
 
       <AppButton
@@ -152,7 +156,7 @@ const nextPage = () => {
         @click="nextPage"
         class="min-w-25"
       >
-        Next &rarr;
+        {{ t("pagination.next") }} &rarr;
       </AppButton>
     </div>
   </section>

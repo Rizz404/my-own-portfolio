@@ -8,6 +8,11 @@ import IconArrowLeft from "~icons/lucide/arrow-left";
 import IconPaperclip from "~icons/lucide/paperclip";
 import { formatDate } from "@/utils/dateUtil";
 import { fadeUp } from "@/composables/useMotionPresets";
+import { useT } from "@/composables/useT";
+
+// * Namespace translation buat view ini, ikutin path file JSON-nya:
+// src/locales/<locale>/views/user/BlogDetailView.json
+const t = useT("views.user.BlogDetailView");
 
 const route = useRoute();
 const blogId = route.params.id as string;
@@ -21,7 +26,7 @@ const { data: response, isLoading, isError, error } = useBlogQuery(blogId);
       to="/blogs"
       class="inline-flex items-center gap-2 mb-8 text-sm font-medium transition-colors text-content/60 hover:text-primary"
     >
-      <IconArrowLeft class="w-4 h-4" /> Back to all articles
+      <IconArrowLeft class="w-4 h-4" /> {{ t("back") }}
     </RouterLink>
 
     <div v-if="isLoading" v-motion="fadeUp()" class="space-y-6">
@@ -33,7 +38,7 @@ const { data: response, isLoading, isError, error } = useBlogQuery(blogId);
       </div>
     </div>
 
-    <AppError v-else-if="isError" title="Article not found" :message="error?.message" />
+    <AppError v-else-if="isError" :title="t('notFound')" :message="error?.message" />
 
     <article v-else-if="response?.data" v-motion="fadeUp()">
       <header class="mb-10 text-center md:text-left">
@@ -44,7 +49,7 @@ const { data: response, isLoading, isError, error } = useBlogQuery(blogId);
             ><IconCalendar class="w-4 h-4" /> {{ formatDate(response.data.createdAt) }}</span
           >
           <span class="flex items-center gap-1.5"
-            ><IconEye class="w-4 h-4" /> {{ response.data.viewsCount }} views</span
+            ><IconEye class="w-4 h-4" /> {{ response.data.viewsCount }} {{ t("views") }}</span
           >
         </div>
 
@@ -66,7 +71,7 @@ const { data: response, isLoading, isError, error } = useBlogQuery(blogId);
         v-if="response.data.blogAttachments && response.data.blogAttachments.length > 0"
         class="pt-8 mt-16 border-t border-border/50"
       >
-        <h3 class="mb-4 text-lg font-bold text-content">Attachments</h3>
+        <h3 class="mb-4 text-lg font-bold text-content">{{ t("attachments") }}</h3>
         <ul class="flex flex-col gap-3">
           <li v-for="file in response.data.blogAttachments" :key="file.id">
             <a

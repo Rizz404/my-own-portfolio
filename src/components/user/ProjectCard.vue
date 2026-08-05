@@ -4,8 +4,13 @@ import { computed, ref } from "vue";
 import { RouterLink } from "vue-router";
 import IconChevronLeft from "~icons/lucide/chevron-left";
 import IconChevronRight from "~icons/lucide/chevron-right";
+import { useT } from "@/composables/useT";
 
 const props = defineProps<{ project: Project }>();
+
+// * Namespace translation buat komponen ini, ikutin path file JSON-nya:
+// src/locales/<locale>/components/user/ProjectCard.json
+const t = useT("components.user.ProjectCard");
 
 // * Carousel
 const currentIndex = ref(0);
@@ -100,7 +105,7 @@ const statusBadgeClass = computed(() => {
           class="text-[10px] py-1 px-2 font-bold uppercase tracking-wider rounded-md"
           :class="statusBadgeClass"
         >
-          {{ formatEnumText(project.status) || "Unknown" }}
+          {{ formatEnumText(project.status) || t("unknown") }}
         </span>
       </div>
       <button
@@ -144,7 +149,7 @@ const statusBadgeClass = computed(() => {
           class="text-[9px] py-0.5 px-1.5 font-bold uppercase tracking-wider rounded"
           :class="statusBadgeClass"
         >
-          {{ formatEnumText(project.status) || "Unknown" }}
+          {{ formatEnumText(project.status) || t("unknown") }}
         </span>
       </div>
 

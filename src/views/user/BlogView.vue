@@ -9,6 +9,11 @@ import AppError from "@/components/shared/AppError.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import IconSearch from "~icons/lucide/search";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
+import { useT } from "@/composables/useT";
+
+// * Namespace translation buat view ini, ikutin path file JSON-nya:
+// src/locales/<locale>/views/user/BlogView.json
+const t = useT("views.user.BlogView");
 
 const searchInput = ref("");
 const debouncedSearch = refDebounced(searchInput, 500);
@@ -63,10 +68,9 @@ const nextPage = () => {
   <section class="mt-8 mb-20 md:mt-12">
     <div class="flex flex-col gap-6 mb-10 md:flex-row md:items-end md:justify-between">
       <div>
-        <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">Blog</h1>
+        <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">{{ t("title") }}</h1>
         <p class="max-w-2xl text-lg text-content/80">
-          Thoughts, tutorials, and insights about software engineering, backend architecture, and my
-          tech journey.
+          {{ t("subtitle") }}
         </p>
       </div>
 
@@ -80,7 +84,7 @@ const nextPage = () => {
           <input
             v-model="searchInput"
             type="text"
-            placeholder="Search articles..."
+            :placeholder="t('searchPlaceholder')"
             class="w-full sm:w-64 pl-10 pr-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all text-content placeholder:text-content/40"
           />
         </div>
@@ -89,9 +93,9 @@ const nextPage = () => {
           @change="handleSortChange"
           class="px-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all text-content cursor-pointer appearance-none"
         >
-          <option value="newest">Newest First</option>
-          <option value="oldest">Oldest First</option>
-          <option value="popular">Most Popular</option>
+          <option value="newest">{{ t("sort.newest") }}</option>
+          <option value="oldest">{{ t("sort.oldest") }}</option>
+          <option value="popular">{{ t("sort.popular") }}</option>
         </select>
       </div>
     </div>
@@ -99,7 +103,7 @@ const nextPage = () => {
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
       <AppSkeleton v-if="isLoading" variant="card" :count="8" />
 
-      <AppError v-else-if="isError" title="Failed to load articles" :message="error?.message" />
+      <AppError v-else-if="isError" :title="t('errorLoad')" :message="error?.message" />
 
       <div
         v-else-if="blogResponse?.data.length === 0"
@@ -107,8 +111,8 @@ const nextPage = () => {
         class="py-16 text-center border border-dashed col-span-full rounded-2xl border-border/50 text-content/60"
       >
         <IconSearch class="w-12 h-12 mx-auto mb-4 opacity-20" />
-        <p class="text-lg font-medium">No articles found.</p>
-        <p class="text-sm">Try adjusting your search keywords.</p>
+        <p class="text-lg font-medium">{{ t("empty.title") }}</p>
+        <p class="text-sm">{{ t("empty.subtitle") }}</p>
       </div>
 
       <BlogCard
@@ -131,11 +135,12 @@ const nextPage = () => {
         @click="prevPage"
         class="min-w-25"
       >
-        &larr; Prev
+        &larr; {{ t("pagination.prev") }}
       </AppButton>
 
       <span class="text-sm font-medium text-content/70">
-        Page {{ blogResponse.pagination.currentPage }} of {{ blogResponse.pagination.totalPages }}
+        {{ t("pagination.page") }} {{ blogResponse.pagination.currentPage }}
+        {{ t("pagination.of") }} {{ blogResponse.pagination.totalPages }}
       </span>
 
       <AppButton
@@ -145,7 +150,7 @@ const nextPage = () => {
         @click="nextPage"
         class="min-w-25"
       >
-        Next &rarr;
+        {{ t("pagination.next") }} &rarr;
       </AppButton>
     </div>
   </section>

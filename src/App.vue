@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import UserHeader from "@/components/user/UserHeader.vue";
-import UserFooter from "@/components/user/UserHeader.vue";
+import UserFooter from "@/components/user/UserFooter.vue";
 </script>
 
 <template>

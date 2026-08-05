@@ -10,6 +10,11 @@ import IconChevronLeft from "~icons/lucide/chevron-left";
 import IconChevronRight from "~icons/lucide/chevron-right";
 import { formatDate } from "@/utils/dateUtil";
 import { fadeUp } from "@/composables/useMotionPresets";
+import { useT } from "@/composables/useT";
+
+// * Namespace translation buat view ini, ikutin path file JSON-nya:
+// src/locales/<locale>/views/user/ProjectDetailView.json
+const t = useT("views.user.ProjectDetailView");
 
 const route = useRoute();
 const projectId = route.params.id as string;
@@ -57,7 +62,7 @@ const scrollImageStrip = (dir: "next" | "prev") => {
       to="/projects"
       class="inline-flex items-center gap-2 mb-8 text-sm font-medium transition-colors text-content/60 hover:text-primary"
     >
-      <IconArrowLeft class="w-4 h-4" /> Back to all projects
+      <IconArrowLeft class="w-4 h-4" /> {{ t("back") }}
     </RouterLink>
 
     <div v-if="isLoading" v-motion="fadeUp()" class="space-y-6">
@@ -72,7 +77,7 @@ const scrollImageStrip = (dir: "next" | "prev") => {
       </div>
     </div>
 
-    <AppError v-else-if="isError" title="Project not found" :message="error?.message" />
+    <AppError v-else-if="isError" :title="t('notFound')" :message="error?.message" />
 
     <article v-else-if="response?.data" v-motion="fadeUp()">
       <header class="flex flex-col gap-6 mb-10 md:flex-row md:items-center md:justify-between">
@@ -97,7 +102,7 @@ const scrollImageStrip = (dir: "next" | "prev") => {
                     : 'bg-surface-raised text-content'
                 "
               >
-                {{ formatEnumText(response.data.status) || "Unknown" }}
+                {{ formatEnumText(response.data.status) || t("unknown") }}
               </span>
               <span class="flex items-center gap-1.5" v-if="response.data.createdAt">
                 <IconCalendar class="w-4 h-4" /> {{ formatDate(response.data.createdAt) }}

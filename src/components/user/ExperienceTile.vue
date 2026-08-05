@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { useT } from "@/composables/useT";
 import type { Experience } from "@/types/experience";
 import { formatDate } from "@/utils/dateUtil"; // Asumsikan kamu punya fungsi ini
 
 defineProps<{ experience: Experience }>();
+
+const t = useT("components.user.ExperienceTile");
 </script>
 
 <template>
@@ -27,7 +30,7 @@ defineProps<{ experience: Experience }>();
       </div>
       <span class="mt-2 text-xs font-medium md:mt-0 text-content/60 whitespace-nowrap">
         {{ formatDate(experience.startDate) }} &mdash;
-        <span v-if="experience.isCurrent" class="text-primary">Present</span>
+        <span v-if="experience.isCurrent" class="text-primary">{{ t("present") }}</span>
         <span v-else>{{ formatDate(experience.endDate || "") }}</span>
       </span>
     </div>

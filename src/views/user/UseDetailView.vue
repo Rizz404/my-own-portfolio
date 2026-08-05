@@ -5,6 +5,11 @@ import AppError from "@/components/shared/AppError.vue";
 import IconArrowLeft from "~icons/lucide/arrow-left";
 import IconExternalLink from "~icons/lucide/external-link";
 import { fadeUp } from "@/composables/useMotionPresets";
+import { useT } from "@/composables/useT";
+
+// * Namespace translation buat view ini, ikutin path file JSON-nya:
+// src/locales/<locale>/views/user/UseDetailView.json
+const t = useT("views.user.UseDetailView");
 
 const route = useRoute();
 const useId = route.params.id as string;
@@ -21,7 +26,7 @@ const getDomain = (url: string) => {
   try {
     return new URL(url).hostname.replace("www.", "");
   } catch {
-    return "Visit Link";
+    return t("visitLink");
   }
 };
 </script>
@@ -32,7 +37,7 @@ const getDomain = (url: string) => {
       to="/uses"
       class="inline-flex items-center gap-2 mb-8 text-sm font-medium transition-colors text-content/60 hover:text-primary"
     >
-      <IconArrowLeft class="w-4 h-4" /> Back to all gear
+      <IconArrowLeft class="w-4 h-4" /> {{ t("back") }}
     </RouterLink>
 
     <div v-if="isLoading" v-motion="fadeUp()" class="space-y-6">
@@ -47,7 +52,7 @@ const getDomain = (url: string) => {
       </div>
     </div>
 
-    <AppError v-else-if="isError" title="Item not found" :message="error?.message" />
+    <AppError v-else-if="isError" :title="t('notFound')" :message="error?.message" />
 
     <article v-else-if="response?.data" v-motion="fadeUp()">
       <header class="flex flex-col gap-6 mb-10 md:flex-row md:items-center md:justify-between">

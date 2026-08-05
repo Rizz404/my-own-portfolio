@@ -7,10 +7,16 @@ import AppError from "@/components/shared/AppError.vue";
 import { useExperiencesQuery } from "@/composables/queries/useExperiences";
 import type { ExperienceQueryParams } from "@/types/experience";
 import { ref } from "vue";
+import { useT } from "@/composables/useT";
 import { fadeUp, revealUp, staggerDelay } from "@/composables/useMotionPresets";
 
 const params = ref<ExperienceQueryParams>({ page: 1, size: 10 });
 const { data, isLoading, isError, error } = useExperiencesQuery(params);
+
+// * Namespace translation buat view ini, ikutin path file JSON-nya:
+// src/locales/<locale>/views/user/AboutView.json
+const NS = "views.user.AboutView";
+const t = useT(NS);
 </script>
 
 <template>
@@ -18,45 +24,34 @@ const { data, isLoading, isError, error } = useExperiencesQuery(params);
     <section class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-start">
       <div class="space-y-6 text-base font-normal leading-relaxed md:text-lg text-content/80">
         <h1 class="mb-6 text-4xl font-extrabold leading-tight md:text-5xl text-content">
-          I build robust APIs and <br class="hidden md:block" />
-          <span class="text-primary">scalable systems.</span>
+          {{ t("hero.titleLine1") }} <br class="hidden md:block" />
+          <span class="text-primary">{{ t("hero.titleHighlight") }}</span>
         </h1>
 
         <p class="font-medium text-content">
-          👋 Hey there! I'm Rizqiansyah Ramadhan, a software engineering student specializing in
-          backend development.
+          {{ t("hero.greeting") }}
         </p>
 
         <p>
-          My journey into software development started with a deep curiosity about how things work
-          behind the scenes. While others were mesmerized by beautiful interfaces, I found myself
-          captivated by databases, server logic, and the intricate dance of APIs that make those
-          interfaces come alive. I focus on the details and I'm passionate about crafting software
-          products that are robust, secure, and easy to maintain.
+          {{ t("hero.paragraph1") }}
+        </p>
+
+        <i18n-t :keypath="`${NS}.hero.paragraph2`" tag="p">
+          <template #techStack>
+            <strong class="text-content">{{ t("hero.techStack") }}</strong>
+          </template>
+        </i18n-t>
+
+        <p>
+          {{ t("hero.paragraph3") }}
         </p>
 
         <p>
-          Over the years, I've had the opportunity to work with a diverse range of technologies. My
-          core toolkit revolves around
-          <strong class="text-content">Go (Golang), Express, NestJS, Flask, and Laravel</strong>.
-          Whether it's designing a normalized database schema, optimizing query performance, or
-          building microservices, I love diving into complex architectural challenges.
-        </p>
-
-        <p>
-          Beyond backend architecture, I'm also familiar with mobile development using Flutter,
-          allowing me to understand the complete lifecycle of product development from the server
-          down to the client's hands. I'm a huge advocate for open source, continuous learning, and
-          collaborating within globally-remote teams that value trust, kindness, and inclusion.
-        </p>
-
-        <p>
-          Curious about the specific hardware and software tools I use daily? Feel free to check out
-          my
+          {{ t("hero.usesPagePrefix") }}
           <RouterLink
             to="/uses"
             class="underline transition-colors text-primary hover:text-primary/80"
-            >/uses page</RouterLink
+            >{{ t("hero.usesPageLink") }}</RouterLink
           >.
         </p>
       </div>
@@ -65,17 +60,17 @@ const { data, isLoading, isError, error } = useExperiencesQuery(params);
         <img
           src="https://i.pinimg.com/originals/e8/fe/59/e8fe595d3fcec5c93bb57a21dbf67081.gif"
           class="object-cover w-full h-56 transition-transform duration-500 shadow-lg rounded-xl md:h-72 hover:scale-105"
-          alt="Working setup"
+          :alt="t('gallery.workingSetupAlt')"
         />
         <img
           src="https://i.pinimg.com/originals/e8/fe/59/e8fe595d3fcec5c93bb57a21dbf67081.gif"
           class="object-cover w-full h-56 transition-transform duration-500 shadow-lg rounded-xl md:h-72 hover:scale-105"
-          alt="Coding session"
+          :alt="t('gallery.codingSessionAlt')"
         />
         <img
           src="https://i.pinimg.com/originals/e8/fe/59/e8fe595d3fcec5c93bb57a21dbf67081.gif"
           class="object-cover w-full h-48 col-span-2 transition-transform duration-500 shadow-lg rounded-xl md:h-64 hover:scale-105"
-          alt="Outdoor workspace"
+          :alt="t('gallery.outdoorWorkspaceAlt')"
         />
       </div>
     </section>
@@ -83,16 +78,16 @@ const { data, isLoading, isError, error } = useExperiencesQuery(params);
     <section class="grid grid-cols-1 gap-12 mt-24 mb-20 lg:grid-cols-3">
       <div v-motion="revealUp()" class="lg:col-span-2">
         <div class="flex items-center justify-between mb-8">
-          <h2 class="text-2xl font-bold md:text-3xl text-content">Experience</h2>
+          <h2 class="text-2xl font-bold md:text-3xl text-content">{{ t("experience.title") }}</h2>
           <AppButton size="sm" variant="secondary" class="rounded-full shadow-sm hover:shadow-md">
-            Download Resume
+            {{ t("experience.downloadResume") }}
           </AppButton>
         </div>
 
         <AppSkeleton v-if="isLoading" variant="tile" :count="4" />
         <AppError
           v-else-if="isError"
-          title="Failed to load experiences"
+          :title="t('experience.loadError')"
           :message="error?.message"
         />
 
@@ -108,10 +103,9 @@ const { data, isLoading, isError, error } = useExperiencesQuery(params);
 
       <div v-motion="revealUp(0.1)" class="lg:col-span-1">
         <div class="p-6 border border-border/30 rounded-2xl bg-surface/30">
-          <h2 class="mb-2 text-xl font-bold text-content">Let's Connect</h2>
+          <h2 class="mb-2 text-xl font-bold text-content">{{ t("connect.title") }}</h2>
           <p class="mb-6 text-sm text-content/70">
-            I'm always open to discussing backend architecture, open-source projects, or new
-            opportunities.
+            {{ t("connect.description") }}
           </p>
 
           <SocialsWidget class="flex-col items-start! gap-4! mt-0!" />
