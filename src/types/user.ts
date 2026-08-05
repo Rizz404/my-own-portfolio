@@ -1,4 +1,4 @@
-import type { BaseQueryParams } from "./api";
+import type { BaseQueryParams, LanguageCode } from "./api";
 
 export interface User {
   id: string; // * Tipe snowflake string di backend
@@ -14,6 +14,7 @@ export interface User {
   gender: Gender | null;
   phoneNumber: string | null;
   bio: string | null;
+  resolvedLocale: string;
   address: string | null;
   createdAt: string;
   updatedAt: string;
@@ -36,6 +37,11 @@ export enum Gender {
   PREFER_NOT_TO_SAY,
 }
 
+export interface UserTranslationRequest {
+  locale: LanguageCode;
+  bio?: string | null;
+}
+
 export interface UserRequest {
   nickname: string;
   fullName?: string | null;
@@ -48,8 +54,8 @@ export interface UserRequest {
   dateOfBirth?: string | null;
   gender?: Gender | null;
   phoneNumber?: string | null;
-  bio?: string | null;
   address?: string | null;
+  translations: UserTranslationRequest[];
 }
 
 export interface UserQueryParams extends BaseQueryParams {

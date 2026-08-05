@@ -20,10 +20,10 @@ export enum FileType {
 }
 
 export interface BlogAttachmentRequest {
-  blogId?: string | null;
+  blogId: string;
   fileName: string;
   fileUrl: string;
-  fileType: string;
+  fileType: FileType;
 }
 
 export type BlogAttachmentQueryParams = BaseQueryParams;

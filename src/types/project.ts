@@ -1,10 +1,11 @@
-import type { BaseQueryParams } from "./api";
+import type { BaseQueryParams, LanguageCode } from "./api";
 
 export interface Project {
   id: string; // * Tipe snowflake string di backend
   slug: string;
   name: string;
   description: string | null;
+  resolvedLocale: string;
   status: ProjectStatus;
   logoUrl: string | null;
   imageUrls: string[] | null;
@@ -53,13 +54,20 @@ export enum LinkType {
   other,
 }
 
-export interface ProjectRequest {
+export interface ProjectTranslationRequest {
+  locale: LanguageCode;
   name: string;
   description?: string | null;
-  status: string;
+}
+
+export interface ProjectRequest {
+  translations: ProjectTranslationRequest[];
+  status: ProjectStatus;
   logoUrl?: string | null;
   imageUrls?: string[] | null;
-  projectLinks?: Record<string, string> | null;
+  techStack?: Record<string, string> | null;
+  projectTypes?: ProjectType[] | null;
+  projectLinks?: Record<LinkType, string> | null;
   deletedImageUrls?: string[] | null;
 }
 

@@ -39,3 +39,10 @@ export interface BaseQueryParams {
   sortBy?: string[];
   sortDir?: string[];
 }
+
+// * Locale yang didukung untuk translation di Blog, Experience, Project, Skill, Use, dan User
+export enum LanguageCode {
+  en,
+  id,
+  ja,
+}

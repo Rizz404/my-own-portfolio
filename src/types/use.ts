@@ -1,9 +1,10 @@
-import type { BaseQueryParams } from "./api";
+import type { BaseQueryParams, LanguageCode } from "./api";
 
 export interface Use {
   id: string; // * Tipe snowflake string di backend
   itemName: string;
   reasons: string | null;
+  resolvedLocale: string;
   category: Category;
   logoUrl: string | null;
   pictures: string[] | null;
@@ -17,14 +18,19 @@ export enum Category {
   hardware,
 }
 
+export interface UseTranslationRequest {
+  locale: LanguageCode;
+  reasons?: string | null;
+}
+
 export interface UseRequest {
   itemName: string;
   category: string;
   logoUrl?: string | null;
   pictures?: string[] | null;
-  reasons?: string | null;
   links?: string[] | null;
   deletedPictures?: string[] | null;
+  translations: UseTranslationRequest[];
 }
 
 export interface UseQueryParams extends BaseQueryParams {

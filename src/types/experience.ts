@@ -1,4 +1,4 @@
-import type { BaseQueryParams } from "./api";
+import type { BaseQueryParams, LanguageCode } from "./api";
 
 export interface Experience {
   id: string; // * Tipe snowflake string di backend
@@ -6,6 +6,7 @@ export interface Experience {
   position: string;
   description: string | null;
   jobdesks: string[] | null;
+  resolvedLocale: string;
   startDate: string;
   endDate: string | null;
   isCurrent: boolean | null;
@@ -13,14 +14,19 @@ export interface Experience {
   updatedAt: string;
 }
 
-export interface ExperienceRequest {
-  companyName: string;
+export interface ExperienceTranslationRequest {
+  locale: LanguageCode;
   position: string;
   description?: string | null;
   jobdesks?: string[] | null;
+}
+
+export interface ExperienceRequest {
+  companyName: string;
   startDate: string;
   endDate?: string | null;
   isCurrent?: boolean | null;
+  translations: ExperienceTranslationRequest[];
 }
 
 export interface ExperienceQueryParams extends BaseQueryParams {
