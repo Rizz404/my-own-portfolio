@@ -153,7 +153,10 @@ const statusBadgeClass = computed(() => {
       >
         {{ project.name }}
       </h3>
-      <div v-if="project.projectTypes && project.projectTypes.length" class="flex flex-wrap gap-1.5 mb-2">
+      <div
+        v-if="project.projectTypes && project.projectTypes.length"
+        class="flex flex-wrap gap-1.5 mb-2"
+      >
         <span
           v-for="type in project.projectTypes"
           :key="type"
