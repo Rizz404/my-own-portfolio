@@ -37,6 +37,25 @@ const formatEnumText = (val: string | number) => {
   const str = String(val).replace(/_/g, " ");
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
+
+// * Status badge color: base on ProjectStatus enum, pakai token warna dari main.css
+// (success/warning/danger/info/secondary) - bukan overlay hitam transparan lagi.
+const statusBadgeClass = computed(() => {
+  const status = String(props.project.status).toLowerCase();
+  switch (status) {
+    case "active":
+      return "bg-success text-white";
+    case "development":
+      return "bg-info text-white";
+    case "maintenance":
+      return "bg-warning text-content";
+    case "archived":
+      return "bg-danger text-white";
+    case "inactive":
+    default:
+      return "bg-secondary text-content";
+  }
+});
 </script>
 
 <template>
@@ -78,7 +97,8 @@ const formatEnumText = (val: string | number) => {
         />
         <div v-else class="size-8"></div>
         <span
-          class="text-[10px] py-1 px-2 font-bold uppercase tracking-wider text-white rounded-md bg-black/50 backdrop-blur-sm border border-border/50"
+          class="text-[10px] py-1 px-2 font-bold uppercase tracking-wider rounded-md"
+          :class="statusBadgeClass"
         >
           {{ formatEnumText(project.status) || "Unknown" }}
         </span>
@@ -86,14 +106,14 @@ const formatEnumText = (val: string | number) => {
       <button
         v-if="images.length > 1"
         @click.prevent="prevImage"
-        class="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-black/40 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/60 hidden md:block backdrop-blur-sm z-10"
+        class="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-black/70 text-white shadow-sm ring-1 ring-white/10 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/90 hidden md:block z-10"
       >
         <IconChevronLeft class="w-5 h-5" />
       </button>
       <button
         v-if="images.length > 1"
         @click.prevent="nextImage"
-        class="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-black/40 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/60 hidden md:block backdrop-blur-sm z-10"
+        class="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-black/70 text-white shadow-sm ring-1 ring-white/10 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/90 hidden md:block z-10"
       >
         <IconChevronRight class="w-5 h-5" />
       </button>
@@ -106,7 +126,7 @@ const formatEnumText = (val: string | number) => {
           v-for="(_, index) in images"
           :key="index"
           @click.prevent="goToImage(index)"
-          class="size-1.5 rounded-full transition-all duration-300"
+          class="size-1.5 rounded-full shadow-sm ring-1 ring-black/20 transition-all duration-300"
           :class="currentIndex === index ? 'bg-white w-4' : 'bg-white/50 hover:bg-white/80'"
         ></button>
       </div>
@@ -121,7 +141,8 @@ const formatEnumText = (val: string | number) => {
           class="object-cover border rounded-md size-6 shrink-0 border-border/50 bg-surface"
         />
         <span
-          class="text-[9px] py-0.5 px-1.5 font-bold uppercase tracking-wider text-primary rounded border border-primary/20 bg-primary/10"
+          class="text-[9px] py-0.5 px-1.5 font-bold uppercase tracking-wider rounded"
+          :class="statusBadgeClass"
         >
           {{ formatEnumText(project.status) || "Unknown" }}
         </span>
@@ -132,6 +153,15 @@ const formatEnumText = (val: string | number) => {
       >
         {{ project.name }}
       </h3>
+      <div v-if="project.projectTypes && project.projectTypes.length" class="flex flex-wrap gap-1.5 mb-2">
+        <span
+          v-for="type in project.projectTypes"
+          :key="type"
+          class="text-[10px] py-0.5 px-2 font-semibold uppercase tracking-wide rounded-full border border-border/50 bg-surface-raised text-content/70"
+        >
+          {{ formatEnumText(type) }}
+        </span>
+      </div>
       <p class="text-base font-normal leading-relaxed md:text-sm text-content/70 line-clamp-3">
         {{ project.description }}
       </p>

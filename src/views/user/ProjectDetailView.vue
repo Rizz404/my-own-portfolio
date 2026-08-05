@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { useProjectQuery } from "@/composables/queries/useProjects";
 import AppError from "@/components/AppError.vue";
 import IconArrowLeft from "~icons/lucide/arrow-left";
 import IconExternalLink from "~icons/lucide/external-link";
 import IconCalendar from "~icons/lucide/calendar";
+import IconChevronLeft from "~icons/lucide/chevron-left";
+import IconChevronRight from "~icons/lucide/chevron-right";
 import { formatDate } from "@/utils/dateUtil";
 import { fadeUp } from "@/composables/useMotionPresets";
 
@@ -18,6 +21,33 @@ const formatEnumText = (val: string | number) => {
   if (val === undefined || val === null) return;
   const str = String(val).replace(/_/g, " ");
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
+
+// * Screenshot strip nav: samain kayak carousel di ProjectCard.vue, tapi tetap
+// scroll strip (bukan diganti jadi single-image fade) - cuma ditambah tombol
+// & dibuat infinite (loncat balik ke ujung saat sudah mentok).
+const imageStripRef = ref<HTMLDivElement | null>(null);
+
+const scrollImageStrip = (dir: "next" | "prev") => {
+  const el = imageStripRef.value;
+  const firstChild = el?.firstElementChild as HTMLElement | null;
+  if (!el || !firstChild) return;
+
+  const gap = 16; // gap-4
+  const step = firstChild.offsetWidth + gap;
+  const maxScroll = el.scrollWidth - el.clientWidth;
+
+  if (dir === "next") {
+    el.scrollTo({
+      left: el.scrollLeft >= maxScroll - 10 ? 0 : el.scrollLeft + step,
+      behavior: "smooth",
+    });
+  } else {
+    el.scrollTo({
+      left: el.scrollLeft <= 10 ? maxScroll : el.scrollLeft - step,
+      behavior: "smooth",
+    });
+  }
 };
 </script>
 
@@ -73,6 +103,18 @@ const formatEnumText = (val: string | number) => {
                 <IconCalendar class="w-4 h-4" /> {{ formatDate(response.data.createdAt) }}
               </span>
             </div>
+            <div
+              v-if="response.data.projectTypes && response.data.projectTypes.length"
+              class="flex flex-wrap items-center gap-2 mt-2"
+            >
+              <span
+                v-for="type in response.data.projectTypes"
+                :key="type"
+                class="px-2.5 py-1 text-xs font-semibold uppercase tracking-wide border rounded-md border-border/50 bg-surface-raised text-content/70"
+              >
+                {{ formatEnumText(type) }}
+              </span>
+            </div>
             <div v-if="response.data.techStack" class="flex flex-wrap items-center gap-2 mt-2">
               <span
                 v-for="(logoUrl, name) in response.data.techStack"
@@ -102,15 +144,34 @@ const formatEnumText = (val: string | number) => {
       <div class="mb-12">
         <div
           v-if="response.data.imageUrls && response.data.imageUrls.length > 0"
-          class="flex gap-4 pb-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+          class="relative group"
         >
-          <img
-            v-for="(img, index) in response.data.imageUrls"
-            :key="index"
-            :src="img"
-            :alt="`${response.data.name} screenshot ${index + 1}`"
-            class="object-cover w-full border shadow-md shrink-0 snap-center aspect-video rounded-2xl border-border/30 md:w-4/5"
-          />
+          <div
+            ref="imageStripRef"
+            class="flex gap-4 pb-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+          >
+            <img
+              v-for="(img, index) in response.data.imageUrls"
+              :key="index"
+              :src="img"
+              :alt="`${response.data.name} screenshot ${index + 1}`"
+              class="object-cover w-full border shadow-md shrink-0 snap-center aspect-video rounded-2xl border-border/30 md:w-4/5"
+            />
+          </div>
+          <button
+            v-if="response.data.imageUrls.length > 1"
+            @click="scrollImageStrip('prev')"
+            class="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-black/70 text-white shadow-sm ring-1 ring-white/10 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/90 hidden md:block z-10"
+          >
+            <IconChevronLeft class="w-5 h-5" />
+          </button>
+          <button
+            v-if="response.data.imageUrls.length > 1"
+            @click="scrollImageStrip('next')"
+            class="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-black/70 text-white shadow-sm ring-1 ring-white/10 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/90 hidden md:block z-10"
+          >
+            <IconChevronRight class="w-5 h-5" />
+          </button>
         </div>
         <img
           v-else
