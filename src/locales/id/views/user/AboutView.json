@@ -15,6 +15,10 @@
     "codingSessionAlt": "Sesi coding",
     "outdoorWorkspaceAlt": "Ruang kerja outdoor"
   },
+  "skills": {
+    "title": "Keahlian",
+    "loadError": "Gagal memuat data keahlian"
+  },
   "experience": {
     "title": "Pengalaman",
     "downloadResume": "Unduh Resume",

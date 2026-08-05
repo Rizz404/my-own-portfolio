@@ -2,16 +2,43 @@
 import AppButton from "@/components/shared/AppButton.vue";
 import SocialsWidget from "@/components/user/SocialsWidget.vue";
 import ExperienceTile from "@/components/user/ExperienceTile.vue";
+import SkillBadge from "@/components/user/SkillBadge.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
 import { useExperiencesQuery } from "@/composables/queries/useExperiences";
+import { useSkillsQuery } from "@/composables/queries/useSkills";
 import type { ExperienceQueryParams } from "@/types/experience";
-import { ref } from "vue";
+import type { Skill, SkillQueryParams } from "@/types/skill";
+import { computed, ref } from "vue";
 import { useT } from "@/composables/useT";
 import { fadeUp, revealUp, staggerDelay } from "@/composables/useMotionPresets";
 
 const params = ref<ExperienceQueryParams>({ page: 1, size: 10 });
 const { data, isLoading, isError, error } = useExperiencesQuery(params);
+
+const skillParams = ref<SkillQueryParams>({ page: 1, size: 100 });
+const {
+  data: skillResponse,
+  isLoading: isSkillLoading,
+  isError: isSkillError,
+  error: skillError,
+} = useSkillsQuery(skillParams);
+
+// * Kelompokin skills per kategori (programming_language, framework, database, tool, other),
+// urutannya ngikutin urutan pertama kali kategori itu muncul di response.
+const skillsByCategory = computed(() => {
+  const groups = new Map<string, Skill[]>();
+  for (const skill of skillResponse.value?.data ?? []) {
+    const key = String(skill.category);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key)!.push(skill);
+  }
+  return groups;
+});
+
+const formatCategoryLabel = (category: string) => {
+  return category.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+};
 
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
 // src/locales/<locale>/views/user/AboutView.json
@@ -72,6 +99,34 @@ const t = useT(NS);
           class="object-cover w-full h-48 col-span-2 transition-transform duration-500 shadow-lg rounded-xl md:h-64 hover:scale-105"
           :alt="t('gallery.outdoorWorkspaceAlt')"
         />
+      </div>
+    </section>
+
+    <!-- * Skills -->
+    <section class="mt-24">
+      <h2 class="mb-8 text-2xl font-bold md:text-3xl text-content">{{ t("skills.title") }}</h2>
+
+      <AppSkeleton v-if="isSkillLoading" variant="card" :count="4" />
+      <AppError
+        v-else-if="isSkillError"
+        :title="t('skills.loadError')"
+        :message="skillError?.message"
+      />
+
+      <div v-else class="space-y-8">
+        <div v-for="[category, skills] in skillsByCategory" :key="category" v-motion="revealUp()">
+          <h3 class="mb-4 text-sm font-semibold tracking-wide uppercase text-content/60">
+            {{ formatCategoryLabel(category) }}
+          </h3>
+          <div class="flex flex-wrap gap-3">
+            <SkillBadge
+              v-for="(skill, index) in skills"
+              :key="skill.id"
+              v-motion="fadeUp(staggerDelay(index))"
+              :skill="skill"
+            />
+          </div>
+        </div>
       </div>
     </section>
 

@@ -15,6 +15,10 @@
     "codingSessionAlt": "Coding session",
     "outdoorWorkspaceAlt": "Outdoor workspace"
   },
+  "skills": {
+    "title": "Skills",
+    "loadError": "Failed to load skills"
+  },
   "experience": {
     "title": "Experience",
     "downloadResume": "Download Resume",
