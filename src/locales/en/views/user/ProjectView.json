@@ -1,0 +1,21 @@
+{
+  "title": "Project",
+  "subtitle": "It's more than just lines of code. It's a showcase of my dedication, artistry, and hard work in crafting software into a meaningful masterpiece.",
+  "searchPlaceholder": "Search projects...",
+  "sort": {
+    "newest": "Newest First",
+    "oldest": "Oldest First",
+    "popular": "Most Popular"
+  },
+  "errorLoad": "Failed to load projects",
+  "empty": {
+    "title": "No projects found.",
+    "subtitle": "Try adjusting your search keywords."
+  },
+  "pagination": {
+    "prev": "Prev",
+    "next": "Next",
+    "page": "Page",
+    "of": "of"
+  }
+}

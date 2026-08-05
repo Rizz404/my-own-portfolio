@@ -1,0 +1,16 @@
+{
+  "description": "Software Engineering student specializing in backend development, with experience in building and managing APIs. Building scalable systems with code and coffee.",
+  "navigate": "Navigate",
+  "explore": "Explore",
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "blog": "Blog",
+    "projects": "Projects",
+    "uses": "Uses"
+  },
+  "colophon": "Colophon",
+  "contact": "Contact",
+  "scrollToTop": "Scroll to Top",
+  "rightsReserved": "All rights reserved."
+}

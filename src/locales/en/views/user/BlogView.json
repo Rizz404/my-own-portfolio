@@ -1,0 +1,21 @@
+{
+  "title": "Blog",
+  "subtitle": "Thoughts, tutorials, and insights about software engineering, backend architecture, and my tech journey.",
+  "searchPlaceholder": "Search articles...",
+  "sort": {
+    "newest": "Newest First",
+    "oldest": "Oldest First",
+    "popular": "Most Popular"
+  },
+  "errorLoad": "Failed to load articles",
+  "empty": {
+    "title": "No articles found.",
+    "subtitle": "Try adjusting your search keywords."
+  },
+  "pagination": {
+    "prev": "Prev",
+    "next": "Next",
+    "page": "Page",
+    "of": "of"
+  }
+}

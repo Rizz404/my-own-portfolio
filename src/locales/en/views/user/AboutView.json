@@ -1,0 +1,27 @@
+{
+  "hero": {
+    "titleLine1": "I build robust APIs and",
+    "titleHighlight": "scalable systems.",
+    "greeting": "👋 Hey there! I'm Rizqiansyah Ramadhan, a software engineering student specializing in backend development.",
+    "paragraph1": "My journey into software development started with a deep curiosity about how things work behind the scenes. While others were mesmerized by beautiful interfaces, I found myself captivated by databases, server logic, and the intricate dance of APIs that make those interfaces come alive. I focus on the details and I'm passionate about crafting software products that are robust, secure, and easy to maintain.",
+    "paragraph2": "Over the years, I've had the opportunity to work with a diverse range of technologies. My core toolkit revolves around {techStack}. Whether it's designing a normalized database schema, optimizing query performance, or building microservices, I love diving into complex architectural challenges.",
+    "techStack": "Go (Golang), Express, NestJS, Flask, and Laravel",
+    "paragraph3": "Beyond backend architecture, I'm also familiar with mobile development using Flutter, allowing me to understand the complete lifecycle of product development from the server down to the client's hands. I'm a huge advocate for open source, continuous learning, and collaborating within globally-remote teams that value trust, kindness, and inclusion.",
+    "usesPagePrefix": "Curious about the specific hardware and software tools I use daily? Feel free to check out my",
+    "usesPageLink": "/uses page"
+  },
+  "gallery": {
+    "workingSetupAlt": "Working setup",
+    "codingSessionAlt": "Coding session",
+    "outdoorWorkspaceAlt": "Outdoor workspace"
+  },
+  "experience": {
+    "title": "Experience",
+    "downloadResume": "Download Resume",
+    "loadError": "Failed to load experiences"
+  },
+  "connect": {
+    "title": "Let's Connect",
+    "description": "I'm always open to discussing backend architecture, open-source projects, or new opportunities."
+  }
+}

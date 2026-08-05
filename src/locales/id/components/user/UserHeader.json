@@ -1,0 +1,15 @@
+{
+  "nav": {
+    "home": "Beranda",
+    "about": "Tentang",
+    "blog": "Blog",
+    "projects": "Proyek",
+    "uses": "Perlengkapan"
+  },
+  "languageSwitcher": {
+    "ariaLabel": "Ganti bahasa",
+    "system": "Sistem",
+    "english": "Inggris",
+    "indonesian": "Indonesia"
+  }
+}

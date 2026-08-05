@@ -1,0 +1,18 @@
+{
+  "hero": {
+    "greeting": "Halo, saya",
+    "role": "Software Developer",
+    "description": "Mahasiswa sarjana Software Engineering dengan spesialisasi backend development, berpengalaman dalam membangun dan mengelola API. Menguasai berbagai tech stack termasuk Go (Golang), Express, NestJS, Flask, dan Laravel. Terampil mengelola berbagai database dan familiar dengan mobile development menggunakan Flutter. Memiliki semangat tinggi untuk belajar dan berkontribusi pada proyek-proyek berdampak.",
+    "moreButton": "Lebih lanjut tentang saya"
+  },
+  "latestBlogs": {
+    "title": "Blog Terbaru",
+    "viewAll": "Lihat semua",
+    "errorLoad": "Gagal memuat blog"
+  },
+  "selectedProjects": {
+    "title": "Proyek Pilihan",
+    "viewAll": "Lihat semua",
+    "errorLoad": "Gagal memuat proyek"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Blog",
+  "subtitle": "Pemikiran, tutorial, dan wawasan seputar software engineering, arsitektur backend, dan perjalanan teknologi saya.",
+  "searchPlaceholder": "Cari artikel...",
+  "sort": {
+    "newest": "Terbaru",
+    "oldest": "Terlama",
+    "popular": "Terpopuler"
+  },
+  "errorLoad": "Gagal memuat artikel",
+  "empty": {
+    "title": "Tidak ada artikel yang ditemukan.",
+    "subtitle": "Coba sesuaikan kata kunci pencarian Anda."
+  },
+  "pagination": {
+    "prev": "Seb",
+    "next": "Lanjut",
+    "page": "Halaman",
+    "of": "dari"
+  }
+}

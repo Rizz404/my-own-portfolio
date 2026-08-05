@@ -1,0 +1,15 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "blog": "Blog",
+    "projects": "Projects",
+    "uses": "Uses"
+  },
+  "languageSwitcher": {
+    "ariaLabel": "Change language",
+    "system": "System",
+    "english": "English",
+    "indonesian": "Indonesian"
+  }
+}

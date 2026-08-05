@@ -1,0 +1,27 @@
+{
+  "hero": {
+    "titleLine1": "Saya membangun API yang andal dan",
+    "titleHighlight": "sistem yang scalable.",
+    "greeting": "👋 Halo! Saya Rizqiansyah Ramadhan, mahasiswa software engineering yang fokus di backend development.",
+    "paragraph1": "Perjalanan saya di dunia software development berawal dari rasa penasaran yang mendalam soal cara kerja sesuatu di balik layar. Saat orang lain terpukau dengan antarmuka yang indah, saya justru terpikat oleh database, logika server, dan tarian rumit API yang menghidupkan antarmuka itu. Saya fokus pada detail dan bersemangat membuat produk software yang andal, aman, dan mudah dirawat.",
+    "paragraph2": "Selama bertahun-tahun, saya berkesempatan bekerja dengan berbagai macam teknologi. Toolkit utama saya berputar di sekitar {techStack}. Baik itu merancang skema database yang ternormalisasi, mengoptimalkan performa query, atau membangun microservices, saya suka mendalami tantangan arsitektur yang kompleks.",
+    "techStack": "Go (Golang), Express, NestJS, Flask, dan Laravel",
+    "paragraph3": "Selain arsitektur backend, saya juga familiar dengan pengembangan mobile menggunakan Flutter, sehingga saya memahami keseluruhan siklus pengembangan produk dari server sampai ke tangan pengguna. Saya sangat mendukung open source, pembelajaran berkelanjutan, dan berkolaborasi dalam tim remote global yang menjunjung kepercayaan, kebaikan, dan inklusivitas.",
+    "usesPagePrefix": "Penasaran dengan hardware dan software spesifik yang saya pakai sehari-hari? Silakan cek",
+    "usesPageLink": "halaman /uses saya"
+  },
+  "gallery": {
+    "workingSetupAlt": "Setup kerja",
+    "codingSessionAlt": "Sesi coding",
+    "outdoorWorkspaceAlt": "Ruang kerja outdoor"
+  },
+  "experience": {
+    "title": "Pengalaman",
+    "downloadResume": "Unduh Resume",
+    "loadError": "Gagal memuat data pengalaman"
+  },
+  "connect": {
+    "title": "Yuk Terhubung",
+    "description": "Saya selalu terbuka untuk diskusi soal arsitektur backend, proyek open-source, atau peluang baru."
+  }
+}

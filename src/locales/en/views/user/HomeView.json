@@ -1,0 +1,18 @@
+{
+  "hero": {
+    "greeting": "Hello, I'm",
+    "role": "Software Developer",
+    "description": "An undergraduate Software Engineering student specializing in backend development, with experience in building and managing APIs. Proficient with a diverse tech stack including Go (Golang), Express, NestJS, Flask, and Laravel. Skilled in various databases and familiar with mobile development using Flutter. Eager to learn and contribute to impactful projects.",
+    "moreButton": "More about me"
+  },
+  "latestBlogs": {
+    "title": "Latest Blogs",
+    "viewAll": "View all",
+    "errorLoad": "Failed to load blogs"
+  },
+  "selectedProjects": {
+    "title": "Selected Projects",
+    "viewAll": "View all",
+    "errorLoad": "Failed to load projects"
+  }
+}
