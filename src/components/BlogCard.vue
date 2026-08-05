@@ -11,7 +11,7 @@ defineProps<{ blog: Blog }>();
 <template>
   <RouterLink
     :to="`/blogs/${blog.id}`"
-    class="flex gap-4 p-4 transition-all border border-transparent cursor-pointer group md:flex-col rounded-xl hover:border-border/30 hover:bg-surface-raised hover:-translate-y-1"
+    class="flex gap-4 p-4 transition-all duration-300 md:flex-col rounded-2xl border border-border/20 bg-surface/30 hover:border-primary/40 hover:bg-surface-raised hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 group"
   >
     <img
       :src="
@@ -22,7 +22,7 @@ defineProps<{ blog: Blog }>();
       class="object-cover rounded-md shrink-0 size-24 md:w-full md:h-auto md:aspect-video"
     />
     <div class="flex flex-col">
-      <div class="flex items-center gap-3 mb-2 text-xs font-medium md:text-sm text-content/50">
+      <div class="flex items-center gap-3 mb-2 text-xs font-medium md:text-sm text-content/60">
         <span class="flex items-center gap-1"
           ><IconCalendar class="size-3" /> {{ formatDate(blog.createdAt) }}</span
         >

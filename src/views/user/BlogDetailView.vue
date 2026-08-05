@@ -75,7 +75,7 @@ const { data: response, isLoading, isError, error } = useBlogQuery(blogId);
             >
               <IconPaperclip class="w-4 h-4" />
               {{ file.fileName }}
-              <span class="pl-2 ml-2 text-xs uppercase border-l text-content/50 border-border">{{
+              <span class="pl-2 ml-2 text-xs uppercase border-l text-content/50 border-border/50">{{
                 file.fileType
               }}</span>
             </a>

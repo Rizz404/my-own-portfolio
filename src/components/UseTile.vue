@@ -8,7 +8,7 @@ defineProps<{ item: Use }>();
 <template>
   <RouterLink
     :to="`/uses/${item.id}`"
-    class="flex flex-col items-center justify-center gap-3 p-4 text-center transition-all border border-transparent group rounded-xl hover:border-border/30 hover:bg-surface-raised"
+    class="flex gap-4 p-4 transition-all duration-300 md:flex-col rounded-2xl border border-border/20 bg-surface/30 hover:border-primary/40 hover:bg-surface-raised hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 group"
   >
     <img
       v-if="item.logoUrl"

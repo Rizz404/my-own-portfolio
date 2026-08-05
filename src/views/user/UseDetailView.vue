@@ -52,7 +52,7 @@ const getDomain = (url: string) => {
       <header class="flex flex-col gap-6 mb-10 md:flex-row md:items-center md:justify-between">
         <div class="flex items-center gap-4">
           <div
-            class="flex items-center justify-center p-2 border shadow-sm shrink-0 size-16 rounded-2xl bg-surface/50 border-border/20 bg-white/5"
+            class="flex items-center justify-center p-2 border shadow-sm shrink-0 size-16 rounded-2xl bg-surface/50 border-border/20"
           >
             <img
               v-if="response.data.logoUrl"

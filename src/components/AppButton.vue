@@ -20,12 +20,17 @@ const buttonClasses = computed(() => {
     "inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none focus:ring-2";
 
   const variantClasses = {
-    primary: "bg-primary text-content hover:brightness-110 focus:ring-primary/300",
-    secondary: "bg-secondary text-content hover:brightness-110 focus:ring-secondary/300",
-    success: "bg-success text-content hover:brightness-110 focus:ring-success/300",
-    danger: "bg-danger text-content hover:brightness-110 focus:ring-danger/300",
-    warning: "bg-warning text-content hover:brightness-110 focus:ring-warning/300",
-    info: "bg-info text-content hover:brightness-110 focus:ring-info/300",
+    primary:
+      "bg-primary text-white shadow-sm hover:brightness-110 hover:shadow-md focus:ring-primary/50 focus:border-primary",
+    success:
+      "bg-success text-white shadow-sm hover:brightness-110 focus:ring-success/50 focus:border-success",
+    danger:
+      "bg-danger text-white shadow-sm hover:brightness-110 focus:ring-danger/50 focus:border-danger",
+    secondary:
+      "bg-secondary text-content border border-border/50 shadow-sm hover:bg-surface-raised focus:ring-secondary/50 focus:border-secondary",
+    warning:
+      "bg-warning/10 text-warning border border-warning/20 hover:bg-warning/20 focus:ring-warning/50 focus:border-warning",
+    info: "bg-info/10 text-info border border-info/20 hover:bg-info/20 focus:ring-info/50 focus:border-info",
   };
 
   const sizeClasses = {

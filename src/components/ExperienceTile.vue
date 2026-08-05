@@ -25,7 +25,7 @@ defineProps<{ experience: Experience }>();
           {{ experience.description }}
         </p>
       </div>
-      <span class="mt-2 text-xs font-medium md:mt-0 text-content/50 whitespace-nowrap">
+      <span class="mt-2 text-xs font-medium md:mt-0 text-content/60 whitespace-nowrap">
         {{ formatDate(experience.startDate) }} &mdash;
         <span v-if="experience.isCurrent" class="text-primary">Present</span>
         <span v-else>{{ formatDate(experience.endDate || "") }}</span>

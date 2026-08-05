@@ -59,8 +59,9 @@ const formatEnumText = (val: string | number) => {
             <div class="flex flex-wrap items-center gap-3 text-sm font-medium text-content/60">
               <span
                 class="px-2.5 py-1 text-xs font-bold uppercase tracking-wider rounded-md border border-border/50"
-                ::class="
-                  String(response.data.status).toLowerCase() === 'active' || String(response.data.status).toLowerCase() === 'completed'
+                :class="
+                  String(response.data.status).toLowerCase() === 'active' ||
+                  String(response.data.status).toLowerCase() === 'completed'
                     ? 'bg-primary/10 text-primary border-primary/20'
                     : 'bg-surface-raised text-content'
                 "

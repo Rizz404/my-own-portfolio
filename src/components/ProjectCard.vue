@@ -42,7 +42,7 @@ const formatEnumText = (val: string | number) => {
 <template>
   <RouterLink
     :to="`/projects/${project.id}`"
-    class="flex gap-4 p-4 transition-all border border-transparent cursor-pointer group md:flex-col rounded-xl hover:border-border/30 hover:bg-surface-raised hover:-translate-y-1"
+    class="flex gap-4 p-4 transition-all duration-300 md:flex-col rounded-2xl border border-border/20 bg-surface/30 hover:border-primary/40 hover:bg-surface-raised hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 group"
   >
     <div
       class="relative overflow-hidden rounded-md shrink-0 size-24 md:w-full md:h-auto md:aspect-video bg-surface"
@@ -78,7 +78,7 @@ const formatEnumText = (val: string | number) => {
         />
         <div v-else class="size-8"></div>
         <span
-          class="text-[10px] py-1 px-2 font-bold uppercase tracking-wider text-white rounded-md bg-background/80 backdrop-blur-sm border border-border/50"
+          class="text-[10px] py-1 px-2 font-bold uppercase tracking-wider text-white rounded-md bg-black/50 backdrop-blur-sm border border-border/50"
         >
           {{ formatEnumText(project.status) || "Unknown" }}
         </span>
@@ -86,14 +86,14 @@ const formatEnumText = (val: string | number) => {
       <button
         v-if="images.length > 1"
         @click.prevent="prevImage"
-        class="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-background/50 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-background/80 hidden md:block backdrop-blur-sm z-10"
+        class="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-black/40 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/60 hidden md:block backdrop-blur-sm z-10"
       >
         <IconChevronLeft class="w-5 h-5" />
       </button>
       <button
         v-if="images.length > 1"
         @click.prevent="nextImage"
-        class="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-background/50 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-background/80 hidden md:block backdrop-blur-sm z-10"
+        class="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-black/40 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/60 hidden md:block backdrop-blur-sm z-10"
       >
         <IconChevronRight class="w-5 h-5" />
       </button>
