@@ -1,14 +1,23 @@
 import { experienceService } from "@/services/experienceService";
 import type { ExperienceQueryParams, ExperienceRequest } from "@/types/experience";
+import type { SupportedLocale } from "@/i18n";
+import { useI18nStore } from "@/stores/i18nStores";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { computed, toValue, type MaybeRefOrGetter } from "vue";
 
 export const experienceKeys = {
   all: ["experiences"] as const,
   lists: () => [...experienceKeys.all, "list"] as const,
-  list: (params: ExperienceQueryParams) => [...experienceKeys.lists(), params] as const,
-  detail: (id: string) => [...experienceKeys.all, "detail", id] as const,
+  // * `locale` wajib di sini biar tiap locale punya cache & fetch sendiri-sendiri.
+  // Key buat invalidateQueries (lists()/detail() tanpa locale) tetep match semua locale
+  // karena TanStack Query nge-match queryKey secara prefix.
+  list: (params: ExperienceQueryParams, locale: SupportedLocale) =>
+    [...experienceKeys.lists(), params, locale] as const,
   details: () => [...experienceKeys.all, "detail"] as const,
+  detail: (id: string, locale?: SupportedLocale) =>
+    locale
+      ? ([...experienceKeys.details(), id, locale] as const)
+      : ([...experienceKeys.details(), id] as const),
 };
 
 export const useExperienceMutation = () => {
@@ -25,8 +34,10 @@ export const useExperienceMutation = () => {
 };
 
 export const useExperiencesQuery = (params: MaybeRefOrGetter<ExperienceQueryParams>) => {
+  const i18nStore = useI18nStore();
+
   return useQuery({
-    queryKey: computed(() => experienceKeys.list(toValue(params))),
+    queryKey: computed(() => experienceKeys.list(toValue(params), i18nStore.currentLocale)),
     queryFn: () => {
       return experienceService.getExperiences(toValue(params));
     },
@@ -34,8 +45,10 @@ export const useExperiencesQuery = (params: MaybeRefOrGetter<ExperienceQueryPara
 };
 
 export const useExperienceQuery = (id: MaybeRefOrGetter<string>) => {
+  const i18nStore = useI18nStore();
+
   return useQuery({
-    queryKey: computed(() => experienceKeys.detail(toValue(id))),
+    queryKey: computed(() => experienceKeys.detail(toValue(id), i18nStore.currentLocale)),
     queryFn: () => {
       return experienceService.getExperience(toValue(id));
     },

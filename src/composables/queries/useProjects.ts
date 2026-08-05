@@ -5,15 +5,24 @@ import type {
   ProjectRequest,
   UpdateProjectMultipartRequest,
 } from "@/types/project";
+import type { SupportedLocale } from "@/i18n";
+import { useI18nStore } from "@/stores/i18nStores";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { computed, toValue, type MaybeRefOrGetter } from "vue";
 
 export const projectKeys = {
   all: ["projects"] as const,
   lists: () => [...projectKeys.all, "list"] as const,
-  list: (params: ProjectQueryParams) => [...projectKeys.lists(), params] as const,
-  detail: (id: string) => [...projectKeys.all, "detail", id] as const,
+  // * `locale` wajib di sini biar tiap locale punya cache & fetch sendiri-sendiri.
+  // Key buat invalidateQueries (lists()/detail() tanpa locale) tetep match semua locale
+  // karena TanStack Query nge-match queryKey secara prefix.
+  list: (params: ProjectQueryParams, locale: SupportedLocale) =>
+    [...projectKeys.lists(), params, locale] as const,
   details: () => [...projectKeys.all, "detail"] as const,
+  detail: (id: string, locale?: SupportedLocale) =>
+    locale
+      ? ([...projectKeys.details(), id, locale] as const)
+      : ([...projectKeys.details(), id] as const),
 };
 
 export const useProjectMutation = () => {
@@ -43,8 +52,10 @@ export const useProjectMultipartMutation = () => {
 };
 
 export const useProjectsQuery = (params: MaybeRefOrGetter<ProjectQueryParams>) => {
+  const i18nStore = useI18nStore();
+
   return useQuery({
-    queryKey: computed(() => projectKeys.list(toValue(params))),
+    queryKey: computed(() => projectKeys.list(toValue(params), i18nStore.currentLocale)),
     queryFn: () => {
       return projectService.getProjects(toValue(params));
     },
@@ -52,8 +63,10 @@ export const useProjectsQuery = (params: MaybeRefOrGetter<ProjectQueryParams>) =
 };
 
 export const useProjectQuery = (id: MaybeRefOrGetter<string>) => {
+  const i18nStore = useI18nStore();
+
   return useQuery({
-    queryKey: computed(() => projectKeys.detail(toValue(id))),
+    queryKey: computed(() => projectKeys.detail(toValue(id), i18nStore.currentLocale)),
     queryFn: () => {
       return projectService.getProject(toValue(id));
     },

@@ -5,15 +5,22 @@ import type {
   UseRequest,
   UpdateUseMultipartRequest,
 } from "@/types/use";
+import type { SupportedLocale } from "@/i18n";
+import { useI18nStore } from "@/stores/i18nStores";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { computed, toValue, type MaybeRefOrGetter } from "vue";
 
 export const useKeys = {
   all: ["uses"] as const,
   lists: () => [...useKeys.all, "list"] as const,
-  list: (params: UseQueryParams) => [...useKeys.lists(), params] as const,
-  detail: (id: string) => [...useKeys.all, "detail", id] as const,
+  // * `locale` wajib di sini biar tiap locale punya cache & fetch sendiri-sendiri.
+  // Key buat invalidateQueries (lists()/detail() tanpa locale) tetep match semua locale
+  // karena TanStack Query nge-match queryKey secara prefix.
+  list: (params: UseQueryParams, locale: SupportedLocale) =>
+    [...useKeys.lists(), params, locale] as const,
   details: () => [...useKeys.all, "detail"] as const,
+  detail: (id: string, locale?: SupportedLocale) =>
+    locale ? ([...useKeys.details(), id, locale] as const) : ([...useKeys.details(), id] as const),
 };
 
 export const useUseMutation = () => {
@@ -43,8 +50,10 @@ export const useUseMultipartMutation = () => {
 };
 
 export const useUsesQuery = (params: MaybeRefOrGetter<UseQueryParams>) => {
+  const i18nStore = useI18nStore();
+
   return useQuery({
-    queryKey: computed(() => useKeys.list(toValue(params))),
+    queryKey: computed(() => useKeys.list(toValue(params), i18nStore.currentLocale)),
     queryFn: () => {
       return useService.getUses(toValue(params));
     },
@@ -52,8 +61,10 @@ export const useUsesQuery = (params: MaybeRefOrGetter<UseQueryParams>) => {
 };
 
 export const useUseQuery = (id: MaybeRefOrGetter<string>) => {
+  const i18nStore = useI18nStore();
+
   return useQuery({
-    queryKey: computed(() => useKeys.detail(toValue(id))),
+    queryKey: computed(() => useKeys.detail(toValue(id), i18nStore.currentLocale)),
     queryFn: () => {
       return useService.getUse(toValue(id));
     },

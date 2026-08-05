@@ -5,15 +5,22 @@ import type {
   BlogRequest,
   UpdateBlogMultipartRequest,
 } from "@/types/blog";
+import type { SupportedLocale } from "@/i18n";
+import { useI18nStore } from "@/stores/i18nStores";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { computed, toValue, type MaybeRefOrGetter } from "vue";
 
 export const blogKeys = {
   all: ["blogs"] as const,
   lists: () => [...blogKeys.all, "list"] as const,
-  list: (params: BlogQueryParams) => [...blogKeys.lists(), params] as const,
-  detail: (id: string) => [...blogKeys.all, "detail", id] as const,
+  // * `locale` wajib di sini biar tiap locale punya cache & fetch sendiri-sendiri.
+  // Key buat invalidateQueries (lists()/detail() tanpa locale) tetep match semua locale
+  // karena TanStack Query nge-match queryKey secara prefix.
+  list: (params: BlogQueryParams, locale: SupportedLocale) =>
+    [...blogKeys.lists(), params, locale] as const,
   details: () => [...blogKeys.all, "detail"] as const,
+  detail: (id: string, locale?: SupportedLocale) =>
+    locale ? ([...blogKeys.details(), id, locale] as const) : ([...blogKeys.details(), id] as const),
 };
 
 export const useBlogMutation = () => {
@@ -43,8 +50,10 @@ export const useBlogMultipartMutation = () => {
 };
 
 export const useBlogsQuery = (params: MaybeRefOrGetter<BlogQueryParams>) => {
+  const i18nStore = useI18nStore();
+
   return useQuery({
-    queryKey: computed(() => blogKeys.list(toValue(params))),
+    queryKey: computed(() => blogKeys.list(toValue(params), i18nStore.currentLocale)),
     queryFn: () => {
       return blogService.getBlogs(toValue(params));
     },
@@ -52,8 +61,10 @@ export const useBlogsQuery = (params: MaybeRefOrGetter<BlogQueryParams>) => {
 };
 
 export const useBlogQuery = (id: MaybeRefOrGetter<string>) => {
+  const i18nStore = useI18nStore();
+
   return useQuery({
-    queryKey: computed(() => blogKeys.detail(toValue(id))),
+    queryKey: computed(() => blogKeys.detail(toValue(id), i18nStore.currentLocale)),
     queryFn: () => {
       return blogService.getBlog(toValue(id));
     },
