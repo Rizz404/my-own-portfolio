@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { useBlogQuery } from "@/composables/queries/useBlogs";
-import AppError from "@/components/AppError.vue";
+import AppError from "@/components/shared/AppError.vue";
 import IconCalendar from "~icons/lucide/calendar";
 import IconEye from "~icons/lucide/eye";
 import IconArrowLeft from "~icons/lucide/arrow-left";

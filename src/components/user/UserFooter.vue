@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
 import IconClock from "~icons/lucide/clock";
-import SocialsWidget from "@/components/SocialsWidget.vue";
+import SocialsWidget from "@/components/user/SocialsWidget.vue";
 
 const currentYear = new Date().getFullYear();
 
@@ -65,7 +65,7 @@ const exploreLinks = ref([
             </p>
           </div>
 
-          <SocialsWidget class="!gap-4" />
+          <SocialsWidget class="gap-4!" />
         </div>
 
         <!-- Links Container (Dibungkus grid 2 kolom agar selalu sejajar) -->

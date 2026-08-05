@@ -3,10 +3,10 @@ import { ref, watch } from "vue";
 import { refDebounced } from "@vueuse/core";
 import { useProjectsQuery } from "@/composables/queries/useProjects";
 import type { ProjectQueryParams } from "@/types/project";
-import ProjectCard from "@/components/ProjectCard.vue";
-import AppSkeleton from "@/components/AppSkeleton.vue";
-import AppError from "@/components/AppError.vue";
-import AppButton from "@/components/AppButton.vue";
+import ProjectCard from "@/components/user/ProjectCard.vue";
+import AppSkeleton from "@/components/shared/AppSkeleton.vue";
+import AppError from "@/components/shared/AppError.vue";
+import AppButton from "@/components/shared/AppButton.vue";
 import IconSearch from "~icons/lucide/search";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
 

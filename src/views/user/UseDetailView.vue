@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { useUseQuery } from "@/composables/queries/useUses";
-import AppError from "@/components/AppError.vue";
+import AppError from "@/components/shared/AppError.vue";
 import IconArrowLeft from "~icons/lucide/arrow-left";
 import IconExternalLink from "~icons/lucide/external-link";
 import { fadeUp } from "@/composables/useMotionPresets";

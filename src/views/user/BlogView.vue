@@ -3,10 +3,10 @@ import { ref, watch } from "vue";
 import { refDebounced } from "@vueuse/core";
 import { useBlogsQuery } from "@/composables/queries/useBlogs";
 import type { BlogQueryParams } from "@/types/blog";
-import BlogCard from "@/components/BlogCard.vue";
-import AppSkeleton from "@/components/AppSkeleton.vue";
-import AppError from "@/components/AppError.vue";
-import AppButton from "@/components/AppButton.vue";
+import BlogCard from "@/components/user/BlogCard.vue";
+import AppSkeleton from "@/components/shared/AppSkeleton.vue";
+import AppError from "@/components/shared/AppError.vue";
+import AppButton from "@/components/shared/AppButton.vue";
 import IconSearch from "~icons/lucide/search";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
 

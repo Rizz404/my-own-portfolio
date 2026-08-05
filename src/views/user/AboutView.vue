@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import AppButton from "@/components/AppButton.vue";
-import SocialsWidget from "@/components/SocialsWidget.vue";
-import ExperienceTile from "@/components/ExperienceTile.vue";
-import AppSkeleton from "@/components/AppSkeleton.vue";
-import AppError from "@/components/AppError.vue";
+import AppButton from "@/components/shared/AppButton.vue";
+import SocialsWidget from "@/components/user/SocialsWidget.vue";
+import ExperienceTile from "@/components/user/ExperienceTile.vue";
+import AppSkeleton from "@/components/shared/AppSkeleton.vue";
+import AppError from "@/components/shared/AppError.vue";
 import { useExperiencesQuery } from "@/composables/queries/useExperiences";
 import type { ExperienceQueryParams } from "@/types/experience";
 import { ref } from "vue";
@@ -61,10 +61,7 @@ const { data, isLoading, isError, error } = useExperiencesQuery(params);
         </p>
       </div>
 
-      <div
-        v-motion="fadeUp(0.15)"
-        class="grid grid-cols-2 gap-4 mt-8 lg:mt-0 lg:sticky lg:top-24"
-      >
+      <div v-motion="fadeUp(0.15)" class="grid grid-cols-2 gap-4 mt-8 lg:mt-0 lg:sticky lg:top-24">
         <img
           src="https://i.pinimg.com/originals/e8/fe/59/e8fe595d3fcec5c93bb57a21dbf67081.gif"
           class="object-cover w-full h-56 transition-transform duration-500 shadow-lg rounded-xl md:h-72 hover:scale-105"

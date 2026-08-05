@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useUsesQuery } from "@/composables/queries/useUses";
-import AppSkeleton from "@/components/AppSkeleton.vue";
-import AppError from "@/components/AppError.vue";
-import UseCard from "@/components/UseCard.vue";
-import UseTile from "@/components/UseTile.vue";
+import AppSkeleton from "@/components/shared/AppSkeleton.vue";
+import AppError from "@/components/shared/AppError.vue";
+import UseCard from "@/components/user/UseCard.vue";
+import UseTile from "@/components/user/UseTile.vue";
 import { fadeUp, revealUp, staggerDelay } from "@/composables/useMotionPresets";
 
 const { data: response, isLoading, isError, error } = useUsesQuery({ size: 100 });

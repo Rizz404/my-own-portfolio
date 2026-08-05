@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { useProjectQuery } from "@/composables/queries/useProjects";
-import AppError from "@/components/AppError.vue";
+import AppError from "@/components/shared/AppError.vue";
 import IconArrowLeft from "~icons/lucide/arrow-left";
 import IconExternalLink from "~icons/lucide/external-link";
 import IconCalendar from "~icons/lucide/calendar";

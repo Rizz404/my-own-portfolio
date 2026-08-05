@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { useProjectsQuery } from "@/composables/queries/useProjects";
 import { useBlogsQuery } from "@/composables/queries/useBlogs";
-import SocialsWidget from "@/components/SocialsWidget.vue";
+import SocialsWidget from "@/components/user/SocialsWidget.vue";
 import { ref } from "vue";
 import type { ProjectQueryParams } from "@/types/project";
 import type { BlogQueryParams } from "@/types/blog";
-import AppSkeleton from "@/components/AppSkeleton.vue";
-import AppError from "@/components/AppError.vue";
-import AppButton from "@/components/AppButton.vue";
-import BlogCard from "@/components/BlogCard.vue";
-import ProjectCard from "@/components/ProjectCard.vue";
+import AppSkeleton from "@/components/shared/AppSkeleton.vue";
+import AppError from "@/components/shared/AppError.vue";
+import AppButton from "@/components/shared/AppButton.vue";
+import BlogCard from "@/components/user/BlogCard.vue";
+import ProjectCard from "@/components/user/ProjectCard.vue";
 import IconArrowRight from "~icons/lucide/arrow-right";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
 
