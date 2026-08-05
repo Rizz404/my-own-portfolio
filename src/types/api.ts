@@ -44,5 +44,4 @@ export interface BaseQueryParams {
 export enum LanguageCode {
   en,
   id,
-  ja,
 }
