@@ -31,16 +31,24 @@
 
   /* Typography: Teks & Konten (Gunakan Opacity untuk hierarki)
      - Heading/Fokus Utama: text-content (100% solid)
+     - Body/Artikel panjang (wysiwyg, deskripsi detail): text-content/90
      - Paragraf/Subjudul: text-content/80 atau /70 (Muted ringan, nyaman dibaca)
-     - Meta/Tanggal/Keterangan: text-content/50 (Muted sedang)
+     - Meta/Tanggal/Keterangan: text-content/60 (Muted sedang)
      - Placeholder/Disabled text: text-content/40 */
   --color-content: oklch(0.15 0 0);
 
   /* Border: Garis Pembatas
      - Border tegas (Input/Card): border-border
      - Divider/Garis pembatas halus: border-border/50 atau /30
-     - Hover/Focus Ring (Glow effect): focus:ring-primary/50 focus:border-primary */
+     - Hover/Focus Ring (Glow effect): focus:ring-2 focus:ring-primary/50 focus:border-primary */
   --color-border: oklch(0.88 0 0);
+
+  /* Overlay di atas media (foto/gambar)
+     - Kontrol/badge yang duduk di atas foto (carousel arrow, dots, status badge)
+       TIDAK memakai token tema (bg-background dsb), karena harus tetap kontras
+       terlepas dari foto atau tema (light/dark) apa pun.
+     - Pakai warna scrim tetap: bg-black/40-60 text-white (atau bg-white/50-80
+       untuk indikator kecil seperti dots), bukan token yang berbalik sesuai tema. */
 
   /* Status: Feedback & Alert
      - Alert Background (Solid): bg-success (Gunakan brightness-110 untuk hover)
