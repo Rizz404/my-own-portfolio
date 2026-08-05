@@ -3,7 +3,8 @@
     "greeting": "Hello, I'm",
     "role": "Software Developer",
     "description": "An undergraduate Software Engineering student specializing in backend development, with experience in building and managing APIs. Proficient with a diverse tech stack including Go (Golang), Express, NestJS, Flask, and Laravel. Skilled in various databases and familiar with mobile development using Flutter. Eager to learn and contribute to impactful projects.",
-    "moreButton": "More about me"
+    "moreButton": "More about me",
+    "downloadCVButton": "Download CV"
   },
   "latestBlogs": {
     "title": "Latest Blogs",

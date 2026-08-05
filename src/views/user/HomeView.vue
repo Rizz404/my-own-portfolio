@@ -11,8 +11,10 @@ import AppButton from "@/components/shared/AppButton.vue";
 import BlogCard from "@/components/user/BlogCard.vue";
 import ProjectCard from "@/components/user/ProjectCard.vue";
 import IconArrowRight from "~icons/lucide/arrow-right";
+import IconDownload from "~icons/lucide/download";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
+import cvUrl from "@/assets/docs/cv-rizqiansyah-ramadhan.pdf?url";
 
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
 // src/locales/<locale>/views/user/HomeView.json
@@ -42,7 +44,8 @@ const {
       <div class="flex flex-col-reverse items-center justify-between gap-10 md:flex-row">
         <div>
           <h1 class="mb-2 text-lg font-semibold leading-tight md:text-3xl text-content">
-            {{ t("hero.greeting") }} <strong class="font-bold text-primary">Rizqiansyah Ramadhan</strong>
+            {{ t("hero.greeting") }}
+            <strong class="font-bold text-primary">Rizqiansyah Ramadhan</strong>
           </h1>
           <h2 class="mb-6 text-4xl font-extrabold leading-tight md:text-6xl text-primary">
             <strong>{{ t("hero.role") }}</strong>
@@ -53,15 +56,27 @@ const {
             {{ t("hero.description") }}
           </p>
 
-          <RouterLink to="/about">
-            <AppButton
-              variant="secondary"
-              size="lg"
-              class="transition-shadow rounded-full shadow-sm hover:shadow-md"
-            >
-              {{ t("hero.moreButton") }}
-            </AppButton>
-          </RouterLink>
+          <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+            <RouterLink to="/about">
+              <AppButton
+                variant="primary"
+                size="lg"
+                class="transition-shadow rounded-full shadow-sm hover:shadow-md"
+              >
+                {{ t("hero.moreButton") }}
+              </AppButton>
+            </RouterLink>
+            <a :href="cvUrl" download target="_blank" rel="noopener">
+              <AppButton
+                variant="secondary"
+                size="lg"
+                class="gap-2 transition-shadow rounded-full shadow-sm hover:shadow-md"
+              >
+                <IconDownload class="size-4" />
+                {{ t("hero.downloadCVButton") }}
+              </AppButton>
+            </a>
+          </div>
         </div>
         <div class="relative shrink-0 group">
           <div
