@@ -1,3 +1,5 @@
+import type { AlertVariant } from "@/utils/alertVariants";
+
 export interface AppButtonProps {
   variant?: "primary" | "secondary" | "success" | "warning" | "danger" | "info";
   size?: "sm" | "md" | "lg";
@@ -60,7 +62,11 @@ export interface AppCheckboxProps {
 }
 
 export interface AppAlertProps {
-  variant?: "danger" | "success" | "warning" | "info";
+  variant?: AlertVariant;
   title?: string;
   class?: string;
+}
+
+export interface AppToastContainerProps {
+  position?: "top-right" | "top-center" | "bottom-right" | "bottom-center";
 }
