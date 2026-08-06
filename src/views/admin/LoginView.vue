@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { isAxiosError } from "axios";
 import IconArrowLeft from "~icons/lucide/arrow-left";
-import IconEye from "~icons/lucide/eye";
-import IconEyeOff from "~icons/lucide/eye-off";
 import IconLoader from "~icons/lucide/loader-2";
+import AppAlert from "@/components/shared/AppAlert.vue";
 import AppButton from "@/components/shared/AppButton.vue";
+import AppInput from "@/components/shared/AppInput.vue";
+import AppPasswordInput from "@/components/shared/AppPasswordInput.vue";
 import { useLoginMutation } from "@/composables/queries/useAuth";
 import { fadeUp } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
+import { useZodForm } from "@/composables/useZodForm";
+import { loginRequestSchema } from "@/schemas/auth.schema";
 import type { ErrorResponse } from "@/types/api";
 
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
@@ -20,21 +23,19 @@ const route = useRoute();
 const router = useRouter();
 const loginMutation = useLoginMutation();
 
-const email = ref("");
-const password = ref("");
-const isPasswordVisible = ref(false);
+const { values, errors, handleSubmit, validateField } = useZodForm(loginRequestSchema, {
+  email: "",
+  password: "",
+});
 
-const handleSubmit = () => {
-  loginMutation.mutate(
-    { email: email.value, password: password.value },
-    {
-      onSuccess: () => {
-        const redirect = route.query.redirect;
-        router.replace(typeof redirect === "string" ? redirect : { name: "AdminDashboard" });
-      },
+const onSubmit = handleSubmit((data) => {
+  loginMutation.mutate(data, {
+    onSuccess: () => {
+      const redirect = route.query.redirect;
+      router.replace(typeof redirect === "string" ? redirect : { name: "AdminDashboard" });
     },
-  );
-};
+  });
+});
 
 // * Backend ngebalikin pesan error yang enak dibaca lewat body JSON-nya
 // ({ status, message }), tapi axios default `error.message` cuma nunjukkin status
@@ -75,54 +76,30 @@ const errorMessage = computed(() => {
         <p class="mt-1 text-sm text-content/60">{{ t("subtitle") }}</p>
       </div>
 
-      <form class="space-y-4" @submit.prevent="handleSubmit">
-        <div>
-          <label for="email" class="block mb-1.5 text-sm font-medium text-content/80">
-            {{ t("emailLabel") }}
-          </label>
-          <input
-            id="email"
-            v-model="email"
-            type="email"
-            autocomplete="username"
-            required
-            :placeholder="t('emailPlaceholder')"
-            class="w-full px-4 py-2.5 bg-background border border-border rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all text-content placeholder:text-content/40"
-          />
-        </div>
+      <form class="space-y-4" novalidate @submit="onSubmit">
+        <AppInput
+          id="email"
+          v-model="values.email"
+          type="email"
+          autocomplete="username"
+          :label="t('emailLabel')"
+          :placeholder="t('emailPlaceholder')"
+          :error="errors.email"
+          @blur="validateField('email')"
+        />
 
-        <div>
-          <label for="password" class="block mb-1.5 text-sm font-medium text-content/80">
-            {{ t("passwordLabel") }}
-          </label>
-          <div class="relative">
-            <input
-              id="password"
-              v-model="password"
-              :type="isPasswordVisible ? 'text' : 'password'"
-              autocomplete="current-password"
-              required
-              :placeholder="t('passwordPlaceholder')"
-              class="w-full py-2.5 pl-4 pr-11 bg-background border border-border rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all text-content placeholder:text-content/40"
-            />
-            <button
-              type="button"
-              :aria-label="t(isPasswordVisible ? 'hidePassword' : 'showPassword')"
-              class="absolute -translate-y-1/2 right-3 top-1/2 text-content/40 hover:text-content/70"
-              @click="isPasswordVisible = !isPasswordVisible"
-            >
-              <IconEyeOff v-if="isPasswordVisible" class="w-5 h-5" />
-              <IconEye v-else class="w-5 h-5" />
-            </button>
-          </div>
-        </div>
+        <AppPasswordInput
+          id="password"
+          v-model="values.password"
+          :label="t('passwordLabel')"
+          :placeholder="t('passwordPlaceholder')"
+          :error="errors.password"
+          :show-password-label="t('showPassword')"
+          :hide-password-label="t('hidePassword')"
+          @blur="validateField('password')"
+        />
 
-        <p
-          v-if="errorMessage"
-          class="px-3 py-2 text-sm border rounded-lg text-danger bg-danger/10 border-danger/20"
-        >
-          {{ errorMessage }}
-        </p>
+        <AppAlert v-if="errorMessage" variant="danger">{{ errorMessage }}</AppAlert>
 
         <AppButton
           type="submit"

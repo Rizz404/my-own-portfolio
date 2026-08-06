@@ -34,8 +34,20 @@ const softwareList = computed(() => {
       </p>
     </div>
 
-    <div v-if="isLoading" class="grid grid-cols-1 gap-6 md:grid-cols-2">
-      <AppSkeleton variant="card" :count="4" />
+    <div v-if="isLoading" class="space-y-20">
+      <div class="p-6 rounded-3xl bg-surface/20 md:p-8">
+        <h2 class="mb-6 text-2xl font-bold text-content">{{ t("hardware") }}</h2>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <AppSkeleton variant="card" :count="4" />
+        </div>
+      </div>
+
+      <div class="p-6 rounded-3xl bg-surface/20 md:p-8">
+        <h2 class="mb-6 text-2xl font-bold text-content">{{ t("software") }}</h2>
+        <div class="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
+          <AppSkeleton variant="grid" :count="8" />
+        </div>
+      </div>
     </div>
 
     <AppError v-else-if="isError" :title="t('errorLoad')" :message="error?.message" />

@@ -106,7 +106,9 @@ const t = useT(NS);
     <section class="mt-24">
       <h2 class="mb-8 text-2xl font-bold md:text-3xl text-content">{{ t("skills.title") }}</h2>
 
-      <AppSkeleton v-if="isSkillLoading" variant="card" :count="4" />
+      <div v-if="isSkillLoading" class="flex flex-wrap gap-3">
+        <AppSkeleton variant="pill" :count="10" />
+      </div>
       <AppError
         v-else-if="isSkillError"
         :title="t('skills.loadError')"
