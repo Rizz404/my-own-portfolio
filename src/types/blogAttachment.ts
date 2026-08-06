@@ -10,13 +10,15 @@ export interface BlogAttachment {
   updatedAt: string;
 }
 
+// * String enum, BUKAN numeric - backend nge-serialize/deserialize enum ini pakai
+// nama konstannya (mis. `"image"`, `"document"`), bukan ordinal number.
 export enum FileType {
-  image,
-  document,
-  video,
-  audio,
-  archive,
-  other,
+  image = "image",
+  document = "document",
+  video = "video",
+  audio = "audio",
+  archive = "archive",
+  other = "other",
 }
 
 export interface BlogAttachmentRequest {

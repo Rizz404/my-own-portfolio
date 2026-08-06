@@ -13,9 +13,11 @@ export interface Use {
   updatedAt: string;
 }
 
+// * String enum, BUKAN numeric - backend nge-serialize/deserialize enum ini pakai
+// nama konstannya (mis. `"software"`, `"hardware"`), bukan ordinal number.
 export enum Category {
-  software,
-  hardware,
+  software = "software",
+  hardware = "hardware",
 }
 
 export interface UseTranslationRequest {

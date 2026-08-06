@@ -11,12 +11,14 @@ export interface Skill {
   updatedAt: string;
 }
 
+// * String enum, BUKAN numeric - backend nge-serialize/deserialize enum ini pakai
+// nama konstannya (mis. `"framework"`, `"database"`), bukan ordinal number.
 export enum SkillCategory {
-  programming_language,
-  framework,
-  database,
-  tool,
-  other,
+  programming_language = "programming_language",
+  framework = "framework",
+  database = "database",
+  tool = "tool",
+  other = "other",
 }
 
 export interface SkillTranslationRequest {

@@ -16,42 +16,47 @@ export interface Project {
   updatedAt: string;
 }
 
+// * String enum, BUKAN numeric - backend nge-serialize/deserialize enum ini pakai
+// nama konstannya (mis. `"archived"`, `"desktop"`, `"figma"`), bukan ordinal number.
+// Kalau ini numeric enum, request body ngirim angka (0,1,2,...) yang gak nyambung
+// ke backend, dan response yang isinya string gak ke-match pas dicocokin balik ke
+// `<option value>` di form edit (status/checkbox/link jadi keliatan kosong).
 export enum ProjectStatus {
-  active,
-  inactive,
-  development,
-  maintenance,
-  archived,
+  active = "active",
+  inactive = "inactive",
+  development = "development",
+  maintenance = "maintenance",
+  archived = "archived",
 }
 
 export enum ProjectType {
-  frontend,
-  backend,
-  fullstack,
-  mobile,
-  desktop,
-  api,
-  library,
-  other,
+  frontend = "frontend",
+  backend = "backend",
+  fullstack = "fullstack",
+  mobile = "mobile",
+  desktop = "desktop",
+  api = "api",
+  library = "library",
+  other = "other",
 }
 
 export enum LinkType {
-  github,
-  gitlab,
-  bitbucket,
-  source_code,
-  demo,
-  website,
-  figma,
-  documentation,
-  api_docs,
-  video,
-  playstore,
-  appstore,
-  npm,
-  dockerhub,
-  staging,
-  other,
+  github = "github",
+  gitlab = "gitlab",
+  bitbucket = "bitbucket",
+  source_code = "source_code",
+  demo = "demo",
+  website = "website",
+  figma = "figma",
+  documentation = "documentation",
+  api_docs = "api_docs",
+  video = "video",
+  playstore = "playstore",
+  appstore = "appstore",
+  npm = "npm",
+  dockerhub = "dockerhub",
+  staging = "staging",
+  other = "other",
 }
 
 export interface ProjectTranslationRequest {

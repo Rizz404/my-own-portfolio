@@ -20,21 +20,23 @@ export interface User {
   updatedAt: string;
 }
 
+// * String enum, BUKAN numeric - backend nge-serialize/deserialize enum ini pakai
+// nama konstannya (mis. `"ADMIN"`, `"GITHUB"`), bukan ordinal number.
 export enum Role {
-  USER,
-  ADMIN,
+  USER = "USER",
+  ADMIN = "ADMIN",
 }
 
 export enum AuthProvider {
-  LOCAL,
-  GITHUB,
+  LOCAL = "LOCAL",
+  GITHUB = "GITHUB",
 }
 
 export enum Gender {
-  MALE,
-  FEMALE,
-  OTHER,
-  PREFER_NOT_TO_SAY,
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  OTHER = "OTHER",
+  PREFER_NOT_TO_SAY = "PREFER_NOT_TO_SAY",
 }
 
 export interface UserTranslationRequest {

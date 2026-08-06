@@ -40,8 +40,10 @@ export interface BaseQueryParams {
   sortDir?: string[];
 }
 
-// * Locale yang didukung untuk translation di Blog, Experience, Project, Skill, Use, dan User
+// * String enum, BUKAN numeric - backend nge-serialize/deserialize enum ini pakai
+// nama konstannya (mis. `"en"`, `"id"`), bukan ordinal number.
+// Locale yang didukung untuk translation di Blog, Experience, Project, Skill, Use, dan User
 export enum LanguageCode {
-  en,
-  id,
+  en = "en",
+  id = "id",
 }
