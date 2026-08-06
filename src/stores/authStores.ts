@@ -14,6 +14,8 @@ export const authStores = defineStore("auth", () => {
   const login = (newToken: string, userData: User) => {
     token.value = newToken;
     user.value = userData;
+    // * Persist token biar tetep login setelah refresh (simetris sama logout()
+    localStorage.setItem("token", newToken);
   };
 
   const logout = () => {
