@@ -1,0 +1,55 @@
+{
+  "back": "Back to projects",
+  "createTitle": "New project",
+  "createSubtitle": "Add a new project to the portfolio.",
+  "editTitle": "Edit project",
+  "editSubtitle": "Update the project details.",
+  "loadErrorTitle": "Failed to load project",
+  "nameLabel": "Name",
+  "descriptionLabel": "Description",
+  "translations": {
+    "title": "Translations",
+    "en": "English",
+    "id": "Indonesian"
+  },
+  "classification": {
+    "title": "Classification"
+  },
+  "statusLabel": "Status",
+  "typesLabel": "Project types",
+  "techStack": {
+    "title": "Tech stack",
+    "add": "Add tech",
+    "empty": "No tech stack added yet.",
+    "namePlaceholder": "Name (e.g. Vue)",
+    "urlPlaceholder": "Logo URL",
+    "remove": "Remove tech stack entry"
+  },
+  "links": {
+    "title": "Project links",
+    "add": "Add link",
+    "empty": "No links added yet.",
+    "urlPlaceholder": "https://...",
+    "remove": "Remove link"
+  },
+  "media": {
+    "title": "Media"
+  },
+  "logo": {
+    "label": "Logo",
+    "choose": "Choose file",
+    "hint": "Leave empty to keep the current logo."
+  },
+  "images": {
+    "label": "Images",
+    "add": "Add images",
+    "remove": "Remove image"
+  },
+  "cancel": "Cancel",
+  "save": "Save",
+  "saving": "Saving...",
+  "toast": {
+    "created": "Project created",
+    "updated": "Project updated"
+  }
+}

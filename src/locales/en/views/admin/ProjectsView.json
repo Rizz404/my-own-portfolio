@@ -1,0 +1,43 @@
+{
+  "title": "Projects",
+  "subtitle": "Manage the portfolio projects shown to visitors.",
+  "addProject": "Add project",
+  "searchPlaceholder": "Search projects...",
+  "filters": {
+    "allStatuses": "All statuses"
+  },
+  "sort": {
+    "createdAt": "Sort: Created",
+    "updatedAt": "Sort: Updated",
+    "name": "Sort: Name",
+    "asc": "Ascending",
+    "desc": "Descending"
+  },
+  "selectMode": "Select",
+  "selectAllOnPage": "Select all on this page",
+  "selectedCount": "{count} selected",
+  "deleteSelected": "Delete selected",
+  "deleting": "Deleting...",
+  "cancelSelection": "Cancel",
+  "confirmDelete": "Delete \"{name}\"? This can't be undone.",
+  "confirmBulkDelete": "Delete {count} selected project(s)? This can't be undone.",
+  "toast": {
+    "deleted": "Project deleted",
+    "deleteFailed": "Failed to delete project",
+    "bulkDeleted": "{count} project(s) deleted",
+    "bulkDeleteFailed": "Failed to delete {count} project(s)"
+  },
+  "errorLoad": "Failed to load projects",
+  "empty": {
+    "title": "No projects yet",
+    "subtitle": "Add your first project to see it here."
+  },
+  "pagination": {
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "of": "of",
+    "size": "Size",
+    "total": "{count} total"
+  }
+}

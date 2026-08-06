@@ -1,0 +1,43 @@
+{
+  "title": "Proyek",
+  "subtitle": "Kelola proyek portofolio yang ditampilkan ke pengunjung.",
+  "addProject": "Tambah proyek",
+  "searchPlaceholder": "Cari proyek...",
+  "filters": {
+    "allStatuses": "Semua status"
+  },
+  "sort": {
+    "createdAt": "Urutkan: Dibuat",
+    "updatedAt": "Urutkan: Diperbarui",
+    "name": "Urutkan: Nama",
+    "asc": "Naik (A-Z)",
+    "desc": "Turun (Z-A)"
+  },
+  "selectMode": "Pilih",
+  "selectAllOnPage": "Pilih semua di halaman ini",
+  "selectedCount": "{count} terpilih",
+  "deleteSelected": "Hapus yang terpilih",
+  "deleting": "Menghapus...",
+  "cancelSelection": "Batal",
+  "confirmDelete": "Hapus \"{name}\"? Tindakan ini tidak bisa dibatalkan.",
+  "confirmBulkDelete": "Hapus {count} proyek terpilih? Tindakan ini tidak bisa dibatalkan.",
+  "toast": {
+    "deleted": "Proyek berhasil dihapus",
+    "deleteFailed": "Gagal menghapus proyek",
+    "bulkDeleted": "{count} proyek berhasil dihapus",
+    "bulkDeleteFailed": "Gagal menghapus {count} proyek"
+  },
+  "errorLoad": "Gagal memuat data proyek",
+  "empty": {
+    "title": "Belum ada proyek",
+    "subtitle": "Tambahkan proyek pertamamu untuk melihatnya di sini."
+  },
+  "pagination": {
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "page": "Halaman",
+    "of": "dari",
+    "size": "Ukuran",
+    "total": "{count} total"
+  }
+}

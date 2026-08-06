@@ -1,0 +1,55 @@
+{
+  "back": "Kembali ke proyek",
+  "createTitle": "Proyek baru",
+  "createSubtitle": "Tambahkan proyek baru ke portofolio.",
+  "editTitle": "Edit proyek",
+  "editSubtitle": "Perbarui detail proyek.",
+  "loadErrorTitle": "Gagal memuat data proyek",
+  "nameLabel": "Nama",
+  "descriptionLabel": "Deskripsi",
+  "translations": {
+    "title": "Terjemahan",
+    "en": "Inggris",
+    "id": "Indonesia"
+  },
+  "classification": {
+    "title": "Klasifikasi"
+  },
+  "statusLabel": "Status",
+  "typesLabel": "Tipe proyek",
+  "techStack": {
+    "title": "Tech stack",
+    "add": "Tambah tech",
+    "empty": "Belum ada tech stack yang ditambahkan.",
+    "namePlaceholder": "Nama (mis. Vue)",
+    "urlPlaceholder": "URL logo",
+    "remove": "Hapus entri tech stack"
+  },
+  "links": {
+    "title": "Tautan proyek",
+    "add": "Tambah tautan",
+    "empty": "Belum ada tautan yang ditambahkan.",
+    "urlPlaceholder": "https://...",
+    "remove": "Hapus tautan"
+  },
+  "media": {
+    "title": "Media"
+  },
+  "logo": {
+    "label": "Logo",
+    "choose": "Pilih file",
+    "hint": "Biarkan kosong untuk tetap pakai logo saat ini."
+  },
+  "images": {
+    "label": "Gambar",
+    "add": "Tambah gambar",
+    "remove": "Hapus gambar"
+  },
+  "cancel": "Batal",
+  "save": "Simpan",
+  "saving": "Menyimpan...",
+  "toast": {
+    "created": "Proyek berhasil dibuat",
+    "updated": "Proyek berhasil diperbarui"
+  }
+}
