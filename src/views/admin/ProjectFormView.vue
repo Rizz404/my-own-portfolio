@@ -1,0 +1,504 @@
+<script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
+import { useRoute, useRouter, RouterLink } from "vue-router";
+import { isAxiosError } from "axios";
+import IconArrowLeft from "~icons/lucide/arrow-left";
+import IconLoader from "~icons/lucide/loader-2";
+import IconPlus from "~icons/lucide/plus";
+import IconTrash2 from "~icons/lucide/trash-2";
+import IconImage from "~icons/lucide/image";
+import IconX from "~icons/lucide/x";
+import AppAlert from "@/components/shared/AppAlert.vue";
+import AppButton from "@/components/shared/AppButton.vue";
+import AppInput from "@/components/shared/AppInput.vue";
+import AppTextarea from "@/components/shared/AppTextarea.vue";
+import AppSelect from "@/components/shared/AppSelect.vue";
+import AppCheckbox from "@/components/shared/AppCheckbox.vue";
+import AppSkeleton from "@/components/shared/AppSkeleton.vue";
+import AppError from "@/components/shared/AppError.vue";
+import {
+  useProjectMultipartMutation,
+  useProjectUpdateMultipartMutation,
+} from "@/composables/queries/useProjects";
+import { projectService } from "@/services/projectService";
+import { setAcceptLanguage } from "@/api/axiosClient";
+import { useI18nStore } from "@/stores/i18nStores";
+import { useZodForm } from "@/composables/useZodForm";
+import { useT } from "@/composables/useT";
+import { useToast } from "@/composables/useToast";
+import { enumStringKeys } from "@/schemas/shared";
+import { projectRequestSchema, type ProjectRequestInput } from "@/schemas/project.schema";
+import { LinkType, ProjectStatus, ProjectType } from "@/types/project";
+import type { ProjectRequest } from "@/types/project";
+import { LanguageCode } from "@/types/api";
+import type { ErrorResponse } from "@/types/api";
+import { fadeUp } from "@/composables/useMotionPresets";
+
+// * Namespace translation buat view ini, ikutin path file JSON-nya:
+// src/locales/<locale>/views/admin/ProjectFormView.json
+const t = useT("views.admin.ProjectFormView");
+const toast = useToast();
+const route = useRoute();
+const router = useRouter();
+const i18nStore = useI18nStore();
+
+const projectId = computed(() => route.params.id as string | undefined);
+const isEdit = computed(() => !!projectId.value);
+
+const emptyProjectRequest = (): ProjectRequestInput => ({
+  translations: [
+    { locale: LanguageCode.en, name: "", description: "" },
+    { locale: LanguageCode.id, name: "", description: "" },
+  ],
+  status: ProjectStatus.development,
+  logoUrl: null,
+  imageUrls: null,
+  techStack: null,
+  projectTypes: [],
+  projectLinks: null,
+  deletedImageUrls: [],
+});
+
+const { values, errors, handleSubmit, validateField, reset } = useZodForm(
+  projectRequestSchema,
+  emptyProjectRequest(),
+);
+
+// * values.translations selalu diisi persis 2 entry - en & id - sejak initial value
+// & tiap kali reset() (lihat emptyProjectRequest() & loadProjectForEdit()), jadi aman
+// non-null assert di sini daripada nangani "possibly undefined" di tiap pemakaian.
+function translationFor(locale: LanguageCode) {
+  return values.translations.find((translation) => translation.locale === locale)!;
+}
+
+// * `description` di schema-nya nullable (`string | null | undefined`), tapi AppTextarea
+// modelnya `string` - computed writable ini yang jembatanin null <-> "" di kedua arah.
+function descriptionModel(locale: LanguageCode) {
+  return computed({
+    get: () => translationFor(locale).description ?? "",
+    set: (value: string) => {
+      translationFor(locale).description = value;
+    },
+  });
+}
+const enDescription = descriptionModel(LanguageCode.en);
+const idDescription = descriptionModel(LanguageCode.id);
+
+function formatLabel(key: string) {
+  return key
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+const statusOptions = enumStringKeys(ProjectStatus).map((key) => ({
+  label: formatLabel(key),
+  value: ProjectStatus[key],
+}));
+
+const projectTypeKeys = enumStringKeys(ProjectType);
+const linkTypeOptions = enumStringKeys(LinkType).map((key) => ({
+  label: formatLabel(key),
+  value: LinkType[key],
+}));
+
+function isTypeSelected(type: ProjectType) {
+  return (values.projectTypes ?? []).includes(type);
+}
+
+function toggleProjectType(type: ProjectType) {
+  const current = values.projectTypes ?? [];
+  values.projectTypes = current.includes(type)
+    ? current.filter((selected) => selected !== type)
+    : [...current, type];
+}
+
+// * techStack (Record<string,string>) & projectLinks (Record<LinkType,string>) diedit
+// sebagai daftar baris key/value biar UI-nya gampang, terus disatuin balik jadi object
+// pas mau submit lewat syncDynamicFields().
+const techStackRows = ref<{ key: string; value: string }[]>([]);
+const projectLinkRows = ref<{ type: LinkType; url: string }[]>([]);
+
+function addTechStackRow() {
+  techStackRows.value.push({ key: "", value: "" });
+}
+
+function addLinkRow() {
+  projectLinkRows.value.push({ type: LinkType.github, url: "" });
+}
+
+function syncDynamicFields() {
+  const techStackEntries = techStackRows.value
+    .filter((row) => row.key.trim())
+    .map((row) => [row.key.trim(), row.value.trim()] as const);
+  values.techStack = techStackEntries.length ? Object.fromEntries(techStackEntries) : null;
+
+  const linkEntries = projectLinkRows.value
+    .filter((row) => row.url.trim())
+    .map((row) => [row.type, row.url.trim()] as const);
+  values.projectLinks = linkEntries.length
+    ? (Object.fromEntries(linkEntries) as Record<LinkType, string>)
+    : null;
+}
+
+// * Logo & images dikelola terpisah dari useZodForm - keduanya File mentah (bukan
+// bagian dari ProjectRequest), dan dikirim lewat field terpisah di
+// ProjectMultipartRequest/UpdateProjectMultipartRequest (lihat projectService.ts).
+const logoFile = ref<File | undefined>(undefined);
+const logoInputRef = ref<HTMLInputElement | null>(null);
+const existingLogoUrl = ref<string | null>(null);
+
+const logoPreview = computed(() => {
+  if (logoFile.value) return URL.createObjectURL(logoFile.value);
+  return existingLogoUrl.value;
+});
+
+function onLogoFileChange(event: Event) {
+  logoFile.value = (event.target as HTMLInputElement).files?.[0] ?? undefined;
+}
+
+const newImageFiles = ref<File[]>([]);
+const imagesInputRef = ref<HTMLInputElement | null>(null);
+const existingImageUrls = ref<string[]>([]);
+
+const newImagePreviews = computed(() => newImageFiles.value.map((file) => URL.createObjectURL(file)));
+
+function onImageFilesChange(event: Event) {
+  const input = event.target as HTMLInputElement;
+  newImageFiles.value = [...newImageFiles.value, ...Array.from(input.files ?? [])];
+  input.value = "";
+}
+
+function removeNewImage(index: number) {
+  newImageFiles.value.splice(index, 1);
+}
+
+function removeExistingImage(url: string) {
+  existingImageUrls.value = existingImageUrls.value.filter((existing) => existing !== url);
+  values.deletedImageUrls = [...(values.deletedImageUrls ?? []), url];
+}
+
+// * GET /projects/:id ngebalikin translation yang UDAH DI-RESOLVE ke satu locale
+// (ikut header Accept-Language), bukan translations array lengkap - jadi buat ngisi
+// form edit yang butuh 2 locale sekaligus (en & id), fetch-nya dipanggil 2x sambil
+// nukar header Accept-Language secara manual, lalu dikembaliin ke locale UI semula.
+const isLoadingProject = ref(isEdit.value);
+const loadError = ref<Error | null>(null);
+
+async function loadProjectForEdit(id: string) {
+  isLoadingProject.value = true;
+  loadError.value = null;
+
+  try {
+    setAcceptLanguage("en");
+    const enResponse = await projectService.getProject(id);
+    setAcceptLanguage("id");
+    const idResponse = await projectService.getProject(id);
+    const project = enResponse.data;
+
+    reset({
+      translations: [
+        { locale: LanguageCode.en, name: enResponse.data.name, description: enResponse.data.description ?? "" },
+        { locale: LanguageCode.id, name: idResponse.data.name, description: idResponse.data.description ?? "" },
+      ],
+      status: project.status,
+      logoUrl: project.logoUrl,
+      imageUrls: project.imageUrls,
+      techStack: project.techStack,
+      projectTypes: project.projectTypes ?? [],
+      projectLinks: project.projectLinks,
+      deletedImageUrls: [],
+    });
+
+    existingLogoUrl.value = project.logoUrl;
+    existingImageUrls.value = project.imageUrls ?? [];
+    techStackRows.value = Object.entries(project.techStack ?? {}).map(([key, value]) => ({ key, value }));
+    projectLinkRows.value = Object.entries(project.projectLinks ?? {}).map(([type, url]) => ({
+      type: type as LinkType,
+      url,
+    }));
+  } catch (error) {
+    loadError.value = error as Error;
+  } finally {
+    setAcceptLanguage(i18nStore.currentLocale);
+    isLoadingProject.value = false;
+  }
+}
+
+onMounted(() => {
+  if (projectId.value) loadProjectForEdit(projectId.value);
+});
+
+const createMutation = useProjectMultipartMutation();
+const updateMutation = useProjectUpdateMultipartMutation();
+const activeMutation = computed(() => (isEdit.value ? updateMutation : createMutation));
+const isSaving = computed(() => activeMutation.value.isPending.value);
+
+const errorMessage = computed(() => {
+  const mutationError = activeMutation.value.error.value;
+  if (!mutationError) return null;
+
+  if (isAxiosError<ErrorResponse>(mutationError)) {
+    return mutationError.response?.data?.message ?? mutationError.message;
+  }
+  return mutationError.message;
+});
+
+const submitForm = handleSubmit(async (data) => {
+  // * `data` ke-infer dari projectRequestSchema, yang pakai `z.partialRecord()` buat
+  // projectLinks (Partial<Record<LinkType,string>>) - sedikit lebih longgar dari tipe
+  // `ProjectRequest.projectLinks` (Record<LinkType,string>) di src/types/project.ts.
+  // Aman di-cast: syncDynamicFields() cuma nulis key yang urlnya keisi.
+  const projectRequest = data as ProjectRequest;
+
+  try {
+    if (isEdit.value && projectId.value) {
+      await updateMutation.mutateAsync({
+        id: projectId.value,
+        projectRequest,
+        logoFile: logoFile.value,
+        newImageFiles: newImageFiles.value.length ? newImageFiles.value : undefined,
+      });
+      toast.success(t("toast.updated"));
+    } else {
+      await createMutation.mutateAsync({
+        projectRequest,
+        logoFile: logoFile.value,
+        imageFiles: newImageFiles.value.length ? newImageFiles.value : undefined,
+      });
+      toast.success(t("toast.created"));
+    }
+    router.push({ name: "AdminProjects" });
+  } catch {
+    // * Pesan error udah ditangani `errorMessage` (dibaca dari activeMutation.error) & ditampilin di AppAlert
+  }
+});
+
+const onSubmit = (event?: Event) => {
+  syncDynamicFields();
+  return submitForm(event);
+};
+</script>
+
+<template>
+  <div v-motion="fadeUp()">
+    <div class="flex items-center gap-3 mb-6">
+      <RouterLink
+        :to="{ name: 'AdminProjects' }"
+        class="p-2 -ml-2 rounded-lg text-content/60 hover:bg-surface-raised hover:text-primary"
+        :aria-label="t('back')"
+      >
+        <IconArrowLeft class="size-5" />
+      </RouterLink>
+      <div>
+        <h2 class="text-2xl font-bold text-content">{{ isEdit ? t("editTitle") : t("createTitle") }}</h2>
+        <p class="mt-1 text-sm text-content/60">
+          {{ isEdit ? t("editSubtitle") : t("createSubtitle") }}
+        </p>
+      </div>
+    </div>
+
+    <AppSkeleton v-if="isLoadingProject" variant="tile" :count="3" />
+
+    <AppError v-else-if="loadError" :title="t('loadErrorTitle')" :message="loadError.message" />
+
+    <form v-else class="space-y-6" novalidate @submit="onSubmit">
+      <section class="p-5 space-y-5 border rounded-card border-border bg-surface">
+        <h3 class="font-semibold text-content">{{ t("translations.title") }}</h3>
+        <div class="grid gap-6 md:grid-cols-2">
+          <div class="space-y-4">
+            <p class="text-xs font-semibold tracking-wide uppercase text-content/50">
+              {{ t("translations.en") }}
+            </p>
+            <AppInput
+              v-model="translationFor(LanguageCode.en).name"
+              :label="t('nameLabel')"
+              required
+              @blur="validateField('translations')"
+            />
+            <AppTextarea
+              v-model="enDescription"
+              :label="t('descriptionLabel')"
+              @blur="validateField('translations')"
+            />
+          </div>
+          <div class="space-y-4">
+            <p class="text-xs font-semibold tracking-wide uppercase text-content/50">
+              {{ t("translations.id") }}
+            </p>
+            <AppInput
+              v-model="translationFor(LanguageCode.id).name"
+              :label="t('nameLabel')"
+              required
+              @blur="validateField('translations')"
+            />
+            <AppTextarea
+              v-model="idDescription"
+              :label="t('descriptionLabel')"
+              @blur="validateField('translations')"
+            />
+          </div>
+        </div>
+        <p v-if="errors.translations" class="text-xs text-danger">{{ errors.translations }}</p>
+      </section>
+
+      <section class="p-5 space-y-5 border rounded-card border-border bg-surface">
+        <h3 class="font-semibold text-content">{{ t("classification.title") }}</h3>
+        <AppSelect
+          v-model="values.status"
+          :label="t('statusLabel')"
+          :options="statusOptions"
+          required
+          :error="errors.status"
+          class="max-w-xs"
+          @blur="validateField('status')"
+        />
+        <div>
+          <p class="block mb-2 text-sm font-medium text-content/80">{{ t("typesLabel") }}</p>
+          <div class="flex flex-wrap gap-x-6 gap-y-2">
+            <AppCheckbox
+              v-for="key in projectTypeKeys"
+              :key="key"
+              :label="formatLabel(key)"
+              :model-value="isTypeSelected(ProjectType[key])"
+              @update:model-value="toggleProjectType(ProjectType[key])"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="p-5 space-y-4 border rounded-card border-border bg-surface">
+        <div class="flex items-center justify-between">
+          <h3 class="font-semibold text-content">{{ t("techStack.title") }}</h3>
+          <AppButton type="button" variant="secondary" size="sm" @click="addTechStackRow">
+            <IconPlus class="mr-1 size-4" />
+            {{ t("techStack.add") }}
+          </AppButton>
+        </div>
+        <p v-if="techStackRows.length === 0" class="text-sm text-content/50">
+          {{ t("techStack.empty") }}
+        </p>
+        <div v-for="(row, index) in techStackRows" :key="index" class="flex items-start gap-3">
+          <AppInput v-model="row.key" :placeholder="t('techStack.namePlaceholder')" class="flex-1" />
+          <AppInput v-model="row.value" :placeholder="t('techStack.urlPlaceholder')" class="flex-1" />
+          <button
+            type="button"
+            class="p-2.5 mt-0.5 rounded-lg text-content/50 hover:bg-danger/10 hover:text-danger"
+            :aria-label="t('techStack.remove')"
+            @click="techStackRows.splice(index, 1)"
+          >
+            <IconTrash2 class="size-4" />
+          </button>
+        </div>
+      </section>
+
+      <section class="p-5 space-y-4 border rounded-card border-border bg-surface">
+        <div class="flex items-center justify-between">
+          <h3 class="font-semibold text-content">{{ t("links.title") }}</h3>
+          <AppButton type="button" variant="secondary" size="sm" @click="addLinkRow">
+            <IconPlus class="mr-1 size-4" />
+            {{ t("links.add") }}
+          </AppButton>
+        </div>
+        <p v-if="projectLinkRows.length === 0" class="text-sm text-content/50">
+          {{ t("links.empty") }}
+        </p>
+        <div v-for="(row, index) in projectLinkRows" :key="index" class="flex items-start gap-3">
+          <AppSelect v-model="row.type" :options="linkTypeOptions" class="w-44 shrink-0" />
+          <AppInput v-model="row.url" type="url" :placeholder="t('links.urlPlaceholder')" class="flex-1" />
+          <button
+            type="button"
+            class="p-2.5 mt-0.5 rounded-lg text-content/50 hover:bg-danger/10 hover:text-danger"
+            :aria-label="t('links.remove')"
+            @click="projectLinkRows.splice(index, 1)"
+          >
+            <IconTrash2 class="size-4" />
+          </button>
+        </div>
+      </section>
+
+      <section class="p-5 space-y-6 border rounded-card border-border bg-surface">
+        <h3 class="font-semibold text-content">{{ t("media.title") }}</h3>
+
+        <div>
+          <p class="block mb-1.5 text-sm font-medium text-content/80">{{ t("logo.label") }}</p>
+          <div class="flex items-center gap-4">
+            <img
+              v-if="logoPreview"
+              :src="logoPreview"
+              :alt="t('logo.label')"
+              class="object-cover border size-16 rounded-xl border-border bg-background"
+            />
+            <div
+              v-else
+              class="flex items-center justify-center border border-dashed size-16 rounded-xl border-border text-content/30"
+            >
+              <IconImage class="size-6" />
+            </div>
+            <div>
+              <input ref="logoInputRef" type="file" accept="image/*" class="hidden" @change="onLogoFileChange" />
+              <AppButton type="button" variant="secondary" size="sm" @click="logoInputRef?.click()">
+                {{ t("logo.choose") }}
+              </AppButton>
+              <p class="mt-1 text-xs text-content/50">{{ t("logo.hint") }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="block mb-2 text-sm font-medium text-content/80">{{ t("images.label") }}</p>
+          <div v-if="existingImageUrls.length || newImagePreviews.length" class="flex flex-wrap gap-3 mb-3">
+            <div v-for="url in existingImageUrls" :key="url" class="relative group">
+              <img :src="url" :alt="t('images.label')" class="object-cover border rounded-lg size-20 border-border bg-background" />
+              <button
+                type="button"
+                class="absolute flex items-center justify-center text-white rounded-full shadow-sm -top-1.5 -right-1.5 bg-danger size-5"
+                :aria-label="t('images.remove')"
+                @click="removeExistingImage(url)"
+              >
+                <IconX class="size-3" />
+              </button>
+            </div>
+            <div v-for="(url, index) in newImagePreviews" :key="`new-${index}`" class="relative group">
+              <img :src="url" :alt="t('images.label')" class="object-cover border rounded-lg size-20 border-border bg-background" />
+              <button
+                type="button"
+                class="absolute flex items-center justify-center text-white rounded-full shadow-sm -top-1.5 -right-1.5 bg-danger size-5"
+                :aria-label="t('images.remove')"
+                @click="removeNewImage(index)"
+              >
+                <IconX class="size-3" />
+              </button>
+            </div>
+          </div>
+          <input
+            ref="imagesInputRef"
+            type="file"
+            accept="image/*"
+            multiple
+            class="hidden"
+            @change="onImageFilesChange"
+          />
+          <AppButton type="button" variant="secondary" size="sm" @click="imagesInputRef?.click()">
+            <IconPlus class="mr-1 size-4" />
+            {{ t("images.add") }}
+          </AppButton>
+        </div>
+      </section>
+
+      <AppAlert v-if="errorMessage" variant="danger">{{ errorMessage }}</AppAlert>
+
+      <div class="flex justify-end gap-3">
+        <AppButton type="button" variant="secondary" @click="router.push({ name: 'AdminProjects' })">
+          {{ t("cancel") }}
+        </AppButton>
+        <AppButton type="submit" :disabled="isSaving">
+          <IconLoader v-if="isSaving" class="mr-2 size-4 animate-spin" />
+          {{ isSaving ? t("saving") : t("save") }}
+        </AppButton>
+      </div>
+    </form>
+  </div>
+</template>
+
+<style scoped></style>

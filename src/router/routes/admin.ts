@@ -14,6 +14,24 @@ export const adminRoutes: RouteRecordRaw[] = [
     component: () => import("@/views/admin/DashboardView.vue"),
     meta: { layout: "admin", requiresAuth: true },
   },
+  {
+    path: "/admin/projects",
+    name: "AdminProjects",
+    component: () => import("@/views/admin/ProjectsView.vue"),
+    meta: { layout: "admin", requiresAuth: true },
+  },
+  {
+    path: "/admin/projects/new",
+    name: "AdminProjectCreate",
+    component: () => import("@/views/admin/ProjectFormView.vue"),
+    meta: { layout: "admin", requiresAuth: true },
+  },
+  {
+    path: "/admin/projects/:id/edit",
+    name: "AdminProjectEdit",
+    component: () => import("@/views/admin/ProjectFormView.vue"),
+    meta: { layout: "admin", requiresAuth: true },
+  },
 ];
 
 export default adminRoutes;

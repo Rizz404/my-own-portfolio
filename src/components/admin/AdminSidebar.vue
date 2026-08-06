@@ -28,13 +28,13 @@ const emit = defineEmits<{
 const authStore = authStores();
 const router = useRouter();
 
-// * Resource CRUD (Blogs/Projects/dst) belum digarap - ditandain "soon" & gak bisa
+// * Resource CRUD (Blogs/dst) belum digarap - ditandain "soon" & gak bisa
 // diklik dulu daripada bikin link mati. Nambah section baru pas udah ada view-nya
 // tinggal hapus `soon: true` dan isi `to`.
 const navItems = computed(() => [
   { label: t("nav.dashboard"), icon: IconLayoutDashboard, to: { name: "AdminDashboard" } },
   { label: t("nav.blogs"), icon: IconFileText, soon: true },
-  { label: t("nav.projects"), icon: IconFolderKanban, soon: true },
+  { label: t("nav.projects"), icon: IconFolderKanban, to: { name: "AdminProjects" } },
   { label: t("nav.experiences"), icon: IconBriefcase, soon: true },
   { label: t("nav.skills"), icon: IconSparkles, soon: true },
   { label: t("nav.uses"), icon: IconPackage, soon: true },
