@@ -1,0 +1,13 @@
+{
+  "title": "Admin Login",
+  "subtitle": "Sign in to manage the portfolio content",
+  "backToSite": "Back to site",
+  "emailLabel": "Email",
+  "emailPlaceholder": "you@example.com",
+  "passwordLabel": "Password",
+  "passwordPlaceholder": "••••••••",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "submit": "Sign in",
+  "submitting": "Signing in..."
+}

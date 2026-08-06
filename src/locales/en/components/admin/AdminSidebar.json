@@ -1,0 +1,15 @@
+{
+  "brand": "Admin Panel",
+  "nav": {
+    "dashboard": "Dashboard",
+    "blogs": "Blogs",
+    "projects": "Projects",
+    "experiences": "Experiences",
+    "skills": "Skills",
+    "uses": "Uses",
+    "users": "Users"
+  },
+  "soonBadge": "Soon",
+  "logout": "Log out",
+  "closeSidebar": "Close sidebar"
+}

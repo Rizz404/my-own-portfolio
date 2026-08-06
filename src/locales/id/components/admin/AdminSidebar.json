@@ -1,0 +1,15 @@
+{
+  "brand": "Panel Admin",
+  "nav": {
+    "dashboard": "Dasbor",
+    "blogs": "Blog",
+    "projects": "Proyek",
+    "experiences": "Pengalaman",
+    "skills": "Keahlian",
+    "uses": "Perlengkapan",
+    "users": "Pengguna"
+  },
+  "soonBadge": "Segera",
+  "logout": "Keluar",
+  "closeSidebar": "Tutup sidebar"
+}
