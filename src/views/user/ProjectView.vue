@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { refDebounced } from "@vueuse/core";
 import { useProjectsQuery } from "@/composables/queries/useProjects";
 import type { ProjectQueryParams } from "@/types/project";
@@ -10,13 +10,11 @@ import AppButton from "@/components/shared/AppButton.vue";
 import IconSearch from "~icons/lucide/search";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
+import { useQuerySync } from "@/composables/useQuerySync";
 
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
 // src/locales/<locale>/views/user/ProjectView.json
 const t = useT("views.user.ProjectView");
-
-const searchInput = ref("");
-const debouncedSearch = refDebounced(searchInput, 500);
 
 const queryParams = ref<ProjectQueryParams>({
   page: 1,
@@ -26,9 +24,25 @@ const queryParams = ref<ProjectQueryParams>({
   sortDir: ["desc"],
 });
 
+// * Sinkronin queryParams <-> URL query string SEBELUM bikin ref UI di bawah,
+// biar ref-nya ke-seed dari value yang udah di-override sama URL awal.
+useQuerySync(queryParams);
+
+const searchInput = ref(queryParams.value.search ?? "");
+const debouncedSearch = refDebounced(searchInput, 500);
+
 watch(debouncedSearch, (newVal) => {
   queryParams.value.search = newVal;
   queryParams.value.page = 1;
+});
+
+// * Buat nge-restore pilihan <select> pas awal load dari URL (mis. ?sortBy=
+// viewsCount&sortDir=desc -> "popular") - selain itu select-nya "uncontrolled",
+// cuma nulis lewat handleSortChange pas di-ganti.
+const sortValue = computed(() => {
+  if (queryParams.value.sortBy?.[0] === "viewsCount") return "popular";
+  if (queryParams.value.sortDir?.[0] === "asc") return "oldest";
+  return "newest";
 });
 
 const {
@@ -96,6 +110,7 @@ const nextPage = () => {
         </div>
 
         <select
+          :value="sortValue"
           @change="handleSortChange"
           class="px-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all text-content cursor-pointer appearance-none"
         >

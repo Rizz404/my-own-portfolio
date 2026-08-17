@@ -20,25 +20,35 @@ import type { Project, ProjectQueryParams } from "@/types/project";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
 import { useToast } from "@/composables/useToast";
+import { useQuerySync } from "@/composables/useQuerySync";
 
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
 // src/locales/<locale>/views/admin/ProjectsView.json
 const t = useT("views.admin.ProjectsView");
 const toast = useToast();
 
-const searchInput = ref("");
-const debouncedSearch = refDebounced(searchInput, 500);
-const statusFilter = ref("");
-const sortByField = ref("createdAt");
-const sortDirField = ref("desc");
-
+// * `status` sengaja dikasih key eksplisit (`undefined`) biar ke-detect sama
+// useQuerySync() sebagai field yang ikut di-sync ke URL - liat komentar di
+// useQuerySync.ts.
 const queryParams = ref<ProjectQueryParams>({
   page: 1,
   size: 10,
   search: "",
+  status: undefined,
   sortBy: ["createdAt"],
   sortDir: ["desc"],
 });
+
+// * Sinkronin queryParams <-> URL query string (?search=...&status=...&sortBy=...
+// dst) SEBELUM bikin ref UI di bawah, biar ref-ref itu ke-seed dari value yang
+// udah di-override sama URL awal (kalau ada).
+useQuerySync(queryParams);
+
+const searchInput = ref(queryParams.value.search ?? "");
+const debouncedSearch = refDebounced(searchInput, 500);
+const statusFilter = ref(queryParams.value.status ?? "");
+const sortByField = ref(queryParams.value.sortBy?.[0] ?? "createdAt");
+const sortDirField = ref(queryParams.value.sortDir?.[0] ?? "desc");
 
 watch(debouncedSearch, (value) => {
   queryParams.value.search = value;
