@@ -1,0 +1,7 @@
+{
+  "select": "Select blog post",
+  "deselect": "Deselect blog post",
+  "delete": "Delete blog post",
+  "published": "Published",
+  "draft": "Draft"
+}
