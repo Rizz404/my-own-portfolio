@@ -28,9 +28,6 @@ const emit = defineEmits<{
 const authStore = authStores();
 const router = useRouter();
 
-// * Resource CRUD (Blogs/dst) belum digarap - ditandain "soon" & gak bisa
-// diklik dulu daripada bikin link mati. Nambah section baru pas udah ada view-nya
-// tinggal hapus `soon: true` dan isi `to`.
 const navItems = computed(() => [
   { label: t("nav.dashboard"), icon: IconLayoutDashboard, to: { name: "AdminDashboard" } },
   { label: t("nav.blogs"), icon: IconFileText, to: { name: "AdminBlogs" } },
@@ -38,7 +35,7 @@ const navItems = computed(() => [
   { label: t("nav.experiences"), icon: IconBriefcase, to: { name: "AdminExperiences" } },
   { label: t("nav.skills"), icon: IconSparkles, to: { name: "AdminSkills" } },
   { label: t("nav.uses"), icon: IconPackage, to: { name: "AdminUses" } },
-  { label: t("nav.users"), icon: IconUsers, soon: true },
+  { label: t("nav.users"), icon: IconUsers, to: { name: "AdminUsers" } },
 ]);
 
 const handleLogout = () => {
@@ -84,30 +81,19 @@ const handleLogout = () => {
         v-for="item in navItems"
         :key="item.label"
         v-slot="{ isActive, href, navigate }"
-        :to="item.to ?? '#'"
+        :to="item.to"
         custom
       >
         <a
-          :href="item.soon ? undefined : href"
-          @click="item.soon ? $event.preventDefault() : navigate($event)"
-          :aria-disabled="item.soon"
+          :href="href"
+          @click="navigate($event)"
           :class="[
             'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-            item.soon
-              ? 'text-content/40 cursor-not-allowed'
-              : isActive
-                ? 'bg-primary/10 text-primary'
-                : 'text-content/70 hover:bg-surface-raised hover:text-primary',
+            isActive ? 'bg-primary/10 text-primary' : 'text-content/70 hover:bg-surface-raised hover:text-primary',
           ]"
         >
           <component :is="item.icon" class="w-5 h-5 shrink-0" />
           <span class="truncate grow">{{ item.label }}</span>
-          <span
-            v-if="item.soon"
-            class="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded-full bg-secondary text-content/50 shrink-0"
-          >
-            {{ t("soonBadge") }}
-          </span>
         </a>
       </RouterLink>
     </nav>

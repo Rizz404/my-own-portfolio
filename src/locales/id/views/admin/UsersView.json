@@ -1,0 +1,43 @@
+{
+  "title": "Pengguna",
+  "subtitle": "Kelola akun pengguna portofolio.",
+  "addUser": "Tambah pengguna",
+  "searchPlaceholder": "Cari pengguna...",
+  "filters": {
+    "allRoles": "Semua peran"
+  },
+  "sort": {
+    "createdAt": "Urutkan: Dibuat",
+    "updatedAt": "Urutkan: Diperbarui",
+    "nickname": "Urutkan: Nama panggilan",
+    "asc": "Naik (A-Z)",
+    "desc": "Turun (Z-A)"
+  },
+  "selectMode": "Pilih",
+  "selectAllOnPage": "Pilih semua di halaman ini",
+  "selectedCount": "{count} terpilih",
+  "deleteSelected": "Hapus yang terpilih",
+  "deleting": "Menghapus...",
+  "cancelSelection": "Batal",
+  "confirmDelete": "Hapus \"{name}\"? Tindakan ini tidak bisa dibatalkan.",
+  "confirmBulkDelete": "Hapus {count} pengguna terpilih? Tindakan ini tidak bisa dibatalkan.",
+  "toast": {
+    "deleted": "Pengguna berhasil dihapus",
+    "deleteFailed": "Gagal menghapus pengguna",
+    "bulkDeleted": "{count} pengguna berhasil dihapus",
+    "bulkDeleteFailed": "Gagal menghapus {count} pengguna"
+  },
+  "errorLoad": "Gagal memuat data pengguna",
+  "empty": {
+    "title": "Belum ada pengguna",
+    "subtitle": "Tambahkan akun pengguna pertamamu untuk melihatnya di sini."
+  },
+  "pagination": {
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "page": "Halaman",
+    "of": "dari",
+    "size": "Ukuran",
+    "total": "{count} total"
+  }
+}

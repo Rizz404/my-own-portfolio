@@ -1,0 +1,45 @@
+{
+  "back": "Kembali ke pengguna",
+  "createTitle": "Pengguna baru",
+  "createSubtitle": "Tambahkan akun pengguna baru.",
+  "editTitle": "Edit pengguna",
+  "editSubtitle": "Perbarui detail akun pengguna.",
+  "loadErrorTitle": "Gagal memuat data pengguna",
+  "account": {
+    "title": "Akun"
+  },
+  "nicknameLabel": "Nama panggilan",
+  "fullNameLabel": "Nama lengkap",
+  "emailLabel": "Email",
+  "passwordLabel": "Kata sandi",
+  "passwordEditHint": "Biarkan kosong untuk tetap pakai kata sandi saat ini.",
+  "roleLabel": "Peran",
+  "providerLabel": "Penyedia",
+  "profile": {
+    "title": "Profil"
+  },
+  "placeOfBirthLabel": "Tempat lahir",
+  "dateOfBirthLabel": "Tanggal lahir",
+  "genderLabel": "Jenis kelamin",
+  "genderUnspecified": "Tidak ditentukan",
+  "phoneNumberLabel": "Nomor telepon",
+  "addressLabel": "Alamat",
+  "translations": {
+    "title": "Terjemahan",
+    "en": "Inggris",
+    "id": "Indonesia"
+  },
+  "bioLabel": "Bio",
+  "profilePict": {
+    "title": "Foto profil",
+    "choose": "Pilih file",
+    "hint": "Biarkan kosong untuk tetap pakai foto saat ini."
+  },
+  "cancel": "Batal",
+  "save": "Simpan",
+  "saving": "Menyimpan...",
+  "toast": {
+    "created": "Pengguna berhasil dibuat",
+    "updated": "Pengguna berhasil diperbarui"
+  }
+}

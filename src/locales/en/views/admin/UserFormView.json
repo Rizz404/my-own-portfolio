@@ -1,0 +1,45 @@
+{
+  "back": "Back to users",
+  "createTitle": "New user",
+  "createSubtitle": "Add a new user account.",
+  "editTitle": "Edit user",
+  "editSubtitle": "Update the user account details.",
+  "loadErrorTitle": "Failed to load user",
+  "account": {
+    "title": "Account"
+  },
+  "nicknameLabel": "Nickname",
+  "fullNameLabel": "Full name",
+  "emailLabel": "Email",
+  "passwordLabel": "Password",
+  "passwordEditHint": "Leave empty to keep the current password.",
+  "roleLabel": "Role",
+  "providerLabel": "Provider",
+  "profile": {
+    "title": "Profile"
+  },
+  "placeOfBirthLabel": "Place of birth",
+  "dateOfBirthLabel": "Date of birth",
+  "genderLabel": "Gender",
+  "genderUnspecified": "Not specified",
+  "phoneNumberLabel": "Phone number",
+  "addressLabel": "Address",
+  "translations": {
+    "title": "Translations",
+    "en": "English",
+    "id": "Indonesian"
+  },
+  "bioLabel": "Bio",
+  "profilePict": {
+    "title": "Profile picture",
+    "choose": "Choose file",
+    "hint": "Leave empty to keep the current picture."
+  },
+  "cancel": "Cancel",
+  "save": "Save",
+  "saving": "Saving...",
+  "toast": {
+    "created": "User created",
+    "updated": "User updated"
+  }
+}

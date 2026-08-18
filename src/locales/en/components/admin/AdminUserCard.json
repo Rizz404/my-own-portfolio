@@ -1,0 +1,6 @@
+{
+  "select": "Select user",
+  "deselect": "Deselect user",
+  "delete": "Delete user",
+  "updated": "Updated"
+}

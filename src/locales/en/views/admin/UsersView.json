@@ -1,0 +1,43 @@
+{
+  "title": "Users",
+  "subtitle": "Manage the user accounts of the portfolio.",
+  "addUser": "Add user",
+  "searchPlaceholder": "Search users...",
+  "filters": {
+    "allRoles": "All roles"
+  },
+  "sort": {
+    "createdAt": "Sort: Created",
+    "updatedAt": "Sort: Updated",
+    "nickname": "Sort: Nickname",
+    "asc": "Ascending",
+    "desc": "Descending"
+  },
+  "selectMode": "Select",
+  "selectAllOnPage": "Select all on this page",
+  "selectedCount": "{count} selected",
+  "deleteSelected": "Delete selected",
+  "deleting": "Deleting...",
+  "cancelSelection": "Cancel",
+  "confirmDelete": "Delete \"{name}\"? This can't be undone.",
+  "confirmBulkDelete": "Delete {count} selected user(s)? This can't be undone.",
+  "toast": {
+    "deleted": "User deleted",
+    "deleteFailed": "Failed to delete user",
+    "bulkDeleted": "{count} user(s) deleted",
+    "bulkDeleteFailed": "Failed to delete {count} user(s)"
+  },
+  "errorLoad": "Failed to load users",
+  "empty": {
+    "title": "No users yet",
+    "subtitle": "Add your first user account to see it here."
+  },
+  "pagination": {
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "of": "of",
+    "size": "Size",
+    "total": "{count} total"
+  }
+}
