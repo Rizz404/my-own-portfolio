@@ -1,0 +1,43 @@
+{
+  "title": "Skills",
+  "subtitle": "Manage the skills shown to visitors.",
+  "addSkill": "Add skill",
+  "searchPlaceholder": "Search skills...",
+  "filters": {
+    "allCategories": "All categories"
+  },
+  "sort": {
+    "createdAt": "Sort: Created",
+    "updatedAt": "Sort: Updated",
+    "name": "Sort: Name",
+    "asc": "Ascending",
+    "desc": "Descending"
+  },
+  "selectMode": "Select",
+  "selectAllOnPage": "Select all on this page",
+  "selectedCount": "{count} selected",
+  "deleteSelected": "Delete selected",
+  "deleting": "Deleting...",
+  "cancelSelection": "Cancel",
+  "confirmDelete": "Delete \"{name}\"? This can't be undone.",
+  "confirmBulkDelete": "Delete {count} selected skill(s)? This can't be undone.",
+  "toast": {
+    "deleted": "Skill deleted",
+    "deleteFailed": "Failed to delete skill",
+    "bulkDeleted": "{count} skill(s) deleted",
+    "bulkDeleteFailed": "Failed to delete {count} skill(s)"
+  },
+  "errorLoad": "Failed to load skills",
+  "empty": {
+    "title": "No skills yet",
+    "subtitle": "Add your first skill to see it here."
+  },
+  "pagination": {
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "of": "of",
+    "size": "Size",
+    "total": "{count} total"
+  }
+}

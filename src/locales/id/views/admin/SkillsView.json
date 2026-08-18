@@ -1,0 +1,43 @@
+{
+  "title": "Keahlian",
+  "subtitle": "Kelola keahlian yang ditampilkan ke pengunjung.",
+  "addSkill": "Tambah keahlian",
+  "searchPlaceholder": "Cari keahlian...",
+  "filters": {
+    "allCategories": "Semua kategori"
+  },
+  "sort": {
+    "createdAt": "Urutkan: Dibuat",
+    "updatedAt": "Urutkan: Diperbarui",
+    "name": "Urutkan: Nama",
+    "asc": "Naik (A-Z)",
+    "desc": "Turun (Z-A)"
+  },
+  "selectMode": "Pilih",
+  "selectAllOnPage": "Pilih semua di halaman ini",
+  "selectedCount": "{count} terpilih",
+  "deleteSelected": "Hapus yang terpilih",
+  "deleting": "Menghapus...",
+  "cancelSelection": "Batal",
+  "confirmDelete": "Hapus \"{name}\"? Tindakan ini tidak bisa dibatalkan.",
+  "confirmBulkDelete": "Hapus {count} keahlian terpilih? Tindakan ini tidak bisa dibatalkan.",
+  "toast": {
+    "deleted": "Keahlian berhasil dihapus",
+    "deleteFailed": "Gagal menghapus keahlian",
+    "bulkDeleted": "{count} keahlian berhasil dihapus",
+    "bulkDeleteFailed": "Gagal menghapus {count} keahlian"
+  },
+  "errorLoad": "Gagal memuat data keahlian",
+  "empty": {
+    "title": "Belum ada keahlian",
+    "subtitle": "Tambahkan keahlian pertamamu untuk melihatnya di sini."
+  },
+  "pagination": {
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "page": "Halaman",
+    "of": "dari",
+    "size": "Ukuran",
+    "total": "{count} total"
+  }
+}

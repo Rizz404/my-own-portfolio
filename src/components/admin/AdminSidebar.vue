@@ -36,7 +36,7 @@ const navItems = computed(() => [
   { label: t("nav.blogs"), icon: IconFileText, to: { name: "AdminBlogs" } },
   { label: t("nav.projects"), icon: IconFolderKanban, to: { name: "AdminProjects" } },
   { label: t("nav.experiences"), icon: IconBriefcase, to: { name: "AdminExperiences" } },
-  { label: t("nav.skills"), icon: IconSparkles, soon: true },
+  { label: t("nav.skills"), icon: IconSparkles, to: { name: "AdminSkills" } },
   { label: t("nav.uses"), icon: IconPackage, soon: true },
   { label: t("nav.users"), icon: IconUsers, soon: true },
 ]);

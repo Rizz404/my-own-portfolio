@@ -1,0 +1,28 @@
+{
+  "back": "Kembali ke keahlian",
+  "createTitle": "Keahlian baru",
+  "createSubtitle": "Tambahkan keahlian baru ke portofolio.",
+  "editTitle": "Edit keahlian",
+  "editSubtitle": "Perbarui detail keahlian.",
+  "loadErrorTitle": "Gagal memuat data keahlian",
+  "nameLabel": "Nama",
+  "categoryLabel": "Kategori",
+  "descriptionLabel": "Deskripsi",
+  "translations": {
+    "title": "Terjemahan",
+    "en": "Inggris",
+    "id": "Indonesia"
+  },
+  "logo": {
+    "title": "Logo",
+    "choose": "Pilih file",
+    "hint": "Biarkan kosong untuk tetap pakai logo saat ini."
+  },
+  "cancel": "Batal",
+  "save": "Simpan",
+  "saving": "Menyimpan...",
+  "toast": {
+    "created": "Keahlian berhasil dibuat",
+    "updated": "Keahlian berhasil diperbarui"
+  }
+}
