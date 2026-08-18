@@ -1,0 +1,40 @@
+{
+  "title": "Blogs",
+  "subtitle": "Manage the blog posts shown to visitors.",
+  "addBlog": "Add blog post",
+  "searchPlaceholder": "Search blog posts...",
+  "sort": {
+    "createdAt": "Sort: Created",
+    "updatedAt": "Sort: Updated",
+    "title": "Sort: Title",
+    "asc": "Ascending",
+    "desc": "Descending"
+  },
+  "selectMode": "Select",
+  "selectAllOnPage": "Select all on this page",
+  "selectedCount": "{count} selected",
+  "deleteSelected": "Delete selected",
+  "deleting": "Deleting...",
+  "cancelSelection": "Cancel",
+  "confirmDelete": "Delete \"{name}\"? This can't be undone.",
+  "confirmBulkDelete": "Delete {count} selected blog post(s)? This can't be undone.",
+  "toast": {
+    "deleted": "Blog post deleted",
+    "deleteFailed": "Failed to delete blog post",
+    "bulkDeleted": "{count} blog post(s) deleted",
+    "bulkDeleteFailed": "Failed to delete {count} blog post(s)"
+  },
+  "errorLoad": "Failed to load blog posts",
+  "empty": {
+    "title": "No blog posts yet",
+    "subtitle": "Write your first blog post to see it here."
+  },
+  "pagination": {
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "of": "of",
+    "size": "Size",
+    "total": "{count} total"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "back": "Kembali ke blog",
+  "createTitle": "Tulisan blog baru",
+  "createSubtitle": "Tulis postingan blog baru untuk portofolio.",
+  "editTitle": "Edit tulisan blog",
+  "editSubtitle": "Perbarui detail tulisan blog.",
+  "loadErrorTitle": "Gagal memuat data tulisan blog",
+  "titleLabel": "Judul",
+  "contentLabel": "Konten",
+  "translations": {
+    "title": "Terjemahan",
+    "en": "Inggris",
+    "id": "Indonesia"
+  },
+  "stats": {
+    "title": "Statistik",
+    "views": "Dilihat",
+    "likes": "Suka",
+    "dislikes": "Tidak suka"
+  },
+  "publishedLabel": "Dipublikasikan",
+  "media": {
+    "title": "Media"
+  },
+  "featuredImage": {
+    "label": "Gambar utama",
+    "choose": "Pilih file",
+    "hint": "Biarkan kosong untuk tetap pakai gambar saat ini."
+  },
+  "attachments": {
+    "label": "Lampiran",
+    "add": "Tambah lampiran",
+    "remove": "Hapus lampiran"
+  },
+  "cancel": "Batal",
+  "save": "Simpan",
+  "saving": "Menyimpan...",
+  "toast": {
+    "created": "Tulisan blog berhasil dibuat",
+    "updated": "Tulisan blog berhasil diperbarui"
+  }
+}

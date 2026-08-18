@@ -32,6 +32,24 @@ export const adminRoutes: RouteRecordRaw[] = [
     component: () => import("@/views/admin/ProjectFormView.vue"),
     meta: { layout: "admin", requiresAuth: true },
   },
+  {
+    path: "/admin/blogs",
+    name: "AdminBlogs",
+    component: () => import("@/views/admin/BlogsView.vue"),
+    meta: { layout: "admin", requiresAuth: true },
+  },
+  {
+    path: "/admin/blogs/new",
+    name: "AdminBlogCreate",
+    component: () => import("@/views/admin/BlogFormView.vue"),
+    meta: { layout: "admin", requiresAuth: true },
+  },
+  {
+    path: "/admin/blogs/:id/edit",
+    name: "AdminBlogEdit",
+    component: () => import("@/views/admin/BlogFormView.vue"),
+    meta: { layout: "admin", requiresAuth: true },
+  },
   // * Catch-all khusus /admin/** biar 404-nya tetep tampil di dalam AdminLayout
   // (sidebar + header admin), bukan ketangkep sama catch-all publik di routes/user.ts.
   // Sengaja gak dikasih requiresAuth - nunjukin halaman 404 gak perlu login dulu.

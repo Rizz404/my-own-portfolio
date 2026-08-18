@@ -1,0 +1,42 @@
+{
+  "back": "Back to blogs",
+  "createTitle": "New blog post",
+  "createSubtitle": "Write a new blog post for the portfolio.",
+  "editTitle": "Edit blog post",
+  "editSubtitle": "Update the blog post details.",
+  "loadErrorTitle": "Failed to load blog post",
+  "titleLabel": "Title",
+  "contentLabel": "Content",
+  "translations": {
+    "title": "Translations",
+    "en": "English",
+    "id": "Indonesian"
+  },
+  "stats": {
+    "title": "Stats",
+    "views": "Views",
+    "likes": "Likes",
+    "dislikes": "Dislikes"
+  },
+  "publishedLabel": "Published",
+  "media": {
+    "title": "Media"
+  },
+  "featuredImage": {
+    "label": "Featured image",
+    "choose": "Choose file",
+    "hint": "Leave empty to keep the current image."
+  },
+  "attachments": {
+    "label": "Attachments",
+    "add": "Add attachments",
+    "remove": "Remove attachment"
+  },
+  "cancel": "Cancel",
+  "save": "Save",
+  "saving": "Saving...",
+  "toast": {
+    "created": "Blog post created",
+    "updated": "Blog post updated"
+  }
+}

@@ -33,7 +33,7 @@ const router = useRouter();
 // tinggal hapus `soon: true` dan isi `to`.
 const navItems = computed(() => [
   { label: t("nav.dashboard"), icon: IconLayoutDashboard, to: { name: "AdminDashboard" } },
-  { label: t("nav.blogs"), icon: IconFileText, soon: true },
+  { label: t("nav.blogs"), icon: IconFileText, to: { name: "AdminBlogs" } },
   { label: t("nav.projects"), icon: IconFolderKanban, to: { name: "AdminProjects" } },
   { label: t("nav.experiences"), icon: IconBriefcase, soon: true },
   { label: t("nav.skills"), icon: IconSparkles, soon: true },

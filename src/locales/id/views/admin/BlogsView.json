@@ -1,0 +1,40 @@
+{
+  "title": "Blog",
+  "subtitle": "Kelola tulisan blog yang ditampilkan ke pengunjung.",
+  "addBlog": "Tambah tulisan",
+  "searchPlaceholder": "Cari tulisan blog...",
+  "sort": {
+    "createdAt": "Urutkan: Dibuat",
+    "updatedAt": "Urutkan: Diperbarui",
+    "title": "Urutkan: Judul",
+    "asc": "Naik (A-Z)",
+    "desc": "Turun (Z-A)"
+  },
+  "selectMode": "Pilih",
+  "selectAllOnPage": "Pilih semua di halaman ini",
+  "selectedCount": "{count} terpilih",
+  "deleteSelected": "Hapus yang terpilih",
+  "deleting": "Menghapus...",
+  "cancelSelection": "Batal",
+  "confirmDelete": "Hapus \"{name}\"? Tindakan ini tidak bisa dibatalkan.",
+  "confirmBulkDelete": "Hapus {count} tulisan terpilih? Tindakan ini tidak bisa dibatalkan.",
+  "toast": {
+    "deleted": "Tulisan blog berhasil dihapus",
+    "deleteFailed": "Gagal menghapus tulisan blog",
+    "bulkDeleted": "{count} tulisan berhasil dihapus",
+    "bulkDeleteFailed": "Gagal menghapus {count} tulisan"
+  },
+  "errorLoad": "Gagal memuat data tulisan blog",
+  "empty": {
+    "title": "Belum ada tulisan blog",
+    "subtitle": "Tulis postingan blog pertamamu untuk melihatnya di sini."
+  },
+  "pagination": {
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "page": "Halaman",
+    "of": "dari",
+    "size": "Ukuran",
+    "total": "{count} total"
+  }
+}
