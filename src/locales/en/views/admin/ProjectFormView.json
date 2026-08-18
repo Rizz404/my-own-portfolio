@@ -19,11 +19,12 @@
   "typesLabel": "Project types",
   "techStack": {
     "title": "Tech stack",
-    "add": "Add tech",
     "empty": "No tech stack added yet.",
-    "namePlaceholder": "Name (e.g. Vue)",
-    "urlPlaceholder": "Logo URL",
-    "remove": "Remove tech stack entry"
+    "searchPlaceholder": "Search a technology (e.g. Vue)",
+    "remove": "Remove tech stack entry",
+    "searchHint": "Search and pick from the logo catalog - custom names or URLs aren't supported.",
+    "searching": "Loading logo catalog...",
+    "noMatches": "No matching logos found."
   },
   "links": {
     "title": "Project links",

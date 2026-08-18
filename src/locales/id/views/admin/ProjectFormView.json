@@ -19,11 +19,12 @@
   "typesLabel": "Tipe proyek",
   "techStack": {
     "title": "Tech stack",
-    "add": "Tambah tech",
     "empty": "Belum ada tech stack yang ditambahkan.",
-    "namePlaceholder": "Nama (mis. Vue)",
-    "urlPlaceholder": "URL logo",
-    "remove": "Hapus entri tech stack"
+    "searchPlaceholder": "Cari teknologi (mis. Vue)",
+    "remove": "Hapus entri tech stack",
+    "searchHint": "Cari & pilih dari katalog logo - nama atau URL custom gak didukung.",
+    "searching": "Memuat katalog logo...",
+    "noMatches": "Logo yang cocok gak ketemu."
   },
   "links": {
     "title": "Tautan proyek",

@@ -5,6 +5,7 @@ import { RouterLink } from "vue-router";
 import IconChevronLeft from "~icons/lucide/chevron-left";
 import IconChevronRight from "~icons/lucide/chevron-right";
 import { useT } from "@/composables/useT";
+import AppTechStackList from "@/components/shared/AppTechStackList.vue";
 
 const props = defineProps<{ project: Project }>();
 
@@ -173,16 +174,7 @@ const statusBadgeClass = computed(() => {
       <p class="text-base font-normal leading-relaxed md:text-sm text-content/70 line-clamp-3">
         {{ project.description }}
       </p>
-      <div v-if="project.techStack" class="flex flex-wrap items-center gap-2 mt-3">
-        <img
-          v-for="(logoUrl, name) in project.techStack"
-          :key="name"
-          :src="logoUrl"
-          :alt="String(name)"
-          :title="formatEnumText(name)"
-          class="object-contain size-5 opacity-70 transition-opacity group-hover:opacity-100"
-        />
-      </div>
+      <AppTechStackList :tech-stack="project.techStack" size="md" class="mt-3" />
     </div>
   </RouterLink>
 </template>

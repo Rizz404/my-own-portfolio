@@ -20,6 +20,7 @@ import {
   useProjectMultipartMutation,
   useProjectUpdateMultipartMutation,
 } from "@/composables/queries/useProjects";
+import { useTechIconsQuery, searchTechIcons, type TechIconOption } from "@/composables/queries/useTechIcons";
 import { projectService } from "@/services/projectService";
 import { setAcceptLanguage } from "@/api/axiosClient";
 import { useI18nStore } from "@/stores/i18nStores";
@@ -113,25 +114,43 @@ function toggleProjectType(type: ProjectType) {
     : [...current, type];
 }
 
-// * techStack (Record<string,string>) & projectLinks (Record<LinkType,string>) diedit
-// sebagai daftar baris key/value biar UI-nya gampang, terus disatuin balik jadi object
-// pas mau submit lewat syncDynamicFields().
-const techStackRows = ref<{ key: string; value: string }[]>([]);
+// * projectLinks (Record<LinkType,string>) diedit sebagai daftar baris type/url biar UI-nya
+// gampang, terus disatuin balik jadi object pas mau submit lewat syncDynamicFields().
 const projectLinkRows = ref<{ type: LinkType; url: string }[]>([]);
-
-function addTechStackRow() {
-  techStackRows.value.push({ key: "", value: "" });
-}
 
 function addLinkRow() {
   projectLinkRows.value.push({ type: LinkType.github, url: "" });
 }
 
+// * Tech stack CUMA bisa dipilih dari katalog Devicon (lihat composables/queries/useTechIcons.ts) -
+// admin gak bisa nulis nama/URL logo sendiri, biar techStack yang tersimpan selalu nunjuk ke
+// logo yang beneran ada. Milih satu saran langsung nambahin chip (icon + nama) ke
+// techStackSelections; techStack yang udah kepilih otomatis di-exclude dari hasil pencarian
+// biar gak bisa ke-pilih dobel.
+const { data: techIconsData, isLoading: isTechIconsLoading } = useTechIconsQuery();
+const techSearchQuery = ref("");
+const isTechDropdownOpen = ref(false);
+const techStackSelections = ref<TechIconOption[]>([]);
+
+const techSearchResults = computed(() => {
+  const excludeSlugs = new Set(techStackSelections.value.map((tech) => tech.slug));
+  return searchTechIcons(techIconsData.value, techSearchQuery.value, excludeSlugs);
+});
+
+function addTechSelection(option: TechIconOption) {
+  techStackSelections.value.push(option);
+  techSearchQuery.value = "";
+  isTechDropdownOpen.value = false;
+}
+
+function removeTechSelection(index: number) {
+  techStackSelections.value.splice(index, 1);
+}
+
 function syncDynamicFields() {
-  const techStackEntries = techStackRows.value
-    .filter((row) => row.key.trim())
-    .map((row) => [row.key.trim(), row.value.trim()] as const);
-  values.techStack = techStackEntries.length ? Object.fromEntries(techStackEntries) : null;
+  values.techStack = techStackSelections.value.length
+    ? Object.fromEntries(techStackSelections.value.map((tech) => [tech.label, tech.iconUrl]))
+    : null;
 
   const linkEntries = projectLinkRows.value
     .filter((row) => row.url.trim())
@@ -212,7 +231,15 @@ async function loadProjectForEdit(id: string) {
 
     existingLogoUrl.value = project.logoUrl;
     existingImageUrls.value = project.imageUrls ?? [];
-    techStackRows.value = Object.entries(project.techStack ?? {}).map(([key, value]) => ({ key, value }));
+    // * Project lama bisa aja punya techStack yang gak persis match slug Devicon (mis. dari
+    // sebelum fitur ini ada) - fallback pakai key-nya sendiri (di-lowercase) sebagai slug
+    // semu, cukup buat kebutuhan :key & exclude-dari-pencarian, gak dikirim kemana-mana.
+    techStackSelections.value = Object.entries(project.techStack ?? {}).map(([label, iconUrl]) => ({
+      slug: label.toLowerCase(),
+      label,
+      iconUrl,
+      altnames: [],
+    }));
     projectLinkRows.value = Object.entries(project.projectLinks ?? {}).map(([type, url]) => ({
       type: type as LinkType,
       url,
@@ -368,27 +395,65 @@ const onSubmit = (event?: Event) => {
       </section>
 
       <section class="p-5 space-y-4 border rounded-card border-border bg-surface">
-        <div class="flex items-center justify-between">
-          <h3 class="font-semibold text-content">{{ t("techStack.title") }}</h3>
-          <AppButton type="button" variant="secondary" size="sm" @click="addTechStackRow">
-            <IconPlus class="mr-1 size-4" />
-            {{ t("techStack.add") }}
-          </AppButton>
+        <h3 class="font-semibold text-content">{{ t("techStack.title") }}</h3>
+        <p class="text-xs text-content/50">{{ t("techStack.searchHint") }}</p>
+
+        <div class="relative max-w-sm">
+          <AppInput
+            v-model="techSearchQuery"
+            :placeholder="t('techStack.searchPlaceholder')"
+            autocomplete="off"
+            @focus="isTechDropdownOpen = true"
+            @blur="isTechDropdownOpen = false"
+          />
+          <div
+            v-if="isTechDropdownOpen && (isTechIconsLoading || techSearchQuery.trim())"
+            class="absolute z-10 w-full mt-1 overflow-hidden border rounded-xl shadow-lg border-border bg-surface"
+          >
+            <p v-if="isTechIconsLoading" class="px-3 py-2 text-xs text-content/50">
+              {{ t("techStack.searching") }}
+            </p>
+            <ul v-else-if="techSearchResults.length" class="overflow-auto max-h-56">
+              <li v-for="option in techSearchResults" :key="option.slug">
+                <button
+                  type="button"
+                  class="flex items-center w-full gap-2 px-3 py-2 text-sm text-left hover:bg-surface-raised"
+                  @mousedown.prevent="addTechSelection(option)"
+                >
+                  <img
+                    :src="option.iconUrl"
+                    :alt="option.label"
+                    loading="lazy"
+                    class="object-contain rounded size-5 shrink-0"
+                  />
+                  {{ option.label }}
+                </button>
+              </li>
+            </ul>
+            <p v-else class="px-3 py-2 text-xs text-content/50">{{ t("techStack.noMatches") }}</p>
+          </div>
         </div>
-        <p v-if="techStackRows.length === 0" class="text-sm text-content/50">
+
+        <p v-if="techStackSelections.length === 0" class="text-sm text-content/50">
           {{ t("techStack.empty") }}
         </p>
-        <div v-for="(row, index) in techStackRows" :key="index" class="flex items-start gap-3">
-          <AppInput v-model="row.key" :placeholder="t('techStack.namePlaceholder')" class="flex-1" />
-          <AppInput v-model="row.value" :placeholder="t('techStack.urlPlaceholder')" class="flex-1" />
-          <button
-            type="button"
-            class="p-2.5 mt-0.5 rounded-lg text-content/50 hover:bg-danger/10 hover:text-danger"
-            :aria-label="t('techStack.remove')"
-            @click="techStackRows.splice(index, 1)"
+        <div v-else class="flex flex-wrap gap-2">
+          <span
+            v-for="(tech, index) in techStackSelections"
+            :key="`${tech.slug}-${index}`"
+            class="inline-flex items-center gap-1.5 py-1 pl-1.5 pr-2 text-sm border rounded-full border-border bg-surface-raised text-content"
           >
-            <IconTrash2 class="size-4" />
-          </button>
+            <img :src="tech.iconUrl" :alt="tech.label" loading="lazy" class="object-contain rounded-full size-5 shrink-0" />
+            {{ tech.label }}
+            <button
+              type="button"
+              class="p-0.5 -mr-1 rounded-full text-content/50 hover:bg-danger/10 hover:text-danger"
+              :aria-label="t('techStack.remove')"
+              @click="removeTechSelection(index)"
+            >
+              <IconX class="size-3" />
+            </button>
+          </span>
         </div>
       </section>
 

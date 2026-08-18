@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { useProjectQuery } from "@/composables/queries/useProjects";
 import AppError from "@/components/shared/AppError.vue";
+import AppTechStackList from "@/components/shared/AppTechStackList.vue";
 import IconArrowLeft from "~icons/lucide/arrow-left";
 import IconExternalLink from "~icons/lucide/external-link";
 import IconCalendar from "~icons/lucide/calendar";
@@ -120,16 +121,7 @@ const scrollImageStrip = (dir: "next" | "prev") => {
                 {{ formatEnumText(type) }}
               </span>
             </div>
-            <div v-if="response.data.techStack" class="flex flex-wrap items-center gap-2 mt-2">
-              <span
-                v-for="(logoUrl, name) in response.data.techStack"
-                :key="name"
-                class="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium border rounded-md bg-surface border-border/50 text-content/70"
-              >
-                <img :src="logoUrl" :alt="String(name)" class="object-contain size-4" />
-                {{ formatEnumText(name) }}
-              </span>
-            </div>
+            <AppTechStackList :tech-stack="response.data.techStack" variant="text" class="mt-2" />
           </div>
         </div>
 

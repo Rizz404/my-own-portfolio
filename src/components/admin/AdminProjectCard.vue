@@ -7,6 +7,7 @@ import IconCheck from "~icons/lucide/check";
 import type Project from "@/types/project";
 import { formatDate } from "@/utils/dateUtil";
 import { useT } from "@/composables/useT";
+import AppTechStackList from "@/components/shared/AppTechStackList.vue";
 
 // * Namespace translation buat komponen ini, ikutin path file JSON-nya:
 // src/locales/<locale>/components/admin/AdminProjectCard.json
@@ -128,6 +129,8 @@ const statusBadgeClass = (status: Project["status"]) => {
     <p v-if="project.description" class="text-sm leading-relaxed text-content/60 line-clamp-2">
       {{ project.description }}
     </p>
+
+    <AppTechStackList :tech-stack="project.techStack" size="sm" />
 
     <div class="flex items-center gap-1.5 pt-3 mt-auto text-xs border-t border-border/50 text-content/50">
       <IconCalendar class="size-3.5" />
