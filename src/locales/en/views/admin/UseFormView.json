@@ -1,0 +1,43 @@
+{
+  "back": "Back to uses",
+  "createTitle": "New use",
+  "createSubtitle": "Add a new gear/software item to the portfolio.",
+  "editTitle": "Edit use",
+  "editSubtitle": "Update the item details.",
+  "loadErrorTitle": "Failed to load item",
+  "itemNameLabel": "Item name",
+  "categoryLabel": "Category",
+  "reasonsLabel": "Reasons",
+  "translations": {
+    "title": "Translations",
+    "en": "English",
+    "id": "Indonesian"
+  },
+  "links": {
+    "title": "Links",
+    "add": "Add link",
+    "empty": "No links added yet.",
+    "urlPlaceholder": "https://...",
+    "remove": "Remove link"
+  },
+  "media": {
+    "title": "Media"
+  },
+  "logo": {
+    "label": "Logo",
+    "choose": "Choose file",
+    "hint": "Leave empty to keep the current logo."
+  },
+  "pictures": {
+    "label": "Pictures",
+    "add": "Add pictures",
+    "remove": "Remove picture"
+  },
+  "cancel": "Cancel",
+  "save": "Save",
+  "saving": "Saving...",
+  "toast": {
+    "created": "Item created",
+    "updated": "Item updated"
+  }
+}

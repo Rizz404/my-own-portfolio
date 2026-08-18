@@ -1,0 +1,43 @@
+{
+  "title": "Perlengkapan",
+  "subtitle": "Kelola perlengkapan & software yang ditampilkan ke pengunjung.",
+  "addUse": "Tambah barang",
+  "searchPlaceholder": "Cari barang...",
+  "filters": {
+    "allCategories": "Semua kategori"
+  },
+  "sort": {
+    "createdAt": "Urutkan: Dibuat",
+    "updatedAt": "Urutkan: Diperbarui",
+    "itemName": "Urutkan: Nama",
+    "asc": "Naik (A-Z)",
+    "desc": "Turun (Z-A)"
+  },
+  "selectMode": "Pilih",
+  "selectAllOnPage": "Pilih semua di halaman ini",
+  "selectedCount": "{count} terpilih",
+  "deleteSelected": "Hapus yang terpilih",
+  "deleting": "Menghapus...",
+  "cancelSelection": "Batal",
+  "confirmDelete": "Hapus \"{name}\"? Tindakan ini tidak bisa dibatalkan.",
+  "confirmBulkDelete": "Hapus {count} barang terpilih? Tindakan ini tidak bisa dibatalkan.",
+  "toast": {
+    "deleted": "Barang berhasil dihapus",
+    "deleteFailed": "Gagal menghapus barang",
+    "bulkDeleted": "{count} barang berhasil dihapus",
+    "bulkDeleteFailed": "Gagal menghapus {count} barang"
+  },
+  "errorLoad": "Gagal memuat data barang",
+  "empty": {
+    "title": "Belum ada barang",
+    "subtitle": "Tambahkan barang/software pertamamu untuk melihatnya di sini."
+  },
+  "pagination": {
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "page": "Halaman",
+    "of": "dari",
+    "size": "Ukuran",
+    "total": "{count} total"
+  }
+}

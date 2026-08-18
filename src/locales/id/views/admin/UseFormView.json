@@ -1,0 +1,43 @@
+{
+  "back": "Kembali ke perlengkapan",
+  "createTitle": "Perlengkapan baru",
+  "createSubtitle": "Tambahkan barang/software baru ke portofolio.",
+  "editTitle": "Edit perlengkapan",
+  "editSubtitle": "Perbarui detail barang.",
+  "loadErrorTitle": "Gagal memuat data barang",
+  "itemNameLabel": "Nama barang",
+  "categoryLabel": "Kategori",
+  "reasonsLabel": "Alasan",
+  "translations": {
+    "title": "Terjemahan",
+    "en": "Inggris",
+    "id": "Indonesia"
+  },
+  "links": {
+    "title": "Tautan",
+    "add": "Tambah tautan",
+    "empty": "Belum ada tautan yang ditambahkan.",
+    "urlPlaceholder": "https://...",
+    "remove": "Hapus tautan"
+  },
+  "media": {
+    "title": "Media"
+  },
+  "logo": {
+    "label": "Logo",
+    "choose": "Pilih file",
+    "hint": "Biarkan kosong untuk tetap pakai logo saat ini."
+  },
+  "pictures": {
+    "label": "Gambar",
+    "add": "Tambah gambar",
+    "remove": "Hapus gambar"
+  },
+  "cancel": "Batal",
+  "save": "Simpan",
+  "saving": "Menyimpan...",
+  "toast": {
+    "created": "Barang berhasil dibuat",
+    "updated": "Barang berhasil diperbarui"
+  }
+}

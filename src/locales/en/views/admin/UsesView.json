@@ -1,0 +1,43 @@
+{
+  "title": "Uses",
+  "subtitle": "Manage the gear & software shown to visitors.",
+  "addUse": "Add item",
+  "searchPlaceholder": "Search items...",
+  "filters": {
+    "allCategories": "All categories"
+  },
+  "sort": {
+    "createdAt": "Sort: Created",
+    "updatedAt": "Sort: Updated",
+    "itemName": "Sort: Name",
+    "asc": "Ascending",
+    "desc": "Descending"
+  },
+  "selectMode": "Select",
+  "selectAllOnPage": "Select all on this page",
+  "selectedCount": "{count} selected",
+  "deleteSelected": "Delete selected",
+  "deleting": "Deleting...",
+  "cancelSelection": "Cancel",
+  "confirmDelete": "Delete \"{name}\"? This can't be undone.",
+  "confirmBulkDelete": "Delete {count} selected item(s)? This can't be undone.",
+  "toast": {
+    "deleted": "Item deleted",
+    "deleteFailed": "Failed to delete item",
+    "bulkDeleted": "{count} item(s) deleted",
+    "bulkDeleteFailed": "Failed to delete {count} item(s)"
+  },
+  "errorLoad": "Failed to load items",
+  "empty": {
+    "title": "No items yet",
+    "subtitle": "Add your first gear/software item to see it here."
+  },
+  "pagination": {
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "of": "of",
+    "size": "Size",
+    "total": "{count} total"
+  }
+}
