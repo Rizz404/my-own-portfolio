@@ -1,0 +1,33 @@
+{
+  "back": "Kembali ke pengalaman",
+  "createTitle": "Pengalaman baru",
+  "createSubtitle": "Tambahkan pengalaman kerja baru ke portofolio.",
+  "editTitle": "Edit pengalaman",
+  "editSubtitle": "Perbarui detail pengalaman kerja.",
+  "loadErrorTitle": "Gagal memuat data pengalaman",
+  "companyNameLabel": "Nama perusahaan",
+  "startDateLabel": "Tanggal mulai",
+  "endDateLabel": "Tanggal selesai",
+  "isCurrentLabel": "Saya masih bekerja di sini",
+  "translations": {
+    "title": "Terjemahan",
+    "en": "Inggris",
+    "id": "Indonesia"
+  },
+  "positionLabel": "Posisi",
+  "descriptionLabel": "Deskripsi",
+  "jobdesks": {
+    "title": "Job desk",
+    "add": "Tambah job desk",
+    "empty": "Belum ada job desk yang ditambahkan.",
+    "placeholder": "Jelaskan sebuah tanggung jawab...",
+    "remove": "Hapus job desk"
+  },
+  "cancel": "Batal",
+  "save": "Simpan",
+  "saving": "Menyimpan...",
+  "toast": {
+    "created": "Pengalaman berhasil dibuat",
+    "updated": "Pengalaman berhasil diperbarui"
+  }
+}

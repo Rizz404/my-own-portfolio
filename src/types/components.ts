@@ -22,7 +22,7 @@ interface AppFormFieldProps {
 }
 
 export interface AppInputProps extends AppFormFieldProps {
-  type?: "text" | "email" | "password" | "number" | "tel" | "url" | "search";
+  type?: "text" | "email" | "password" | "number" | "tel" | "url" | "search" | "date";
   placeholder?: string;
   autocomplete?: string;
 }

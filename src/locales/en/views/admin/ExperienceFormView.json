@@ -1,0 +1,33 @@
+{
+  "back": "Back to experiences",
+  "createTitle": "New experience",
+  "createSubtitle": "Add a new work experience to the portfolio.",
+  "editTitle": "Edit experience",
+  "editSubtitle": "Update the experience details.",
+  "loadErrorTitle": "Failed to load experience",
+  "companyNameLabel": "Company name",
+  "startDateLabel": "Start date",
+  "endDateLabel": "End date",
+  "isCurrentLabel": "I currently work here",
+  "translations": {
+    "title": "Translations",
+    "en": "English",
+    "id": "Indonesian"
+  },
+  "positionLabel": "Position",
+  "descriptionLabel": "Description",
+  "jobdesks": {
+    "title": "Job desks",
+    "add": "Add job desk",
+    "empty": "No job desks added yet.",
+    "placeholder": "Describe a responsibility...",
+    "remove": "Remove job desk"
+  },
+  "cancel": "Cancel",
+  "save": "Save",
+  "saving": "Saving...",
+  "toast": {
+    "created": "Experience created",
+    "updated": "Experience updated"
+  }
+}

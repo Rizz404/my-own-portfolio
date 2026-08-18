@@ -1,0 +1,45 @@
+{
+  "title": "Pengalaman",
+  "subtitle": "Kelola pengalaman kerja yang ditampilkan ke pengunjung.",
+  "addExperience": "Tambah pengalaman",
+  "searchPlaceholder": "Cari pengalaman...",
+  "filters": {
+    "all": "Semua",
+    "current": "Masih berjalan",
+    "past": "Sudah selesai"
+  },
+  "sort": {
+    "startDate": "Urutkan: Tanggal mulai",
+    "createdAt": "Urutkan: Dibuat",
+    "updatedAt": "Urutkan: Diperbarui",
+    "asc": "Naik (A-Z)",
+    "desc": "Turun (Z-A)"
+  },
+  "selectMode": "Pilih",
+  "selectAllOnPage": "Pilih semua di halaman ini",
+  "selectedCount": "{count} terpilih",
+  "deleteSelected": "Hapus yang terpilih",
+  "deleting": "Menghapus...",
+  "cancelSelection": "Batal",
+  "confirmDelete": "Hapus pengalaman sebagai \"{name}\"? Tindakan ini tidak bisa dibatalkan.",
+  "confirmBulkDelete": "Hapus {count} pengalaman terpilih? Tindakan ini tidak bisa dibatalkan.",
+  "toast": {
+    "deleted": "Pengalaman berhasil dihapus",
+    "deleteFailed": "Gagal menghapus pengalaman",
+    "bulkDeleted": "{count} pengalaman berhasil dihapus",
+    "bulkDeleteFailed": "Gagal menghapus {count} pengalaman"
+  },
+  "errorLoad": "Gagal memuat data pengalaman",
+  "empty": {
+    "title": "Belum ada pengalaman",
+    "subtitle": "Tambahkan pengalaman kerja pertamamu untuk melihatnya di sini."
+  },
+  "pagination": {
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "page": "Halaman",
+    "of": "dari",
+    "size": "Ukuran",
+    "total": "{count} total"
+  }
+}

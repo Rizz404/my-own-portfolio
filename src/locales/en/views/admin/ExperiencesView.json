@@ -1,0 +1,45 @@
+{
+  "title": "Experiences",
+  "subtitle": "Manage the work experiences shown to visitors.",
+  "addExperience": "Add experience",
+  "searchPlaceholder": "Search experiences...",
+  "filters": {
+    "all": "All",
+    "current": "Current",
+    "past": "Past"
+  },
+  "sort": {
+    "startDate": "Sort: Start date",
+    "createdAt": "Sort: Created",
+    "updatedAt": "Sort: Updated",
+    "asc": "Ascending",
+    "desc": "Descending"
+  },
+  "selectMode": "Select",
+  "selectAllOnPage": "Select all on this page",
+  "selectedCount": "{count} selected",
+  "deleteSelected": "Delete selected",
+  "deleting": "Deleting...",
+  "cancelSelection": "Cancel",
+  "confirmDelete": "Delete the experience as \"{name}\"? This can't be undone.",
+  "confirmBulkDelete": "Delete {count} selected experience(s)? This can't be undone.",
+  "toast": {
+    "deleted": "Experience deleted",
+    "deleteFailed": "Failed to delete experience",
+    "bulkDeleted": "{count} experience(s) deleted",
+    "bulkDeleteFailed": "Failed to delete {count} experience(s)"
+  },
+  "errorLoad": "Failed to load experiences",
+  "empty": {
+    "title": "No experiences yet",
+    "subtitle": "Add your first work experience to see it here."
+  },
+  "pagination": {
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "of": "of",
+    "size": "Size",
+    "total": "{count} total"
+  }
+}
