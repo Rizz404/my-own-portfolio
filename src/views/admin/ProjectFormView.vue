@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import { isAxiosError } from "axios";
 import IconArrowLeft from "~icons/lucide/arrow-left";
@@ -137,10 +137,36 @@ const techSearchResults = computed(() => {
   return searchTechIcons(techIconsData.value, techSearchQuery.value, excludeSlugs);
 });
 
+// * Index suggestion yang lagi di-highlight, buat navigasi keyboard (↑/↓ + Enter) di
+// dropdown pencarian tech stack - biar admin gak wajib gerakin mouse tiap milih.
+// Direset ke 0 tiap query berubah biar highlight-nya selalu balik ke hasil teratas.
+const techActiveIndex = ref(0);
+watch(techSearchQuery, () => {
+  techActiveIndex.value = 0;
+});
+
+function moveTechActiveIndex(delta: number) {
+  if (!techSearchResults.value.length) return;
+  const maxIndex = techSearchResults.value.length - 1;
+  techActiveIndex.value = Math.min(maxIndex, Math.max(0, techActiveIndex.value + delta));
+}
+
 function addTechSelection(option: TechIconOption) {
   techStackSelections.value.push(option);
+  // * Sengaja gak nutup isTechDropdownOpen di sini - input tetap focused abis milih
+  // (lihat @mousedown.prevent di tombol suggestion), jadi @focus gak bakal nembak lagi
+  // buat re-open dropdown-nya. Ngosongin query aja udah cukup nutup dropdown (lihat
+  // v-if di template: butuh techSearchQuery.trim()), sambil isTechDropdownOpen tetap
+  // true biar begitu user ngetik lagi, dropdown langsung muncul lagi tanpa perlu blur+focus dulu.
   techSearchQuery.value = "";
-  isTechDropdownOpen.value = false;
+  techActiveIndex.value = 0;
+}
+
+// * Dipanggil dari @keydown.enter di search input - milih suggestion yang lagi di-highlight
+// (techActiveIndex) biar admin bisa navigasi ↑/↓ lalu Enter tanpa nyentuh mouse sama sekali.
+function selectActiveTechOption() {
+  const option = techSearchResults.value[techActiveIndex.value];
+  if (option) addTechSelection(option);
 }
 
 function removeTechSelection(index: number) {
@@ -403,8 +429,14 @@ const onSubmit = (event?: Event) => {
             v-model="techSearchQuery"
             :placeholder="t('techStack.searchPlaceholder')"
             autocomplete="off"
+            role="combobox"
+            :aria-expanded="isTechDropdownOpen"
             @focus="isTechDropdownOpen = true"
             @blur="isTechDropdownOpen = false"
+            @keydown.down.prevent="moveTechActiveIndex(1)"
+            @keydown.up.prevent="moveTechActiveIndex(-1)"
+            @keydown.enter.prevent="selectActiveTechOption"
+            @keydown.esc="isTechDropdownOpen = false"
           />
           <div
             v-if="isTechDropdownOpen && (isTechIconsLoading || techSearchQuery.trim())"
@@ -413,12 +445,14 @@ const onSubmit = (event?: Event) => {
             <p v-if="isTechIconsLoading" class="px-3 py-2 text-xs text-content/50">
               {{ t("techStack.searching") }}
             </p>
-            <ul v-else-if="techSearchResults.length" class="overflow-auto max-h-56">
-              <li v-for="option in techSearchResults" :key="option.slug">
+            <ul v-else-if="techSearchResults.length" role="listbox" class="overflow-auto max-h-56">
+              <li v-for="(option, index) in techSearchResults" :key="option.slug" role="option" :aria-selected="index === techActiveIndex">
                 <button
                   type="button"
-                  class="flex items-center w-full gap-2 px-3 py-2 text-sm text-left hover:bg-surface-raised"
+                  class="flex items-center w-full gap-2 px-3 py-2 text-sm text-left"
+                  :class="index === techActiveIndex ? 'bg-surface-raised' : 'hover:bg-surface-raised'"
                   @mousedown.prevent="addTechSelection(option)"
+                  @mouseenter="techActiveIndex = index"
                 >
                   <img
                     :src="option.iconUrl"
