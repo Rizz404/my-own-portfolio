@@ -57,3 +57,41 @@ export function revealUp(delay = 0): FadeVariants {
     visibleOnce: { opacity: 1, y: 0, transition: { duration: 0.7, delay, ease: "easeOut" } },
   };
 }
+
+/**
+ * Plain fade-in, gak ada gerakan naik - buat backdrop overlay (mis. AppModal)
+ * yang harusnya cuma muncul di tempat, bukan "rise up" kayak fadeUp().
+ */
+export function fadeIn(delay = 0): FadeVariants {
+  if (prefersReducedMotion.value) {
+    return {
+      initial: { opacity: 1, y: 0 },
+      enter: { opacity: 1, y: 0, transition: { duration: 0 } },
+    };
+  }
+
+  return {
+    initial: { opacity: 0, y: 0 },
+    enter: { opacity: 1, y: 0, transition: { duration: 0.2, delay, ease: "easeOut" } },
+  };
+}
+
+/**
+ * Fade + scale-in - buat panel overlay (mis. isi AppModal) yang mount lewat
+ * v-if. Gak ada varian exit tersendiri: ngikutin konvensi motion preset lain
+ * di file ini (fadeUp/revealUp) yang cuma nge-animasi entrance - pas elemen
+ * dilepas lewat v-if, ilangnya instan tanpa animasi keluar.
+ */
+export function scaleIn(delay = 0): MotionVariants<"initial" | "enter"> {
+  if (prefersReducedMotion.value) {
+    return {
+      initial: { opacity: 1, scale: 1, y: 0 },
+      enter: { opacity: 1, scale: 1, y: 0, transition: { duration: 0 } },
+    };
+  }
+
+  return {
+    initial: { opacity: 0, scale: 0.95, y: 8 },
+    enter: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.2, delay, ease: "easeOut" } },
+  };
+}
