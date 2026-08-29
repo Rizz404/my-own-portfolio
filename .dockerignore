@@ -1,0 +1,17 @@
+# dependency & build artifact lokal, gak perlu ikut ke build context
+node_modules
+dist
+
+# git & editor stuff
+.git
+.gitignore
+.gitattributes
+.vscode
+
+# secrets — jangan sampai ke-bake ke image
+.env
+.env.*
+
+# cache & misc yang gak relevan buat build
+.eslintcache
+README.md
