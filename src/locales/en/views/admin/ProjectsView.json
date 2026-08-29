@@ -19,8 +19,15 @@
   "deleteSelected": "Delete selected",
   "deleting": "Deleting...",
   "cancelSelection": "Cancel",
+  "confirmDeleteTitle": "Delete project?",
   "confirmDelete": "Delete \"{name}\"? This can't be undone.",
+  "confirmBulkDeleteTitle": "Delete selected projects?",
   "confirmBulkDelete": "Delete {count} selected project(s)? This can't be undone.",
+  "deleteAction": "Delete",
+  "deleteProgress": {
+    "single": "Deleting project…",
+    "bulk": "Deleting {done} of {total} projects…"
+  },
   "toast": {
     "deleted": "Project deleted",
     "deleteFailed": "Failed to delete project",

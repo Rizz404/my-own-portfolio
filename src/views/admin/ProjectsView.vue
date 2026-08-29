@@ -7,6 +7,7 @@ import IconTrash2 from "~icons/lucide/trash-2";
 import IconListChecks from "~icons/lucide/list-checks";
 import IconSearch from "~icons/lucide/search";
 import IconFolderKanban from "~icons/lucide/folder-kanban";
+import IconLoader from "~icons/lucide/loader-2";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppSelect from "@/components/shared/AppSelect.vue";
 import AppCheckbox from "@/components/shared/AppCheckbox.vue";
@@ -20,12 +21,14 @@ import type { Project, ProjectQueryParams } from "@/types/project";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
 import { useToast } from "@/composables/useToast";
+import { useConfirm } from "@/composables/useConfirm";
 import { useQuerySync } from "@/composables/useQuerySync";
 
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
 // src/locales/<locale>/views/admin/ProjectsView.json
 const t = useT("views.admin.ProjectsView");
 const toast = useToast();
+const { confirm } = useConfirm();
 
 // * `status` sengaja dikasih key eksplisit (`undefined`) biar ke-detect sama
 // useQuerySync() sebagai field yang ikut di-sync ke URL - liat komentar di
@@ -147,6 +150,20 @@ const isSelecting = ref(false);
 const selectedIds = ref<Set<string>>(new Set());
 const isBulkDeleting = ref(false);
 
+// * Id project yang lagi diproses hapus SAAT INI - dipake buat (1) nge-guard
+// biar handleDelete/handleBulkDelete gak bisa di-trigger ulang buat project
+// yang sama selagi masih diproses (klik ganda), (2) disable tombol delete
+// per-card di AdminProjectCard.vue (deletingIds.has(project.id)), dan (3)
+// nentuin kapan floating progress indicator di bawah nongol. Diisi baik dari
+// handleDelete (single) maupun handleBulkDelete (banyak sekaligus).
+const deletingIds = ref<Set<string>>(new Set());
+const isDeletingAny = computed(() => deletingIds.value.size > 0);
+
+// * Progress khusus bulk delete (done/total) - dipake floating indicator buat
+// nampilin "menghapus X dari Y" pas bulk, beda pesan sama single delete.
+// total > 0 nandain lagi ada proses bulk delete yang jalan.
+const bulkProgress = ref({ done: 0, total: 0 });
+
 const isAllSelectedOnPage = computed(() => {
   const items = projectResponse.value?.data ?? [];
   return items.length > 0 && items.every((project) => selectedIds.value.has(project.id));
@@ -172,25 +189,63 @@ function exitSelectionMode() {
 }
 
 async function handleDelete(project: Project) {
-  if (!window.confirm(t("confirmDelete", { name: project.name }))) return;
+  // * Guard: kalau project ini udah lagi diproses hapus (single ATAU lagi
+  // ikut ke-include di bulk delete yang jalan), abaikan klik berikutnya.
+  // Tombol delete di card-nya sendiri juga udah di-disable (lihat template)
+  // - ini lapisan kedua jaga-jaga (mis. Enter key event / race klik cepat).
+  if (deletingIds.value.has(project.id)) return;
 
+  const confirmed = await confirm({
+    title: t("confirmDeleteTitle"),
+    message: t("confirmDelete", { name: project.name }),
+    confirmLabel: t("deleteAction"),
+    cancelLabel: t("cancelSelection"),
+    variant: "danger",
+  });
+  if (!confirmed) return;
+
+  deletingIds.value.add(project.id);
   try {
     await deleteMutation.mutateAsync(project.id);
     selectedIds.value.delete(project.id);
     toast.success(t("toast.deleted"));
   } catch {
     toast.error(t("toast.deleteFailed"));
+  } finally {
+    deletingIds.value.delete(project.id);
   }
 }
 
 async function handleBulkDelete() {
+  // * Guard: cegah handleBulkDelete ke-trigger dobel (mis. klik cepat
+  // berulang) selagi batch sebelumnya masih diproses.
+  if (isBulkDeleting.value) return;
+
   const ids = Array.from(selectedIds.value);
   if (ids.length === 0) return;
-  if (!window.confirm(t("confirmBulkDelete", { count: ids.length }))) return;
+
+  const confirmed = await confirm({
+    title: t("confirmBulkDeleteTitle"),
+    message: t("confirmBulkDelete", { count: ids.length }),
+    confirmLabel: t("deleteSelected"),
+    cancelLabel: t("cancelSelection"),
+    variant: "danger",
+  });
+  if (!confirmed) return;
 
   isBulkDeleting.value = true;
+  ids.forEach((id) => deletingIds.value.add(id));
+  bulkProgress.value = { done: 0, total: ids.length };
+
   try {
-    const results = await Promise.allSettled(ids.map((id) => deleteMutation.mutateAsync(id)));
+    const results = await Promise.allSettled(
+      ids.map((id) =>
+        deleteMutation.mutateAsync(id).finally(() => {
+          bulkProgress.value.done++;
+          deletingIds.value.delete(id);
+        }),
+      ),
+    );
     const failedCount = results.filter((result) => result.status === "rejected").length;
 
     results.forEach((result, index) => {
@@ -204,6 +259,10 @@ async function handleBulkDelete() {
     }
   } finally {
     isBulkDeleting.value = false;
+    // * Safety net - normalnya semua id udah ke-hapus dari deletingIds lewat
+    // .finally() di atas satu-satu, ini cuma jaga-jaga kalau ada yang lolos.
+    ids.forEach((id) => deletingIds.value.delete(id));
+    bulkProgress.value = { done: 0, total: 0 };
   }
 }
 </script>
@@ -301,7 +360,7 @@ async function handleBulkDelete() {
         :key="project.id"
         v-motion="fadeUp(staggerDelay(index))"
         :project="project"
-        :deleting="deleteMutation.isPending.value"
+        :deleting="deletingIds.has(project.id)"
         :selectable="isSelecting"
         :selected="selectedIds.has(project.id)"
         @delete="handleDelete"
@@ -362,6 +421,35 @@ async function handleBulkDelete() {
         {{ t("pagination.total", { count: projectResponse?.pagination.total ?? 0 }) }}
       </span>
     </div>
+
+    <!-- * Floating progress indicator - nongol selama ada delete (single ATAU
+    bulk) yang lagi diproses, biar user tau prosesnya jalan & gak spam klik
+    delete. Teleport ke body biar posisinya fixed relatif ke viewport, bukan
+    ke parent yang mungkin punya overflow/transform.
+    Wrapper luar cuma buat centering horizontal (-translate-x-1/2) - dipisah
+    dari elemen yang di-v-motion soalnya @vueuse/motion nulis transform-nya
+    sendiri lewat inline style pas animasi jalan, yang bakal nimpa class
+    Tailwind translate-x kalau dipasang di elemen yang sama. -->
+    <Teleport to="body">
+      <div class="fixed z-40 bottom-6 left-1/2 -translate-x-1/2">
+        <div
+          v-if="isDeletingAny"
+          v-motion="fadeUp()"
+          class="flex items-center gap-3 px-4 py-3 border shadow-lg rounded-xl border-border/60 bg-surface text-content"
+          role="status"
+          aria-live="polite"
+        >
+          <IconLoader class="shrink-0 size-4 animate-spin text-primary" />
+          <span class="text-sm font-medium whitespace-nowrap">
+            {{
+              bulkProgress.total > 0
+                ? t("deleteProgress.bulk", { done: bulkProgress.done, total: bulkProgress.total })
+                : t("deleteProgress.single")
+            }}
+          </span>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 

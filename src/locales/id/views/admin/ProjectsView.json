@@ -19,8 +19,15 @@
   "deleteSelected": "Hapus yang terpilih",
   "deleting": "Menghapus...",
   "cancelSelection": "Batal",
+  "confirmDeleteTitle": "Hapus proyek?",
   "confirmDelete": "Hapus \"{name}\"? Tindakan ini tidak bisa dibatalkan.",
+  "confirmBulkDeleteTitle": "Hapus proyek terpilih?",
   "confirmBulkDelete": "Hapus {count} proyek terpilih? Tindakan ini tidak bisa dibatalkan.",
+  "deleteAction": "Hapus",
+  "deleteProgress": {
+    "single": "Menghapus proyek...",
+    "bulk": "Menghapus {done} dari {total} proyek..."
+  },
   "toast": {
     "deleted": "Proyek berhasil dihapus",
     "deleteFailed": "Gagal menghapus proyek",

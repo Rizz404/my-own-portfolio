@@ -2,6 +2,7 @@
 import { useRouter } from "vue-router";
 import IconFolderKanban from "~icons/lucide/folder-kanban";
 import IconTrash2 from "~icons/lucide/trash-2";
+import IconLoader from "~icons/lucide/loader-2";
 import IconCalendar from "~icons/lucide/calendar";
 import IconCheck from "~icons/lucide/check";
 import type Project from "@/types/project";
@@ -15,6 +16,10 @@ const t = useT("components.admin.AdminProjectCard");
 
 const props = defineProps<{
   project: Project;
+  // * True kalau project INI SPESIFIK lagi diproses hapus (bukan flag global) -
+  // dikontrol dari ProjectsView.vue lewat `deletingIds`, biar tombol delete
+  // disabled & icon-nya ganti jadi spinner cuma buat card yang bersangkutan,
+  // gak ngeblok tombol delete di card lain.
   deleting?: boolean;
   selected?: boolean;
   // * Mode seleksi di-toggle dari ProjectsView.vue. Gak ada checkbox terpisah -
@@ -101,12 +106,13 @@ const statusBadgeClass = (status: Project["status"]) => {
       <button
         v-if="!selectable"
         type="button"
-        class="p-1.5 rounded-lg shrink-0 text-content/50 hover:bg-danger/10 hover:text-danger disabled:opacity-50"
+        class="p-1.5 rounded-lg shrink-0 text-content/50 hover:bg-danger/10 hover:text-danger disabled:opacity-50 disabled:cursor-not-allowed"
         :disabled="deleting"
         :aria-label="t('delete')"
         @click.stop="emit('delete', project)"
       >
-        <IconTrash2 class="size-4" />
+        <IconLoader v-if="deleting" class="size-4 animate-spin" />
+        <IconTrash2 v-else class="size-4" />
       </button>
     </div>
 
