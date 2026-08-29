@@ -5,6 +5,7 @@ import UserLayout from "@/components/layout/UserLayout.vue";
 import AdminLayout from "@/components/layout/AdminLayout.vue";
 import BlankLayout from "@/components/layout/BlankLayout.vue";
 import AppToastContainer from "@/components/shared/AppToastContainer.vue";
+import AppConfirmDialog from "@/components/shared/AppConfirmDialog.vue";
 
 const route = useRoute();
 const isAdminLayout = computed(() => route.meta.layout === "admin");
@@ -19,6 +20,9 @@ const isBlankLayout = computed(() => route.meta.layout === "blank");
 
   <!-- * Global, gak terikat layout - state toast-nya dikelola useToast() -->
   <AppToastContainer />
+
+  <!-- * Global juga - pengganti window.confirm(), state-nya dikelola useConfirm() -->
+  <AppConfirmDialog />
 </template>
 
 <style scoped></style>

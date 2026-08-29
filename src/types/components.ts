@@ -70,3 +70,18 @@ export interface AppAlertProps {
 export interface AppToastContainerProps {
   position?: "top-right" | "top-center" | "bottom-right" | "bottom-center";
 }
+
+// * Modal generik - lihat AppModal.vue. `closeLabel` dikasih default bahasa
+// Inggris biar aman dipake tanpa i18n, tapi sebaiknya di-pass dari useT()
+// pemanggil (pola sama kayak AppPasswordInputProps di atas).
+export interface AppModalProps {
+  modelValue: boolean;
+  title?: string;
+  size?: "sm" | "md" | "lg";
+  // * Pas true, backdrop click & Esc jadi no-op dan tombol close disembunyiin -
+  // dipake buat modal yang lagi ada proses kritis jalan (submit, delete, dst).
+  persistent?: boolean;
+  closeOnBackdrop?: boolean;
+  closeLabel?: string;
+  class?: string;
+}
