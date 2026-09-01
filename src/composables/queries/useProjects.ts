@@ -108,9 +108,17 @@ export const useDeleteProjectMutation = () => {
     mutationFn: (id: string) => {
       return projectService.deleteProject(id);
     },
+    // * Sengaja di-`return` (bukan fire-and-forget) - TanStack Query nunggu promise ini
+    // kelar sebelum mutateAsync() resolve, jadi caller (mis. ProjectsView.vue) baru
+    // nganggep "delete selesai" pas list query BENERAN udah ke-refetch, bukan pas
+    // invalidateQueries() cuma di-trigger. Tanpa ini, UI yang gantungin deleting-state ke
+    // mutateAsync() (buat nyembunyiin spinner/disable tombol) bakal nyembunyiin loading-nya
+    // duluan sebelum grid sempet re-render tanpa item yang baru kehapus.
     onSuccess: (_data, id) => {
-      queryClient.invalidateQueries({ queryKey: projectKeys.detail(id) });
-      queryClient.invalidateQueries({ queryKey: projectKeys.lists() });
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: projectKeys.detail(id) }),
+        queryClient.invalidateQueries({ queryKey: projectKeys.lists() }),
+      ]);
     },
   });
 };

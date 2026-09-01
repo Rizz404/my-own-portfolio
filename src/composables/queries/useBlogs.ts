@@ -106,9 +106,13 @@ export const useDeleteBlogMutation = () => {
     mutationFn: (id: string) => {
       return blogService.deleteBlog(id);
     },
+    // * Sengaja di-`return` (bukan fire-and-forget) - lihat komentar sama di
+    // useDeleteProjectMutation() (useProjects.ts).
     onSuccess: (_data, id) => {
-      queryClient.invalidateQueries({ queryKey: blogKeys.detail(id) });
-      queryClient.invalidateQueries({ queryKey: blogKeys.lists() });
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: blogKeys.detail(id) }),
+        queryClient.invalidateQueries({ queryKey: blogKeys.lists() }),
+      ]);
     },
   });
 };

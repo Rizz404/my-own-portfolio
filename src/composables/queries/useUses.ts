@@ -106,9 +106,13 @@ export const useDeleteUseMutation = () => {
     mutationFn: (id: string) => {
       return useService.deleteUse(id);
     },
+    // * Sengaja di-`return` (bukan fire-and-forget) - lihat komentar sama di
+    // useDeleteProjectMutation() (useProjects.ts).
     onSuccess: (_data, id) => {
-      queryClient.invalidateQueries({ queryKey: useKeys.detail(id) });
-      queryClient.invalidateQueries({ queryKey: useKeys.lists() });
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: useKeys.detail(id) }),
+        queryClient.invalidateQueries({ queryKey: useKeys.lists() }),
+      ]);
     },
   });
 };

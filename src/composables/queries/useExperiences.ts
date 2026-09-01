@@ -76,9 +76,13 @@ export const useDeleteExperienceMutation = () => {
     mutationFn: (id: string) => {
       return experienceService.deleteExperience(id);
     },
+    // * Sengaja di-`return` (bukan fire-and-forget) - lihat komentar sama di
+    // useDeleteProjectMutation() (useProjects.ts).
     onSuccess: (_data, id) => {
-      queryClient.invalidateQueries({ queryKey: experienceKeys.detail(id) });
-      queryClient.invalidateQueries({ queryKey: experienceKeys.lists() });
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: experienceKeys.detail(id) }),
+        queryClient.invalidateQueries({ queryKey: experienceKeys.lists() }),
+      ]);
     },
   });
 };
