@@ -2,6 +2,7 @@
 import { useRouter } from "vue-router";
 import IconSparkles from "~icons/lucide/sparkles";
 import IconTrash2 from "~icons/lucide/trash-2";
+import IconLoader from "~icons/lucide/loader-2";
 import IconCalendar from "~icons/lucide/calendar";
 import IconCheck from "~icons/lucide/check";
 import type Skill from "@/types/skill";
@@ -47,7 +48,10 @@ function formatLabel(value: string | number) {
 <template>
   <div
     class="flex flex-col gap-3 p-4 transition-all border cursor-pointer rounded-2xl border-border/60 bg-surface hover:border-primary/40 hover:-translate-y-0.5 hover:shadow-md"
-    :class="selected ? 'border-primary/60 ring-1 ring-primary/30' : ''"
+    :class="[
+      selected ? 'border-primary/60 ring-1 ring-primary/30' : '',
+      deleting ? 'opacity-50 pointer-events-none' : '',
+    ]"
     role="button"
     :aria-label="selectable ? (selected ? t('deselect') : t('select')) : skill.name"
     :aria-pressed="selectable ? selected : undefined"
@@ -88,7 +92,8 @@ function formatLabel(value: string | number) {
         :aria-label="t('delete')"
         @click.stop="emit('delete', skill)"
       >
-        <IconTrash2 class="size-4" />
+        <IconLoader v-if="deleting" class="size-4 animate-spin" />
+        <IconTrash2 v-else class="size-4" />
       </button>
     </div>
 
