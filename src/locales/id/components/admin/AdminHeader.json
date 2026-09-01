@@ -1,5 +1,11 @@
 {
   "title": "Panel Admin",
   "openSidebar": "Buka sidebar",
-  "toggleTheme": "Ganti tema"
+  "toggleTheme": "Ganti tema",
+  "languageSwitcher": {
+    "ariaLabel": "Ganti bahasa",
+    "system": "Sistem",
+    "english": "Inggris",
+    "indonesian": "Indonesia"
+  }
 }

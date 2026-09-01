@@ -54,11 +54,24 @@ axiosClient.interceptors.request.use(
   },
 );
 
+// * Sama kayak currentAcceptLanguage di atas: axiosClient gak boleh import authStores/router
+// langsung (bakal jadi circular & nyampur layer HTTP sama state management), jadi 401 handler-nya
+// didaftarkan dari luar (lihat main.ts) lewat setUnauthorizedHandler().
+let unauthorizedHandler: (() => void) | undefined;
+
+export function setUnauthorizedHandler(handler: () => void) {
+  unauthorizedHandler = handler;
+}
+
 axiosClient.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      unauthorizedHandler?.();
+    }
+
     return Promise.reject(error);
   },
 );

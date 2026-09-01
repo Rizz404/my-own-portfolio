@@ -1,5 +1,11 @@
 {
   "title": "Admin Panel",
   "openSidebar": "Open sidebar",
-  "toggleTheme": "Toggle theme"
+  "toggleTheme": "Toggle theme",
+  "languageSwitcher": {
+    "ariaLabel": "Change language",
+    "system": "System",
+    "english": "English",
+    "indonesian": "Indonesian"
+  }
 }

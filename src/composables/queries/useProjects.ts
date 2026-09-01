@@ -129,7 +129,7 @@ export const useDeleteProjectMutation = () => {
       return projectService.deleteProject(id);
     },
     // * Sengaja di-`return` (bukan fire-and-forget) - TanStack Query nunggu promise ini
-    // kelar sebelum mutateAsync() resolve, jadi caller (mis. ProjectsView.vue) baru
+    // kelar sebelum mutateAsync() resolve, jadi caller (mis. ProjectListView.vue) baru
     // nganggep "delete selesai" pas list query BENERAN udah ke-refetch, bukan pas
     // invalidateQueries() cuma di-trigger. Tanpa ini, UI yang gantungin deleting-state ke
     // mutateAsync() (buat nyembunyiin spinner/disable tombol) bakal nyembunyiin loading-nya
@@ -138,9 +138,9 @@ export const useDeleteProjectMutation = () => {
     // * `refetchType: "all"` - defaultnya invalidateQueries() cuma REFETCH query yang lagi
     // "active" (ada observer/komponen yang mount & pake queryKey itu SAAT INI). Query yang
     // lagi "inactive" (mis. list query pas kita masih di FormView, belum balik ke
-    // ProjectsView) cuma ditandain stale TANPA beneran di-refetch - baru kefetch ulang pas
+    // ProjectListView) cuma ditandain stale TANPA beneran di-refetch - baru kefetch ulang pas
     // komponennya mount lagi nanti. Efeknya: promise di atas resolve INSTAN buat query yang
-    // inactive (gak ada yang beneran ditunggu), terus pas ProjectsView mount balik, dia
+    // inactive (gak ada yang beneran ditunggu), terus pas ProjectListView mount balik, dia
     // sempet nampilin data lama dari cache dulu (isLoading udah false karena ada cache),
     // baru diam-diam refetch di background & tiba-tiba ganti - persis "data lama dulu, abis
     // itu keedit/kehapus/muncul tanpa loading" yang dikeluh user. `refetchType: "all"`

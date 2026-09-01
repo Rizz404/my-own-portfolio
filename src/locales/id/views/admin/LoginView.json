@@ -9,5 +9,6 @@
   "showPassword": "Tampilkan kata sandi",
   "hidePassword": "Sembunyikan kata sandi",
   "submit": "Masuk",
-  "submitting": "Sedang masuk..."
+  "submitting": "Sedang masuk...",
+  "accessDenied": "Akun ini tidak memiliki akses admin."
 }

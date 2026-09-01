@@ -9,5 +9,6 @@
   "showPassword": "Show password",
   "hidePassword": "Hide password",
   "submit": "Sign in",
-  "submitting": "Signing in..."
+  "submitting": "Signing in...",
+  "accessDenied": "This account doesn't have admin access."
 }
