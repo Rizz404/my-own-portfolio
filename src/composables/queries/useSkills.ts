@@ -30,8 +30,9 @@ export const useSkillMutation = () => {
     mutationFn: (newSkillData: SkillRequest) => {
       return skillService.createSkill(newSkillData);
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteSkillMutation().
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: useKeys.lists() });
+      return queryClient.invalidateQueries({ queryKey: useKeys.lists(), refetchType: "all" });
     },
   });
 };
@@ -43,8 +44,9 @@ export const useSkillMultipartMutation = () => {
     mutationFn: (newSkillData: SkillMultipartRequest) => {
       return skillService.createSkillMultipart(newSkillData);
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteSkillMutation().
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: useKeys.lists() });
+      return queryClient.invalidateQueries({ queryKey: useKeys.lists(), refetchType: "all" });
     },
   });
 };
@@ -78,9 +80,15 @@ export const useSkillUpdateMutation = () => {
     mutationFn: ({ id, data }: { id: string; data: SkillRequest }) => {
       return skillService.updateSkill({ id, data });
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteSkillMutation().
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: useKeys.detail(variables.id) });
-      queryClient.invalidateQueries({ queryKey: useKeys.lists() });
+      return Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: useKeys.detail(variables.id),
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({ queryKey: useKeys.lists(), refetchType: "all" }),
+      ]);
     },
   });
 };
@@ -92,9 +100,15 @@ export const useSkillUpdateMultipartMutation = () => {
     mutationFn: (data: UpdateSkillMultipartRequest) => {
       return skillService.updateSkillMultipart(data);
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteSkillMutation().
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: useKeys.detail(variables.id) });
-      queryClient.invalidateQueries({ queryKey: useKeys.lists() });
+      return Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: useKeys.detail(variables.id),
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({ queryKey: useKeys.lists(), refetchType: "all" }),
+      ]);
     },
   });
 };
@@ -106,12 +120,12 @@ export const useDeleteSkillMutation = () => {
     mutationFn: (id: string) => {
       return skillService.deleteSkill(id);
     },
-    // * Sengaja di-`return` (bukan fire-and-forget) - lihat komentar sama di
-    // useDeleteProjectMutation() (useProjects.ts).
+    // * Sengaja di-`return` (bukan fire-and-forget), dan `refetchType: "all"` - lihat
+    // komentar panjang di useDeleteProjectMutation() (useProjects.ts).
     onSuccess: (_data, id) => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: useKeys.detail(id) }),
-        queryClient.invalidateQueries({ queryKey: useKeys.lists() }),
+        queryClient.invalidateQueries({ queryKey: useKeys.detail(id), refetchType: "all" }),
+        queryClient.invalidateQueries({ queryKey: useKeys.lists(), refetchType: "all" }),
       ]);
     },
   });

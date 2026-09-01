@@ -30,8 +30,9 @@ export const useUserMutation = () => {
     mutationFn: (newUserData: UserRequest) => {
       return userService.createUser(newUserData);
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteUserMutation().
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: useKeys.lists() });
+      return queryClient.invalidateQueries({ queryKey: useKeys.lists(), refetchType: "all" });
     },
   });
 };
@@ -43,8 +44,9 @@ export const useUserMultipartMutation = () => {
     mutationFn: (newUserData: UserMultipartRequest) => {
       return userService.createUserMultipart(newUserData);
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteUserMutation().
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: useKeys.lists() });
+      return queryClient.invalidateQueries({ queryKey: useKeys.lists(), refetchType: "all" });
     },
   });
 };
@@ -78,9 +80,15 @@ export const useUserUpdateMutation = () => {
     mutationFn: ({ id, data }: { id: string; data: UserRequest }) => {
       return userService.updateUser({ id, data });
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteUserMutation().
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: useKeys.detail(variables.id) });
-      queryClient.invalidateQueries({ queryKey: useKeys.lists() });
+      return Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: useKeys.detail(variables.id),
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({ queryKey: useKeys.lists(), refetchType: "all" }),
+      ]);
     },
   });
 };
@@ -92,9 +100,15 @@ export const useUserUpdateMultipartMutation = () => {
     mutationFn: (data: UpdateUserMultipartRequest) => {
       return userService.updateUserMultipart(data);
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteUserMutation().
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: useKeys.detail(variables.id) });
-      queryClient.invalidateQueries({ queryKey: useKeys.lists() });
+      return Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: useKeys.detail(variables.id),
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({ queryKey: useKeys.lists(), refetchType: "all" }),
+      ]);
     },
   });
 };
@@ -106,12 +120,12 @@ export const useDeleteUserMutation = () => {
     mutationFn: (id: string) => {
       return userService.deleteUser(id);
     },
-    // * Sengaja di-`return` (bukan fire-and-forget) - lihat komentar sama di
-    // useDeleteProjectMutation() (useProjects.ts).
+    // * Sengaja di-`return` (bukan fire-and-forget), dan `refetchType: "all"` - lihat
+    // komentar panjang di useDeleteProjectMutation() (useProjects.ts).
     onSuccess: (_data, id) => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: useKeys.detail(id) }),
-        queryClient.invalidateQueries({ queryKey: useKeys.lists() }),
+        queryClient.invalidateQueries({ queryKey: useKeys.detail(id), refetchType: "all" }),
+        queryClient.invalidateQueries({ queryKey: useKeys.lists(), refetchType: "all" }),
       ]);
     },
   });

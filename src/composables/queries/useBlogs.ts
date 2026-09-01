@@ -30,8 +30,9 @@ export const useBlogMutation = () => {
     mutationFn: (newBlogData: BlogRequest) => {
       return blogService.createBlog(newBlogData);
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteBlogMutation().
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: blogKeys.lists() });
+      return queryClient.invalidateQueries({ queryKey: blogKeys.lists(), refetchType: "all" });
     },
   });
 };
@@ -43,8 +44,9 @@ export const useBlogMultipartMutation = () => {
     mutationFn: (newBlogData: BlogMultipartRequest) => {
       return blogService.createBlogMultipart(newBlogData);
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteBlogMutation().
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: blogKeys.lists() });
+      return queryClient.invalidateQueries({ queryKey: blogKeys.lists(), refetchType: "all" });
     },
   });
 };
@@ -78,9 +80,15 @@ export const useBlogUpdateMutation = () => {
     mutationFn: ({ id, data }: { id: string; data: BlogRequest }) => {
       return blogService.updateBlog({ id, data });
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteBlogMutation().
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: blogKeys.detail(variables.id) });
-      queryClient.invalidateQueries({ queryKey: blogKeys.lists() });
+      return Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: blogKeys.detail(variables.id),
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({ queryKey: blogKeys.lists(), refetchType: "all" }),
+      ]);
     },
   });
 };
@@ -92,9 +100,15 @@ export const useBlogUpdateMultipartMutation = () => {
     mutationFn: (data: UpdateBlogMultipartRequest) => {
       return blogService.updateBlogMultipart(data);
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteBlogMutation().
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: blogKeys.detail(variables.id) });
-      queryClient.invalidateQueries({ queryKey: blogKeys.lists() });
+      return Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: blogKeys.detail(variables.id),
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({ queryKey: blogKeys.lists(), refetchType: "all" }),
+      ]);
     },
   });
 };
@@ -106,12 +120,12 @@ export const useDeleteBlogMutation = () => {
     mutationFn: (id: string) => {
       return blogService.deleteBlog(id);
     },
-    // * Sengaja di-`return` (bukan fire-and-forget) - lihat komentar sama di
-    // useDeleteProjectMutation() (useProjects.ts).
+    // * Sengaja di-`return` (bukan fire-and-forget), dan `refetchType: "all"` - lihat
+    // komentar panjang di useDeleteProjectMutation() (useProjects.ts).
     onSuccess: (_data, id) => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: blogKeys.detail(id) }),
-        queryClient.invalidateQueries({ queryKey: blogKeys.lists() }),
+        queryClient.invalidateQueries({ queryKey: blogKeys.detail(id), refetchType: "all" }),
+        queryClient.invalidateQueries({ queryKey: blogKeys.lists(), refetchType: "all" }),
       ]);
     },
   });

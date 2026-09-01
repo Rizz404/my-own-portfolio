@@ -27,8 +27,12 @@ export const useExperienceMutation = () => {
     mutationFn: (newExperienceData: ExperienceRequest) => {
       return experienceService.createExperience(newExperienceData);
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteExperienceMutation().
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: experienceKeys.lists() });
+      return queryClient.invalidateQueries({
+        queryKey: experienceKeys.lists(),
+        refetchType: "all",
+      });
     },
   });
 };
@@ -62,9 +66,15 @@ export const useExperienceUpdateMutation = () => {
     mutationFn: ({ id, data }: { id: string; data: ExperienceRequest }) => {
       return experienceService.updateExperience({ id, data });
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteExperienceMutation().
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: experienceKeys.detail(variables.id) });
-      queryClient.invalidateQueries({ queryKey: experienceKeys.lists() });
+      return Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: experienceKeys.detail(variables.id),
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({ queryKey: experienceKeys.lists(), refetchType: "all" }),
+      ]);
     },
   });
 };
@@ -76,12 +86,15 @@ export const useDeleteExperienceMutation = () => {
     mutationFn: (id: string) => {
       return experienceService.deleteExperience(id);
     },
-    // * Sengaja di-`return` (bukan fire-and-forget) - lihat komentar sama di
-    // useDeleteProjectMutation() (useProjects.ts).
+    // * Sengaja di-`return` (bukan fire-and-forget), dan `refetchType: "all"` - lihat
+    // komentar panjang di useDeleteProjectMutation() (useProjects.ts).
     onSuccess: (_data, id) => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: experienceKeys.detail(id) }),
-        queryClient.invalidateQueries({ queryKey: experienceKeys.lists() }),
+        queryClient.invalidateQueries({
+          queryKey: experienceKeys.detail(id),
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({ queryKey: experienceKeys.lists(), refetchType: "all" }),
       ]);
     },
   });

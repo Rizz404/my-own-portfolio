@@ -32,8 +32,12 @@ export const useProjectMutation = () => {
     mutationFn: (newProjectData: ProjectRequest) => {
       return projectService.createProject(newProjectData);
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteProjectMutation().
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: projectKeys.lists() });
+      return queryClient.invalidateQueries({
+        queryKey: projectKeys.lists(),
+        refetchType: "all",
+      });
     },
   });
 };
@@ -45,8 +49,12 @@ export const useProjectMultipartMutation = () => {
     mutationFn: (newProjectData: ProjectMultipartRequest) => {
       return projectService.createProjectMultipart(newProjectData);
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteProjectMutation().
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: projectKeys.lists() });
+      return queryClient.invalidateQueries({
+        queryKey: projectKeys.lists(),
+        refetchType: "all",
+      });
     },
   });
 };
@@ -80,9 +88,15 @@ export const useProjectUpdateMutation = () => {
     mutationFn: ({ id, data }: { id: string; data: ProjectRequest }) => {
       return projectService.updateProject({ id, data });
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteProjectMutation().
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: projectKeys.detail(variables.id) });
-      queryClient.invalidateQueries({ queryKey: projectKeys.lists() });
+      return Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: projectKeys.detail(variables.id),
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({ queryKey: projectKeys.lists(), refetchType: "all" }),
+      ]);
     },
   });
 };
@@ -94,9 +108,15 @@ export const useProjectUpdateMultipartMutation = () => {
     mutationFn: (data: UpdateProjectMultipartRequest) => {
       return projectService.updateProjectMultipart(data);
     },
+    // * `refetchType: "all"` - lihat komentar panjang di useDeleteProjectMutation().
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: projectKeys.detail(variables.id) });
-      queryClient.invalidateQueries({ queryKey: projectKeys.lists() });
+      return Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: projectKeys.detail(variables.id),
+          refetchType: "all",
+        }),
+        queryClient.invalidateQueries({ queryKey: projectKeys.lists(), refetchType: "all" }),
+      ]);
     },
   });
 };
@@ -114,10 +134,22 @@ export const useDeleteProjectMutation = () => {
     // invalidateQueries() cuma di-trigger. Tanpa ini, UI yang gantungin deleting-state ke
     // mutateAsync() (buat nyembunyiin spinner/disable tombol) bakal nyembunyiin loading-nya
     // duluan sebelum grid sempet re-render tanpa item yang baru kehapus.
+    //
+    // * `refetchType: "all"` - defaultnya invalidateQueries() cuma REFETCH query yang lagi
+    // "active" (ada observer/komponen yang mount & pake queryKey itu SAAT INI). Query yang
+    // lagi "inactive" (mis. list query pas kita masih di FormView, belum balik ke
+    // ProjectsView) cuma ditandain stale TANPA beneran di-refetch - baru kefetch ulang pas
+    // komponennya mount lagi nanti. Efeknya: promise di atas resolve INSTAN buat query yang
+    // inactive (gak ada yang beneran ditunggu), terus pas ProjectsView mount balik, dia
+    // sempet nampilin data lama dari cache dulu (isLoading udah false karena ada cache),
+    // baru diam-diam refetch di background & tiba-tiba ganti - persis "data lama dulu, abis
+    // itu keedit/kehapus/muncul tanpa loading" yang dikeluh user. `refetchType: "all"`
+    // maksa TanStack beneran refetch (dan promise-nya BENERAN ditunggu) walau query-nya lagi
+    // inactive, jadi cache-nya udah fresh SEBELUM kita pindah halaman/`router.push`.
     onSuccess: (_data, id) => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: projectKeys.detail(id) }),
-        queryClient.invalidateQueries({ queryKey: projectKeys.lists() }),
+        queryClient.invalidateQueries({ queryKey: projectKeys.detail(id), refetchType: "all" }),
+        queryClient.invalidateQueries({ queryKey: projectKeys.lists(), refetchType: "all" }),
       ]);
     },
   });
