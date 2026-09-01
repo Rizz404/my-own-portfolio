@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useProjectQuery } from "@/composables/queries/useProjects";
 import AppError from "@/components/shared/AppError.vue";
@@ -28,6 +28,26 @@ const formatEnumText = (val: string | number) => {
   const str = String(val).replace(/_/g, " ");
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
+
+// * Status badge color: samain skemanya sama ProjectCard.vue (success/warning/danger/
+// info/secondary tergantung status), sebelumnya di sini cuma ada 2 kondisi (primary vs
+// netral) jadi gak konsisten sama badge di ProjectCard pas user lompat dari list ke detail.
+const statusBadgeClass = computed(() => {
+  const status = String(response.value?.data?.status).toLowerCase();
+  switch (status) {
+    case "active":
+      return "bg-success/10 text-success border-success/20";
+    case "development":
+      return "bg-info/10 text-info border-info/20";
+    case "maintenance":
+      return "bg-warning/10 text-warning border-warning/20";
+    case "archived":
+      return "bg-danger/10 text-danger border-danger/20";
+    case "inactive":
+    default:
+      return "bg-surface-raised text-content border-border/50";
+  }
+});
 
 // * Screenshot strip nav: samain kayak carousel di ProjectCard.vue, tapi tetap
 // scroll strip (bukan diganti jadi single-image fade) - cuma ditambah tombol
@@ -61,7 +81,7 @@ const scrollImageStrip = (dir: "next" | "prev") => {
   <div class="max-w-4xl mx-auto mt-8 mb-20 md:mt-12">
     <RouterLink
       to="/projects"
-      class="inline-flex items-center gap-2 mb-8 text-sm font-medium transition-colors text-content/60 hover:text-primary"
+      class="inline-flex items-center gap-2 mb-8 text-sm font-medium transition-colors text-content/60 hover:text-success"
     >
       <IconArrowLeft class="w-4 h-4" /> {{ t("back") }}
     </RouterLink>
@@ -95,13 +115,8 @@ const scrollImageStrip = (dir: "next" | "prev") => {
             </h1>
             <div class="flex flex-wrap items-center gap-3 text-sm font-medium text-content/60">
               <span
-                class="px-2.5 py-1 text-xs font-bold uppercase tracking-wider rounded-md border border-border/50"
-                :class="
-                  String(response.data.status).toLowerCase() === 'active' ||
-                  String(response.data.status).toLowerCase() === 'completed'
-                    ? 'bg-primary/10 text-primary border-primary/20'
-                    : 'bg-surface-raised text-content'
-                "
+                class="px-2.5 py-1 text-xs font-bold uppercase tracking-wider rounded-md border"
+                :class="statusBadgeClass"
               >
                 {{ formatEnumText(response.data.status) || t("unknown") }}
               </span>
@@ -131,7 +146,7 @@ const scrollImageStrip = (dir: "next" | "prev") => {
             :key="label"
             :href="url"
             target="_blank"
-            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-border/50 bg-surface/30 hover:border-primary/50 hover:bg-surface text-content hover:text-primary"
+            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-border/50 bg-surface/30 hover:border-success/50 hover:bg-surface text-content hover:text-success"
           >
             {{ formatEnumText(label) }} <IconExternalLink class="w-4 h-4" />
           </a>

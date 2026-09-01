@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useUseQuery } from "@/composables/queries/useUses";
 import AppError from "@/components/shared/AppError.vue";
@@ -29,13 +30,22 @@ const getDomain = (url: string) => {
     return t("visitLink");
   }
 };
+
+// * Badge kategori: samain sama dot di UseView.vue (hardware = danger/maroon, software =
+// success/hijau-kuning), biar nyambung pas user lompat dari list ke detail.
+const categoryBadgeClass = computed(() => {
+  const category = String(response.value?.data?.category).toLowerCase();
+  return category === "hardware"
+    ? "bg-danger/10 text-danger border-danger/20"
+    : "bg-success/10 text-success border-success/20";
+});
 </script>
 
 <template>
   <div class="max-w-4xl mx-auto mt-8 mb-20 md:mt-12">
     <RouterLink
       to="/uses"
-      class="inline-flex items-center gap-2 mb-8 text-sm font-medium transition-colors text-content/60 hover:text-primary"
+      class="inline-flex items-center gap-2 mb-8 text-sm font-medium transition-colors text-content/60 hover:text-warning"
     >
       <IconArrowLeft class="w-4 h-4" /> {{ t("back") }}
     </RouterLink>
@@ -73,7 +83,8 @@ const getDomain = (url: string) => {
             </h1>
             <div class="flex flex-wrap items-center gap-3 text-sm font-medium text-content/60">
               <span
-                class="px-2.5 py-1 text-xs font-bold uppercase tracking-wider rounded-md border border-border/50 text-content bg-surface-raised"
+                class="px-2.5 py-1 text-xs font-bold uppercase tracking-wider rounded-md border"
+                :class="categoryBadgeClass"
               >
                 {{ formatEnumText(response.data.category) }}
               </span>
@@ -90,7 +101,7 @@ const getDomain = (url: string) => {
             :key="index"
             :href="url"
             target="_blank"
-            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-border/50 bg-surface/30 hover:border-primary/50 hover:bg-surface text-content hover:text-primary"
+            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-border/50 bg-surface/30 hover:border-warning/50 hover:bg-surface text-content hover:text-warning"
           >
             {{ getDomain(url) }} <IconExternalLink class="w-4 h-4" />
           </a>

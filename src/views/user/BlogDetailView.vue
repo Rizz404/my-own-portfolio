@@ -24,7 +24,7 @@ const { data: response, isLoading, isError, error } = useBlogQuery(blogId);
   <div class="max-w-3xl mx-auto mt-8 mb-20 md:mt-12">
     <RouterLink
       to="/blogs"
-      class="inline-flex items-center gap-2 mb-8 text-sm font-medium transition-colors text-content/60 hover:text-primary"
+      class="inline-flex items-center gap-2 mb-8 text-sm font-medium transition-colors text-content/60 hover:text-danger"
     >
       <IconArrowLeft class="w-4 h-4" /> {{ t("back") }}
     </RouterLink>
@@ -77,7 +77,7 @@ const { data: response, isLoading, isError, error } = useBlogQuery(blogId);
             <a
               :href="file.fileUrl"
               target="_blank"
-              class="inline-flex items-center gap-2 p-3 text-sm font-medium transition-colors border rounded-lg border-border/50 bg-surface/30 hover:border-primary/50 hover:bg-surface text-content hover:text-primary"
+              class="inline-flex items-center gap-2 p-3 text-sm font-medium transition-colors border rounded-lg border-border/50 bg-surface/30 hover:border-danger/50 hover:bg-surface text-content hover:text-danger"
             >
               <IconPaperclip class="w-4 h-4" />
               {{ file.fileName }}
@@ -131,12 +131,14 @@ const { data: response, isLoading, isError, error } = useBlogQuery(blogId);
   line-height: 1.6;
 }
 .wysiwyg-content :deep(a) {
-  color: var(--color-primary);
+  /* * Link & blockquote artikel pakai aksen maroon (danger - pita/sepatu Kita), nyambung
+     sama identitas warna halaman Blog - bukan primary biar gak numpuk sama tombol/CTA */
+  color: var(--color-danger);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 .wysiwyg-content :deep(blockquote) {
-  border-left: 4px solid var(--color-primary);
+  border-left: 4px solid var(--color-danger);
   padding-left: 1rem;
   font-style: italic;
   color: color-mix(in srgb, var(--color-content) 70%, transparent);

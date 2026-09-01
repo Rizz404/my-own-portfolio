@@ -114,6 +114,22 @@
   border-color: color-mix(in oklab, var(--color-border) 50%, transparent);
 }
 
+/* Dark Mode: sama kayak fix di atas, tapi buat wash section berwarna (bg-danger/8,
+   bg-success/8, bg-warning/5 - dipakai buat ngasih tiap section di Home/Uses/About
+   identitas warnanya sendiri). Bedanya sama masalah bg-surface: di sini hue-nya beda jauh
+   dari background (bukan alpha-blend abu ke abu), jadi keliatan dikit di dark - tapi danger
+   kebetulan satu hue sama primary/background (hue 25), jadi paling parah kena efek "ketutup
+   gelap". Alpha dinaikin di sini biar sama enaknya diliat kayak versi light-nya. */
+.dark .bg-danger\/8 {
+  background-color: color-mix(in oklab, var(--color-danger) 14%, transparent);
+}
+.dark .bg-success\/8 {
+  background-color: color-mix(in oklab, var(--color-success) 15%, transparent);
+}
+.dark .bg-warning\/5 {
+  background-color: color-mix(in oklab, var(--color-warning) 12%, transparent);
+}
+
 /* Base Styles */
 :root {
   color-scheme: light dark;

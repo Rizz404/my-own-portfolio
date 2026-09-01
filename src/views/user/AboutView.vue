@@ -40,6 +40,12 @@ const formatCategoryLabel = (category: string) => {
   return category.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 };
 
+// * Tiap kategori skill dapet warna dot beda-beda (gilir dari palet Kita: merah rambut,
+// hijau-kuning mata, kuning kancing, maroon pita/sepatu), biar daftar skill gak keliatan
+// monoton - urutannya ngikutin urutan kemunculan kategori (sama kayak skillsByCategory).
+const categoryDotColors = ["bg-primary", "bg-success", "bg-warning", "bg-danger"];
+const categoryDotClass = (index: number) => categoryDotColors[index % categoryDotColors.length];
+
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
 // src/locales/<locale>/views/user/AboutView.json
 const NS = "views.user.AboutView";
@@ -116,8 +122,19 @@ const t = useT(NS);
       />
 
       <div v-else class="space-y-8">
-        <div v-for="[category, skills] in skillsByCategory" :key="category" v-motion="revealUp()">
-          <h3 class="mb-4 text-sm font-semibold tracking-wide uppercase text-content/60">
+        <div
+          v-for="([category, skills], index) in skillsByCategory"
+          :key="category"
+          v-motion="revealUp()"
+        >
+          <h3
+            class="flex items-center gap-2 mb-4 text-sm font-semibold tracking-wide uppercase text-content/60"
+          >
+            <span
+              class="rounded-full size-2 shrink-0"
+              :class="categoryDotClass(index)"
+              aria-hidden="true"
+            ></span>
             {{ formatCategoryLabel(category) }}
           </h3>
           <div class="flex flex-wrap gap-3">
@@ -159,8 +176,13 @@ const t = useT(NS);
       </div>
 
       <div v-motion="revealUp(0.1)" class="lg:col-span-1">
-        <div class="p-6 border border-border/30 rounded-2xl bg-surface/30">
-          <h2 class="mb-2 text-xl font-bold text-content">{{ t("connect.title") }}</h2>
+        <!-- * Aksen warning (emas, kancing seragam Kita) buat card ini, biar beda
+             dari section Experience di sebelahnya yang netral -->
+        <div class="p-6 border rounded-2xl border-warning/25 bg-warning/5">
+          <h2 class="flex items-center gap-2 mb-2 text-xl font-bold text-content">
+            <span class="rounded-full size-2 bg-warning shrink-0" aria-hidden="true"></span>
+            {{ t("connect.title") }}
+          </h2>
           <p class="mb-6 text-sm text-content/70">
             {{ t("connect.description") }}
           </p>

@@ -35,15 +35,21 @@ const softwareList = computed(() => {
     </div>
 
     <div v-if="isLoading" class="space-y-20">
-      <div class="p-6 rounded-3xl bg-surface/20 md:p-8">
-        <h2 class="mb-6 text-2xl font-bold text-content">{{ t("hardware") }}</h2>
+      <div class="p-6 rounded-3xl bg-danger/8 md:p-8">
+        <h2 class="flex items-center gap-2.5 mb-6 text-2xl font-bold text-content">
+          <span class="rounded-full size-2.5 bg-danger shrink-0" aria-hidden="true"></span>
+          {{ t("hardware") }}
+        </h2>
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <AppSkeleton variant="card" :count="4" />
         </div>
       </div>
 
-      <div class="p-6 rounded-3xl bg-surface/20 md:p-8">
-        <h2 class="mb-6 text-2xl font-bold text-content">{{ t("software") }}</h2>
+      <div class="p-6 rounded-3xl bg-success/8 md:p-8">
+        <h2 class="flex items-center gap-2.5 mb-6 text-2xl font-bold text-content">
+          <span class="rounded-full size-2.5 bg-success shrink-0" aria-hidden="true"></span>
+          {{ t("software") }}
+        </h2>
         <div class="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
           <AppSkeleton variant="grid" :count="8" />
         </div>
@@ -56,9 +62,14 @@ const softwareList = computed(() => {
       <div
         v-if="hardwareList.length > 0"
         v-motion="revealUp()"
-        class="p-6 rounded-3xl bg-surface/20 md:p-8"
+        class="p-6 rounded-3xl bg-danger/8 md:p-8"
       >
-        <h2 class="mb-6 text-2xl font-bold text-content">{{ t("hardware") }}</h2>
+        <!-- * Aksen maroon (danger - pita/sepatu Kita) + background di-tint tipis, buat
+             kategori Hardware -->
+        <h2 class="flex items-center gap-2.5 mb-6 text-2xl font-bold text-content">
+          <span class="rounded-full size-2.5 bg-danger shrink-0" aria-hidden="true"></span>
+          {{ t("hardware") }}
+        </h2>
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <UseCard
             v-for="(item, index) in hardwareList"
@@ -72,9 +83,14 @@ const softwareList = computed(() => {
       <div
         v-if="softwareList.length > 0"
         v-motion="revealUp()"
-        class="p-6 rounded-3xl bg-surface/20 md:p-8"
+        class="p-6 rounded-3xl bg-success/8 md:p-8"
       >
-        <h2 class="mb-6 text-2xl font-bold text-content">{{ t("software") }}</h2>
+        <!-- * Aksen success (hijau-kuning, mata Kita) + background di-tint tipis, buat
+             kategori Software -->
+        <h2 class="flex items-center gap-2.5 mb-6 text-2xl font-bold text-content">
+          <span class="rounded-full size-2.5 bg-success shrink-0" aria-hidden="true"></span>
+          {{ t("software") }}
+        </h2>
         <div class="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
           <UseTile
             v-for="(item, index) in softwareList"

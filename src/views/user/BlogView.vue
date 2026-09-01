@@ -89,9 +89,10 @@ const nextPage = () => {
       </div>
 
       <div class="flex flex-col gap-4 sm:flex-row shrink-0">
+        <!-- * Aksen maroon (danger) - identitas warna halaman Blog, biar beda dari Projects/Uses -->
         <div class="relative group">
           <div
-            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-content/50 group-focus-within:text-primary"
+            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-content/50 group-focus-within:text-danger"
           >
             <IconSearch class="w-5 h-5" />
           </div>
@@ -99,14 +100,14 @@ const nextPage = () => {
             v-model="searchInput"
             type="text"
             :placeholder="t('searchPlaceholder')"
-            class="w-full sm:w-64 pl-10 pr-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all text-content placeholder:text-content/40"
+            class="w-full sm:w-64 pl-10 pr-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-danger focus:ring-2 focus:ring-danger/50 transition-all text-content placeholder:text-content/40"
           />
         </div>
 
         <select
           :value="sortValue"
           @change="handleSortChange"
-          class="px-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all text-content cursor-pointer appearance-none"
+          class="px-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-danger focus:ring-2 focus:ring-danger/50 transition-all text-content cursor-pointer appearance-none"
         >
           <option value="newest">{{ t("sort.newest") }}</option>
           <option value="oldest">{{ t("sort.oldest") }}</option>

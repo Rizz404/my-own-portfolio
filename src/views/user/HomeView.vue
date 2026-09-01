@@ -47,7 +47,11 @@ const {
             {{ t("hero.greeting") }}
             <strong class="font-bold text-primary">Rizqiansyah Ramadhan</strong>
           </h1>
-          <h2 class="mb-6 text-4xl font-extrabold leading-tight md:text-6xl text-primary">
+          <!-- * Gradient merah -> maroon (ngikutin gradasi rambut Kita dari merah terang
+               ke ujung yang lebih gelap), bukan cuma solid text-primary -->
+          <h2
+            class="mb-6 text-4xl font-extrabold leading-tight text-transparent md:text-6xl bg-linear-to-r from-primary to-danger bg-clip-text"
+          >
             <strong>{{ t("hero.role") }}</strong>
           </h2>
           <p
@@ -79,6 +83,11 @@ const {
           </div>
         </div>
         <div class="relative shrink-0 group">
+          <!-- * Glow dobel: gold di belakang (lebih lebar & difus) + merah di depan -
+               biar kayak lighting panggung, gak cuma satu warna polos -->
+          <div
+            class="absolute transition-all rounded-full -inset-4 bg-warning/10 blur-3xl group-hover:bg-warning/20"
+          ></div>
           <div
             class="absolute inset-0 transition-all rounded-full bg-primary/20 blur-2xl group-hover:bg-primary/30"
           ></div>
@@ -93,13 +102,20 @@ const {
       <SocialsWidget />
     </section>
 
-    <!-- * Latest Blog -->
-    <section class="mt-20 md:mt-32">
+    <!-- * Latest Blog - background di-tint maroon (danger - pita/sepatu Kita), beda dari
+         hero (netral) & Selected Projects (hijau-kuning), biar tiap section kerasa
+         identitasnya sendiri-sendiri -->
+    <section class="p-6 mt-20 rounded-3xl bg-danger/8 md:mt-32 md:p-10">
       <div class="flex items-end justify-between mb-6">
-        <h2 class="text-2xl font-bold md:text-3xl">{{ t("latestBlogs.title") }}</h2>
+        <!-- * Aksen maroon (danger - pita/sepatu Kita) khusus buat identitas section Blog,
+             biar section-section di Home gak semuanya merah primary -->
+        <h2 class="flex items-center gap-2.5 text-2xl font-bold md:text-3xl">
+          <span class="rounded-full size-2.5 bg-danger shrink-0" aria-hidden="true"></span>
+          {{ t("latestBlogs.title") }}
+        </h2>
         <RouterLink
           to="/blogs"
-          class="inline-flex items-center gap-1.5 text-sm font-medium transition-colors group text-primary hover:brightness-110"
+          class="inline-flex items-center gap-1.5 text-sm font-medium transition-colors group text-danger hover:brightness-110"
         >
           {{ t("latestBlogs.viewAll") }}
           <IconArrowRight class="transition-transform size-4 group-hover:translate-x-1" />
@@ -123,13 +139,18 @@ const {
       </div>
     </section>
 
-    <!-- * Selected Project -->
-    <section class="p-6 mt-20 mb-20 rounded-3xl bg-surface/20 md:mt-32 md:p-10">
+    <!-- * Selected Project - background di-tint tipis pake success (hijau-kuning, mata
+         Kita), bukan surface abu-abu netral, biar section ini punya identitas warna sendiri -->
+    <section class="p-6 mt-20 mb-20 rounded-3xl bg-success/8 md:mt-32 md:p-10">
       <div class="flex items-end justify-between mb-6">
-        <h2 class="text-2xl font-bold md:text-3xl">{{ t("selectedProjects.title") }}</h2>
+        <!-- * Aksen success (hijau-kuning, mata Kita) khusus buat identitas section Projects -->
+        <h2 class="flex items-center gap-2.5 text-2xl font-bold md:text-3xl">
+          <span class="rounded-full size-2.5 bg-success shrink-0" aria-hidden="true"></span>
+          {{ t("selectedProjects.title") }}
+        </h2>
         <RouterLink
           to="/projects"
-          class="inline-flex items-center gap-1.5 text-sm font-medium transition-colors group text-primary hover:brightness-110"
+          class="inline-flex items-center gap-1.5 text-sm font-medium transition-colors group text-success hover:brightness-110"
         >
           {{ t("selectedProjects.viewAll") }}
           <IconArrowRight class="transition-transform size-4 group-hover:translate-x-1" />
