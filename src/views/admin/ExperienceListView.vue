@@ -23,8 +23,8 @@ import { useConfirm } from "@/composables/useConfirm";
 import { useQuerySync } from "@/composables/useQuerySync";
 
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
-// src/locales/<locale>/views/admin/ExperiencesView.json
-const t = useT("views.admin.ExperiencesView");
+// src/locales/<locale>/views/admin/ExperienceListView.json
+const t = useT("views.admin.ExperienceListView");
 const toast = useToast();
 const { confirm } = useConfirm();
 

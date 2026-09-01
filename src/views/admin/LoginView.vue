@@ -8,7 +8,7 @@ import AppAlert from "@/components/shared/AppAlert.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";
 import AppPasswordInput from "@/components/shared/AppPasswordInput.vue";
-import { useLoginMutation } from "@/composables/queries/useAuth";
+import { ADMIN_ACCESS_DENIED, useLoginMutation } from "@/composables/queries/useAuth";
 import { fadeUp } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
 import { useZodForm } from "@/composables/useZodForm";
@@ -43,6 +43,10 @@ const onSubmit = handleSubmit((data) => {
 const errorMessage = computed(() => {
   const error = loginMutation.error.value;
   if (!error) return null;
+
+  if (error.message === ADMIN_ACCESS_DENIED) {
+    return t("accessDenied");
+  }
 
   if (isAxiosError<ErrorResponse>(error)) {
     return error.response?.data?.message ?? error.message;
