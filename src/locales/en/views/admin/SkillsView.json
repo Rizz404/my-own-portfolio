@@ -19,8 +19,15 @@
   "deleteSelected": "Delete selected",
   "deleting": "Deleting...",
   "cancelSelection": "Cancel",
+  "confirmDeleteTitle": "Delete skill?",
   "confirmDelete": "Delete \"{name}\"? This can't be undone.",
+  "confirmBulkDeleteTitle": "Delete selected skills?",
   "confirmBulkDelete": "Delete {count} selected skill(s)? This can't be undone.",
+  "deleteAction": "Delete",
+  "deleteProgress": {
+    "single": "Deleting skill…",
+    "bulk": "Deleting {done} of {total} skills…"
+  },
   "toast": {
     "deleted": "Skill deleted",
     "deleteFailed": "Failed to delete skill",

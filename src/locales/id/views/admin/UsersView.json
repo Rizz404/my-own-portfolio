@@ -19,8 +19,15 @@
   "deleteSelected": "Hapus yang terpilih",
   "deleting": "Menghapus...",
   "cancelSelection": "Batal",
+  "confirmDeleteTitle": "Hapus pengguna?",
   "confirmDelete": "Hapus \"{name}\"? Tindakan ini tidak bisa dibatalkan.",
+  "confirmBulkDeleteTitle": "Hapus pengguna terpilih?",
   "confirmBulkDelete": "Hapus {count} pengguna terpilih? Tindakan ini tidak bisa dibatalkan.",
+  "deleteAction": "Hapus",
+  "deleteProgress": {
+    "single": "Menghapus pengguna...",
+    "bulk": "Menghapus {done} dari {total} pengguna..."
+  },
   "toast": {
     "deleted": "Pengguna berhasil dihapus",
     "deleteFailed": "Gagal menghapus pengguna",

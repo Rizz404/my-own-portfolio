@@ -19,8 +19,15 @@
   "deleteSelected": "Hapus yang terpilih",
   "deleting": "Menghapus...",
   "cancelSelection": "Batal",
+  "confirmDeleteTitle": "Hapus keahlian?",
   "confirmDelete": "Hapus \"{name}\"? Tindakan ini tidak bisa dibatalkan.",
+  "confirmBulkDeleteTitle": "Hapus keahlian terpilih?",
   "confirmBulkDelete": "Hapus {count} keahlian terpilih? Tindakan ini tidak bisa dibatalkan.",
+  "deleteAction": "Hapus",
+  "deleteProgress": {
+    "single": "Menghapus keahlian...",
+    "bulk": "Menghapus {done} dari {total} keahlian..."
+  },
   "toast": {
     "deleted": "Keahlian berhasil dihapus",
     "deleteFailed": "Gagal menghapus keahlian",

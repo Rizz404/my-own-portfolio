@@ -19,8 +19,15 @@
   "deleteSelected": "Delete selected",
   "deleting": "Deleting...",
   "cancelSelection": "Cancel",
+  "confirmDeleteTitle": "Delete item?",
   "confirmDelete": "Delete \"{name}\"? This can't be undone.",
+  "confirmBulkDeleteTitle": "Delete selected items?",
   "confirmBulkDelete": "Delete {count} selected item(s)? This can't be undone.",
+  "deleteAction": "Delete",
+  "deleteProgress": {
+    "single": "Deleting item…",
+    "bulk": "Deleting {done} of {total} items…"
+  },
   "toast": {
     "deleted": "Item deleted",
     "deleteFailed": "Failed to delete item",

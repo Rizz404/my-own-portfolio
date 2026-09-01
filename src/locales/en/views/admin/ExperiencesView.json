@@ -21,8 +21,15 @@
   "deleteSelected": "Delete selected",
   "deleting": "Deleting...",
   "cancelSelection": "Cancel",
+  "confirmDeleteTitle": "Delete experience?",
   "confirmDelete": "Delete the experience as \"{name}\"? This can't be undone.",
+  "confirmBulkDeleteTitle": "Delete selected experiences?",
   "confirmBulkDelete": "Delete {count} selected experience(s)? This can't be undone.",
+  "deleteAction": "Delete",
+  "deleteProgress": {
+    "single": "Deleting experience…",
+    "bulk": "Deleting {done} of {total} experiences…"
+  },
   "toast": {
     "deleted": "Experience deleted",
     "deleteFailed": "Failed to delete experience",

@@ -21,8 +21,15 @@
   "deleteSelected": "Hapus yang terpilih",
   "deleting": "Menghapus...",
   "cancelSelection": "Batal",
+  "confirmDeleteTitle": "Hapus pengalaman?",
   "confirmDelete": "Hapus pengalaman sebagai \"{name}\"? Tindakan ini tidak bisa dibatalkan.",
+  "confirmBulkDeleteTitle": "Hapus pengalaman terpilih?",
   "confirmBulkDelete": "Hapus {count} pengalaman terpilih? Tindakan ini tidak bisa dibatalkan.",
+  "deleteAction": "Hapus",
+  "deleteProgress": {
+    "single": "Menghapus pengalaman...",
+    "bulk": "Menghapus {done} dari {total} pengalaman..."
+  },
   "toast": {
     "deleted": "Pengalaman berhasil dihapus",
     "deleteFailed": "Gagal menghapus pengalaman",

@@ -16,8 +16,15 @@
   "deleteSelected": "Hapus yang terpilih",
   "deleting": "Menghapus...",
   "cancelSelection": "Batal",
+  "confirmDeleteTitle": "Hapus tulisan blog?",
   "confirmDelete": "Hapus \"{name}\"? Tindakan ini tidak bisa dibatalkan.",
+  "confirmBulkDeleteTitle": "Hapus tulisan blog terpilih?",
   "confirmBulkDelete": "Hapus {count} tulisan terpilih? Tindakan ini tidak bisa dibatalkan.",
+  "deleteAction": "Hapus",
+  "deleteProgress": {
+    "single": "Menghapus tulisan blog...",
+    "bulk": "Menghapus {done} dari {total} tulisan blog..."
+  },
   "toast": {
     "deleted": "Tulisan blog berhasil dihapus",
     "deleteFailed": "Gagal menghapus tulisan blog",

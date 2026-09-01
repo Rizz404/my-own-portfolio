@@ -16,8 +16,15 @@
   "deleteSelected": "Delete selected",
   "deleting": "Deleting...",
   "cancelSelection": "Cancel",
+  "confirmDeleteTitle": "Delete blog post?",
   "confirmDelete": "Delete \"{name}\"? This can't be undone.",
+  "confirmBulkDeleteTitle": "Delete selected blog posts?",
   "confirmBulkDelete": "Delete {count} selected blog post(s)? This can't be undone.",
+  "deleteAction": "Delete",
+  "deleteProgress": {
+    "single": "Deleting blog post…",
+    "bulk": "Deleting {done} of {total} blog posts…"
+  },
   "toast": {
     "deleted": "Blog post deleted",
     "deleteFailed": "Failed to delete blog post",
