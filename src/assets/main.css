@@ -67,20 +67,51 @@
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
-/* Dark Mode: nuansa merah-gelap ala malam, tetap konsisten dengan palet Kita */
+/* Dark Mode: nuansa merah-gelap ala malam, tetap konsisten dengan palet Kita
+   Catatan: step antar --color-surface/-raised/-secondary/-border sengaja dibuat
+   jauh lebih lebar (~0.06-0.07 L) dibanding versi lama (~0.03-0.05 L). Di lightness
+   rendah, jarak L kecil nyaris tidak kelihatan setelah kena opacity modifier
+   (bg-surface/30, border-border/20, dst) - makanya sebelumnya semua komponen non-primary
+   (tag pills, card border, tombol secondary) menyatu jadi hitam polos. */
 :root.dark {
-  --color-background: oklch(0.14 0.015 25);
-  --color-surface: oklch(0.18 0.017 25);
-  --color-surface-raised: oklch(0.23 0.018 25);
-  --color-secondary: oklch(0.26 0.018 25);
+  --color-background: oklch(0.16 0.016 25);
+  --color-surface: oklch(0.22 0.02 25);
+  --color-surface-raised: oklch(0.29 0.022 25);
+  --color-secondary: oklch(0.36 0.024 25);
   --color-primary: oklch(0.65 0.19 25);
   --color-content: oklch(0.95 0.008 80);
-  --color-border: oklch(0.32 0.018 25);
+  --color-border: oklch(0.44 0.028 25);
 
   --color-success: oklch(0.72 0.15 120);
   --color-warning: oklch(0.8 0.15 90);
   --color-danger: oklch(0.62 0.2 25);
   --color-info: oklch(0.68 0.14 230);
+}
+
+/* Dark Mode: perbaikan kontras untuk wash tipis (bg-surface/20, /30, /50 dkk).
+   Kelas opacity Tailwind (bg-surface/30) itu alpha-blend ke composite di belakangnya
+   (ujung-ujungnya ke --color-background) langsung di level browser, bukan nge-mix ke
+   token lain lewat CSS var - jadi lebar token di atas gak ngaruh ke sini. Di light mode
+   itu masih cukup kebaca karena background-nya nyaris putih, tapi di dark mode background
+   & surface sama-sama gelap jadi selisihnya abis kepotong opacity rendah (mis. bg-surface/30
+   cuma beda ~0.02 lightness dari background - nyaris hitam polos). Override manual di sini:
+   pakai --color-surface-raised (base lebih terang) + alpha yg dinaikin, biar card/section
+   wash beneran kebeda dari background, sambil tetep di satu tempat (main.css) tanpa perlu
+   nambahin dark: varian ke belasan komponen. */
+.dark .bg-surface\/20 {
+  background-color: color-mix(in oklab, var(--color-surface-raised) 40%, transparent);
+}
+.dark .bg-surface\/30 {
+  background-color: color-mix(in oklab, var(--color-surface-raised) 55%, transparent);
+}
+.dark .bg-surface\/50 {
+  background-color: color-mix(in oklab, var(--color-surface-raised) 70%, transparent);
+}
+.dark .border-border\/20 {
+  border-color: color-mix(in oklab, var(--color-border) 40%, transparent);
+}
+.dark .border-border\/30 {
+  border-color: color-mix(in oklab, var(--color-border) 50%, transparent);
 }
 
 /* Base Styles */
