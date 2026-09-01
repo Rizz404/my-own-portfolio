@@ -16,7 +16,7 @@ const props = defineProps<{
   user: User;
   deleting?: boolean;
   selected?: boolean;
-  // * Mode seleksi di-toggle dari UsersView.vue. Gak ada checkbox terpisah -
+  // * Mode seleksi di-toggle dari UserListView.vue. Gak ada checkbox terpisah -
   // pas mode ini aktif, klik card = toggle pilih (bukan masuk edit).
   selectable?: boolean;
 }>();

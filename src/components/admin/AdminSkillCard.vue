@@ -17,7 +17,7 @@ const props = defineProps<{
   skill: Skill;
   deleting?: boolean;
   selected?: boolean;
-  // * Mode seleksi di-toggle dari SkillsView.vue. Gak ada checkbox terpisah -
+  // * Mode seleksi di-toggle dari SkillListView.vue. Gak ada checkbox terpisah -
   // pas mode ini aktif, klik card = toggle pilih (bukan masuk edit).
   selectable?: boolean;
 }>();

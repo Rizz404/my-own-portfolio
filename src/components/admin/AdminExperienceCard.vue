@@ -17,7 +17,7 @@ const props = defineProps<{
   experience: Experience;
   deleting?: boolean;
   selected?: boolean;
-  // * Mode seleksi di-toggle dari ExperiencesView.vue. Gak ada checkbox terpisah -
+  // * Mode seleksi di-toggle dari ExperienceListView.vue. Gak ada checkbox terpisah -
   // pas mode ini aktif, klik card = toggle pilih (bukan masuk edit).
   selectable?: boolean;
 }>();

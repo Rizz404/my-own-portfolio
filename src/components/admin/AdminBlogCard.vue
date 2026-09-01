@@ -19,7 +19,7 @@ const props = defineProps<{
   blog: Blog;
   deleting?: boolean;
   selected?: boolean;
-  // * Mode seleksi di-toggle dari BlogsView.vue. Gak ada checkbox terpisah -
+  // * Mode seleksi di-toggle dari BlogListView.vue. Gak ada checkbox terpisah -
   // pas mode ini aktif, klik card = toggle pilih (bukan masuk edit).
   selectable?: boolean;
 }>();

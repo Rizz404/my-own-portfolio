@@ -17,12 +17,12 @@ const t = useT("components.admin.AdminProjectCard");
 const props = defineProps<{
   project: Project;
   // * True kalau project INI SPESIFIK lagi diproses hapus (bukan flag global) -
-  // dikontrol dari ProjectsView.vue lewat `deletingIds`, biar tombol delete
+  // dikontrol dari ProjectListView.vue lewat `deletingIds`, biar tombol delete
   // disabled & icon-nya ganti jadi spinner cuma buat card yang bersangkutan,
   // gak ngeblok tombol delete di card lain.
   deleting?: boolean;
   selected?: boolean;
-  // * Mode seleksi di-toggle dari ProjectsView.vue. Gak ada checkbox terpisah -
+  // * Mode seleksi di-toggle dari ProjectListView.vue. Gak ada checkbox terpisah -
   // pas mode ini aktif, klik card = toggle pilih (bukan masuk edit). Bulatan
   // di kiri cuma indikator visual (gak ikut nangkep klik sendiri), biar satu
   // area klik aja & gak dobel-trigger.
