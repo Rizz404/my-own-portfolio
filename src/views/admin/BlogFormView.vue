@@ -89,6 +89,11 @@ const featuredImagePreview = computed(() => {
 
 function onFeaturedImageChange(event: Event) {
   featuredImageFile.value = (event.target as HTMLInputElement).files?.[0] ?? undefined;
+  // * Backend nolak kalau featuredImageUrl (string lama, keisi lewat loadBlogForEdit() pas
+  // edit) & featuredImageFile dikirim bareng dalam satu request ("Cannot accept both
+  // 'featuredImageUrl' string and 'featuredImageFile'. Choose one") - begitu ada file baru
+  // dipilih, featuredImageUrl lama wajib di-null-in biar cuma featuredImageFile yang kekirim.
+  if (featuredImageFile.value) values.featuredImageUrl = null;
 }
 
 const newAttachmentFiles = ref<File[]>([]);

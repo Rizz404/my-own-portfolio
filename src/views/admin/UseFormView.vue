@@ -115,6 +115,11 @@ const logoPreview = computed(() => {
 
 function onLogoFileChange(event: Event) {
   logoFile.value = (event.target as HTMLInputElement).files?.[0] ?? undefined;
+  // * Backend nolak kalau logoUrl (string lama, keisi lewat loadUseForEdit() pas
+  // edit) & logoFile dikirim bareng dalam satu request ("Cannot accept both 'logoUrl'
+  // string and 'logoFile'. Choose one") - begitu ada file baru dipilih, logoUrl lama
+  // wajib di-null-in biar cuma logoFile yang kekirim.
+  if (logoFile.value) values.logoUrl = null;
 }
 
 const newPictureFiles = ref<File[]>([]);

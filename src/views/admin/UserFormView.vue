@@ -160,6 +160,11 @@ const profilePictPreview = computed(() => {
 
 function onProfilePictChange(event: Event) {
   profilePictFile.value = (event.target as HTMLInputElement).files?.[0] ?? undefined;
+  // * Backend nolak kalau profilePictUrl (string lama, keisi lewat loadUserForEdit() pas
+  // edit) & profilePictFile dikirim bareng dalam satu request ("Cannot accept both
+  // 'profilePictUrl' string and 'profilePictFile'. Choose one") - begitu ada file baru
+  // dipilih, profilePictUrl lama wajib di-null-in biar cuma profilePictFile yang kekirim.
+  if (profilePictFile.value) values.profilePictUrl = null;
 }
 
 // * GET /users/:id ngebalikin translation yang UDAH DI-RESOLVE ke satu locale
