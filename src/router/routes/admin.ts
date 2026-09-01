@@ -17,7 +17,7 @@ export const adminRoutes: RouteRecordRaw[] = [
   {
     path: "/admin/projects",
     name: "AdminProjects",
-    component: () => import("@/views/admin/ProjectsView.vue"),
+    component: () => import("@/views/admin/ProjectListView.vue"),
     meta: { layout: "admin", requiresAuth: true },
   },
   {
@@ -35,7 +35,7 @@ export const adminRoutes: RouteRecordRaw[] = [
   {
     path: "/admin/blogs",
     name: "AdminBlogs",
-    component: () => import("@/views/admin/BlogsView.vue"),
+    component: () => import("@/views/admin/BlogListView.vue"),
     meta: { layout: "admin", requiresAuth: true },
   },
   {
@@ -53,7 +53,7 @@ export const adminRoutes: RouteRecordRaw[] = [
   {
     path: "/admin/experiences",
     name: "AdminExperiences",
-    component: () => import("@/views/admin/ExperiencesView.vue"),
+    component: () => import("@/views/admin/ExperienceListView.vue"),
     meta: { layout: "admin", requiresAuth: true },
   },
   {
@@ -71,7 +71,7 @@ export const adminRoutes: RouteRecordRaw[] = [
   {
     path: "/admin/skills",
     name: "AdminSkills",
-    component: () => import("@/views/admin/SkillsView.vue"),
+    component: () => import("@/views/admin/SkillListView.vue"),
     meta: { layout: "admin", requiresAuth: true },
   },
   {
@@ -89,7 +89,7 @@ export const adminRoutes: RouteRecordRaw[] = [
   {
     path: "/admin/uses",
     name: "AdminUses",
-    component: () => import("@/views/admin/UsesView.vue"),
+    component: () => import("@/views/admin/UseListView.vue"),
     meta: { layout: "admin", requiresAuth: true },
   },
   {
@@ -107,7 +107,7 @@ export const adminRoutes: RouteRecordRaw[] = [
   {
     path: "/admin/users",
     name: "AdminUsers",
-    component: () => import("@/views/admin/UsersView.vue"),
+    component: () => import("@/views/admin/UserListView.vue"),
     meta: { layout: "admin", requiresAuth: true },
   },
   {
