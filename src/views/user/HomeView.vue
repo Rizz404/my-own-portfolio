@@ -3,6 +3,8 @@ import { useProjectsQuery } from "@/composables/queries/useProjects";
 import { useBlogsQuery } from "@/composables/queries/useBlogs";
 import SocialsWidget from "@/components/user/SocialsWidget.vue";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useSecretTap } from "@/composables/useSecretTap";
 import type { ProjectQueryParams } from "@/types/project";
 import type { BlogQueryParams } from "@/types/blog";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
@@ -35,6 +37,13 @@ const {
   isError: isProjectError,
   error: projectError,
 } = useProjectsQuery(projectQueryParams);
+
+// * "Pintu belakang" ke admin: tap foto profil 5x beruntun buat ke halaman
+// login admin, tanpa nambah tombol/link admin yang keliatan di UI publik.
+const router = useRouter();
+const { handleTap: handleAvatarTap } = useSecretTap(() => {
+  router.push({ name: "AdminLogin" });
+});
 </script>
 
 <template>
@@ -94,7 +103,8 @@ const {
           <img
             src="https://i.pinimg.com/736x/05/68/42/0568424eab5583658cf6641c69573b78.jpg"
             alt="Rizqiansyah Ramadhan"
-            class="relative object-cover rounded-full shadow-xl size-40 md:size-72 ring-4 ring-background"
+            class="relative object-cover rounded-full shadow-xl size-40 md:size-72 ring-4 ring-background select-none"
+            @click="handleAvatarTap"
           />
         </div>
       </div>
