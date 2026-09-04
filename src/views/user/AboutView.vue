@@ -12,6 +12,7 @@ import type { Skill, SkillQueryParams } from "@/types/skill";
 import { computed, ref } from "vue";
 import { useT } from "@/composables/useT";
 import { fadeUp, revealUp, staggerDelay } from "@/composables/useMotionPresets";
+import { User as IconUser } from "@lucide/vue";
 
 const params = ref<ExperienceQueryParams>({ page: 1, size: 10 });
 const { data, isLoading, isError, error } = useExperiencesQuery(params);
@@ -89,22 +90,29 @@ const t = useT(NS);
         </p>
       </div>
 
+      <!-- * Placeholder sementara selagi foto asli belum disiapkan -->
       <div v-motion="fadeUp(0.15)" class="grid grid-cols-2 gap-4 mt-8 lg:mt-0 lg:sticky lg:top-24">
-        <img
-          src="https://i.pinimg.com/originals/e8/fe/59/e8fe595d3fcec5c93bb57a21dbf67081.gif"
-          class="object-cover w-full h-56 transition-transform duration-500 shadow-lg rounded-xl md:h-72 hover:scale-105"
-          :alt="t('gallery.workingSetupAlt')"
-        />
-        <img
-          src="https://i.pinimg.com/originals/e8/fe/59/e8fe595d3fcec5c93bb57a21dbf67081.gif"
-          class="object-cover w-full h-56 transition-transform duration-500 shadow-lg rounded-xl md:h-72 hover:scale-105"
-          :alt="t('gallery.codingSessionAlt')"
-        />
-        <img
-          src="https://i.pinimg.com/originals/e8/fe/59/e8fe595d3fcec5c93bb57a21dbf67081.gif"
-          class="object-cover w-full h-48 col-span-2 transition-transform duration-500 shadow-lg rounded-xl md:h-64 hover:scale-105"
-          :alt="t('gallery.outdoorWorkspaceAlt')"
-        />
+        <div
+          role="img"
+          :aria-label="t('gallery.workingSetupAlt')"
+          class="flex items-center justify-center w-full h-56 transition-transform duration-500 shadow-lg rounded-xl md:h-72 hover:scale-105 bg-surface"
+        >
+          <IconUser class="size-12 md:size-16 text-content/30" />
+        </div>
+        <div
+          role="img"
+          :aria-label="t('gallery.codingSessionAlt')"
+          class="flex items-center justify-center w-full h-56 transition-transform duration-500 shadow-lg rounded-xl md:h-72 hover:scale-105 bg-surface"
+        >
+          <IconUser class="size-12 md:size-16 text-content/30" />
+        </div>
+        <div
+          role="img"
+          :aria-label="t('gallery.outdoorWorkspaceAlt')"
+          class="flex items-center justify-center w-full h-48 col-span-2 transition-transform duration-500 shadow-lg rounded-xl md:h-64 hover:scale-105 bg-surface"
+        >
+          <IconUser class="size-12 md:size-16 text-content/30" />
+        </div>
       </div>
     </section>
 

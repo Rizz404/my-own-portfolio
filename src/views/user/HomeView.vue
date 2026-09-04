@@ -12,7 +12,11 @@ import AppError from "@/components/shared/AppError.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 // import BlogCard from "@/components/user/BlogCard.vue";
 import ProjectCard from "@/components/user/ProjectCard.vue";
-import { ArrowRight as IconArrowRight, Download as IconDownload } from "@lucide/vue";
+import {
+  ArrowRight as IconArrowRight,
+  Download as IconDownload,
+  User as IconUser,
+} from "@lucide/vue";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
 import cvUrl from "@/assets/docs/cv-rizqiansyah-ramadhan.pdf?url";
@@ -103,11 +107,22 @@ const myPicture: string | null = null;
           ></div>
 
           <img
-            src="https://i.pinimg.com/736x/05/68/42/0568424eab5583658cf6641c69573b78.jpg"
+            v-if="myPicture"
+            :src="myPicture"
             alt="Rizqiansyah Ramadhan"
             class="relative object-cover rounded-full shadow-xl size-40 md:size-72 ring-4 ring-background select-none"
             @click="handleAvatarTap"
           />
+          <!-- * Placeholder sementara selagi foto asli belum disiapkan -->
+          <div
+            v-else
+            role="img"
+            aria-label="Rizqiansyah Ramadhan"
+            class="relative flex items-center justify-center rounded-full shadow-xl select-none size-40 md:size-72 ring-4 ring-background bg-surface"
+            @click="handleAvatarTap"
+          >
+            <IconUser class="size-16 md:size-28 text-content/30" />
+          </div>
         </div>
       </div>
 
