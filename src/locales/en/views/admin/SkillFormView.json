@@ -16,7 +16,12 @@
   "logo": {
     "title": "Logo",
     "choose": "Choose file",
-    "hint": "Leave empty to keep the current logo."
+    "hint": "Leave empty to keep the current logo.",
+    "remove": "Remove logo",
+    "searchHint": "Or search and pick from the logo catalog - custom names or URLs aren't supported.",
+    "searchPlaceholder": "Search a technology (e.g. Vue)",
+    "searching": "Loading logo catalog...",
+    "noMatches": "No matching logos found."
   },
   "cancel": "Cancel",
   "save": "Save",

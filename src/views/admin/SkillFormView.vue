@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import { isAxiosError } from "axios";
 import IconArrowLeft from "~icons/lucide/arrow-left";
 import IconLoader from "~icons/lucide/loader-2";
 import IconImage from "~icons/lucide/image";
+import IconX from "~icons/lucide/x";
 import AppAlert from "@/components/shared/AppAlert.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";
@@ -13,6 +14,7 @@ import AppSelect from "@/components/shared/AppSelect.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
 import { useSkillMultipartMutation, useSkillUpdateMultipartMutation } from "@/composables/queries/useSkills";
+import { useTechIconsQuery, searchTechIcons, type TechIconOption } from "@/composables/queries/useTechIcons";
 import { skillService } from "@/services/skillService";
 import { setAcceptLanguage } from "@/api/axiosClient";
 import { useI18nStore } from "@/stores/i18nStores";
@@ -104,6 +106,59 @@ function onLogoFileChange(event: Event) {
   // string and 'logoFile'. Choose one") - begitu ada file baru dipilih, logoUrl lama
   // wajib di-null-in biar cuma logoFile yang kekirim.
   if (logoFile.value) values.logoUrl = null;
+}
+
+// * Alternatif dari upload file manual - logo skill boleh juga dipilih langsung dari
+// katalog Devicon (sama kayak techStack di ProjectFormView), yang ngasih URL logo
+// tanpa perlu upload apa-apa. Milih satu suggestion nyetel values.logoUrl langsung
+// & mbatalin logoFile yang mungkin udah kepilih (lihat selectTechLogo()), biar cuma
+// satu sumber logo yang aktif dalam satu waktu.
+const { data: techIconsData, isLoading: isTechIconsLoading } = useTechIconsQuery();
+const techSearchQuery = ref("");
+const isTechDropdownOpen = ref(false);
+
+const techSearchResults = computed(() => searchTechIcons(techIconsData.value, techSearchQuery.value));
+
+// * Index suggestion yang lagi di-highlight, buat navigasi keyboard (↑/↓ + Enter) di
+// dropdown pencarian logo - biar admin gak wajib gerakin mouse tiap milih.
+// Direset ke 0 tiap query berubah biar highlight-nya selalu balik ke hasil teratas.
+const techActiveIndex = ref(0);
+watch(techSearchQuery, () => {
+  techActiveIndex.value = 0;
+});
+
+function moveTechActiveIndex(delta: number) {
+  if (!techSearchResults.value.length) return;
+  const maxIndex = techSearchResults.value.length - 1;
+  techActiveIndex.value = Math.min(maxIndex, Math.max(0, techActiveIndex.value + delta));
+}
+
+function selectTechLogo(option: TechIconOption) {
+  logoFile.value = undefined;
+  if (logoInputRef.value) logoInputRef.value.value = "";
+  values.logoUrl = option.iconUrl;
+  existingLogoUrl.value = option.iconUrl;
+  // * Sengaja gak nutup isTechDropdownOpen di sini - input tetap focused abis milih
+  // (lihat @mousedown.prevent di tombol suggestion), jadi @focus gak bakal nembak lagi
+  // buat re-open dropdown-nya. Ngosongin query aja udah cukup nutup dropdown (lihat
+  // v-if di template: butuh techSearchQuery.trim()), sambil isTechDropdownOpen tetap
+  // true biar begitu user ngetik lagi, dropdown langsung muncul lagi tanpa perlu blur+focus dulu.
+  techSearchQuery.value = "";
+  techActiveIndex.value = 0;
+}
+
+// * Dipanggil dari @keydown.enter di search input - milih suggestion yang lagi di-highlight
+// (techActiveIndex) biar admin bisa navigasi ↑/↓ lalu Enter tanpa nyentuh mouse sama sekali.
+function selectActiveTechLogo() {
+  const option = techSearchResults.value[techActiveIndex.value];
+  if (option) selectTechLogo(option);
+}
+
+function clearLogo() {
+  logoFile.value = undefined;
+  if (logoInputRef.value) logoInputRef.value.value = "";
+  values.logoUrl = null;
+  existingLogoUrl.value = null;
 }
 
 // * GET /skills/:id ngebalikin translation yang UDAH DI-RESOLVE ke satu locale
@@ -253,12 +308,21 @@ const onSubmit = handleSubmit(async (data) => {
       <section class="p-5 space-y-4 border rounded-card border-border bg-surface">
         <h3 class="font-semibold text-content">{{ t("logo.title") }}</h3>
         <div class="flex items-center gap-4">
-          <img
-            v-if="logoPreview"
-            :src="logoPreview"
-            :alt="t('logo.title')"
-            class="object-cover border size-16 rounded-xl border-border bg-background"
-          />
+          <div v-if="logoPreview" class="relative group">
+            <img
+              :src="logoPreview"
+              :alt="t('logo.title')"
+              class="object-cover border size-16 rounded-xl border-border bg-background"
+            />
+            <button
+              type="button"
+              class="absolute flex items-center justify-center text-white rounded-full shadow-sm -top-1.5 -right-1.5 bg-danger size-5"
+              :aria-label="t('logo.remove')"
+              @click="clearLogo"
+            >
+              <IconX class="size-3" />
+            </button>
+          </div>
           <div
             v-else
             class="flex items-center justify-center border border-dashed size-16 rounded-xl border-border text-content/30"
@@ -271,6 +335,58 @@ const onSubmit = handleSubmit(async (data) => {
               {{ t("logo.choose") }}
             </AppButton>
             <p class="mt-1 text-xs text-content/50">{{ t("logo.hint") }}</p>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-xs text-content/50">{{ t("logo.searchHint") }}</p>
+          <div class="relative max-w-sm mt-1.5">
+            <AppInput
+              v-model="techSearchQuery"
+              :placeholder="t('logo.searchPlaceholder')"
+              autocomplete="off"
+              role="combobox"
+              :aria-expanded="isTechDropdownOpen"
+              @focus="isTechDropdownOpen = true"
+              @blur="isTechDropdownOpen = false"
+              @keydown.down.prevent="moveTechActiveIndex(1)"
+              @keydown.up.prevent="moveTechActiveIndex(-1)"
+              @keydown.enter.prevent="selectActiveTechLogo"
+              @keydown.esc="isTechDropdownOpen = false"
+            />
+            <div
+              v-if="isTechDropdownOpen && (isTechIconsLoading || techSearchQuery.trim())"
+              class="absolute z-10 w-full mt-1 overflow-hidden border rounded-xl shadow-lg border-border bg-surface"
+            >
+              <p v-if="isTechIconsLoading" class="px-3 py-2 text-xs text-content/50">
+                {{ t("logo.searching") }}
+              </p>
+              <ul v-else-if="techSearchResults.length" role="listbox" class="overflow-auto max-h-56">
+                <li
+                  v-for="(option, index) in techSearchResults"
+                  :key="option.slug"
+                  role="option"
+                  :aria-selected="index === techActiveIndex"
+                >
+                  <button
+                    type="button"
+                    class="flex items-center w-full gap-2 px-3 py-2 text-sm text-left"
+                    :class="index === techActiveIndex ? 'bg-surface-raised' : 'hover:bg-surface-raised'"
+                    @mousedown.prevent="selectTechLogo(option)"
+                    @mouseenter="techActiveIndex = index"
+                  >
+                    <img
+                      :src="option.iconUrl"
+                      :alt="option.label"
+                      loading="lazy"
+                      class="object-contain rounded size-5 shrink-0"
+                    />
+                    {{ option.label }}
+                  </button>
+                </li>
+              </ul>
+              <p v-else class="px-3 py-2 text-xs text-content/50">{{ t("logo.noMatches") }}</p>
+            </div>
           </div>
         </div>
       </section>

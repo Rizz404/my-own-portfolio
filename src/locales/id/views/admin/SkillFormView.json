@@ -16,7 +16,12 @@
   "logo": {
     "title": "Logo",
     "choose": "Pilih file",
-    "hint": "Biarkan kosong untuk tetap pakai logo saat ini."
+    "hint": "Biarkan kosong untuk tetap pakai logo saat ini.",
+    "remove": "Hapus logo",
+    "searchHint": "Atau cari & pilih dari katalog logo - nama atau URL custom gak didukung.",
+    "searchPlaceholder": "Cari teknologi (mis. Vue)",
+    "searching": "Memuat katalog logo...",
+    "noMatches": "Logo yang cocok gak ketemu."
   },
   "cancel": "Batal",
   "save": "Simpan",
