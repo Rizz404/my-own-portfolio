@@ -4,6 +4,7 @@ import { computed, ref } from "vue";
 import { RouterLink } from "vue-router";
 import { ChevronLeft as IconChevronLeft, ChevronRight as IconChevronRight } from "@lucide/vue";
 import { useT } from "@/composables/useT";
+import { useLocalizedPath } from "@/composables/useLocalizedPath";
 import AppTechStackList from "@/components/shared/AppTechStackList.vue";
 
 const props = defineProps<{ project: Project }>();
@@ -11,6 +12,7 @@ const props = defineProps<{ project: Project }>();
 // * Namespace translation buat komponen ini, ikutin path file JSON-nya:
 // src/locales/<locale>/components/user/ProjectCard.json
 const t = useT("components.user.ProjectCard");
+const { withLocale } = useLocalizedPath();
 
 // * Carousel
 const currentIndex = ref(0);
@@ -65,7 +67,7 @@ const statusBadgeClass = computed(() => {
 
 <template>
   <RouterLink
-    :to="`/projects/${project.id}`"
+    :to="withLocale(`/projects/${project.id}`)"
     class="flex gap-4 p-4 transition-all duration-300 md:flex-col rounded-2xl border border-border/20 bg-surface/30 hover:border-primary/40 hover:bg-surface-raised hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 group"
   >
     <div

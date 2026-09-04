@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onUnmounted } from "vue";
 import { Clock as IconClock } from "@lucide/vue";
 import SocialsWidget from "@/components/user/SocialsWidget.vue";
 import { useT } from "@/composables/useT";
+import { useLocalizedPath } from "@/composables/useLocalizedPath";
 
 const currentYear = new Date().getFullYear();
 
@@ -30,18 +31,19 @@ const scrollToTop = () => {
 };
 
 const t = useT("components.user.UserFooter");
+const { withLocale } = useLocalizedPath();
 
 const navigateLinks = computed(() => [
-  { name: t("nav.home"), path: "/" },
-  { name: t("nav.about"), path: "/about" },
-  // { name: t("nav.blog"), path: "/blogs" },
-  { name: t("nav.projects"), path: "/projects" },
-  { name: t("nav.uses"), path: "/uses" },
+  { name: t("nav.home"), path: withLocale("/") },
+  { name: t("nav.about"), path: withLocale("/about") },
+  // { name: t("nav.blog"), path: withLocale("/blogs") },
+  { name: t("nav.projects"), path: withLocale("/projects") },
+  { name: t("nav.uses"), path: withLocale("/uses") },
 ]);
 
 const exploreLinks = computed(() => [
-  { name: t("colophon"), path: "/colophon" },
-  { name: t("contact"), path: "/contact" },
+  { name: t("colophon"), path: withLocale("/colophon") },
+  { name: t("contact"), path: withLocale("/contact") },
 ]);
 </script>
 

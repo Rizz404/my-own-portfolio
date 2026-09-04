@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import type { Use } from "@/types/use";
 import { RouterLink } from "vue-router";
+import { useLocalizedPath } from "@/composables/useLocalizedPath";
 
 defineProps<{ item: Use }>();
+
+const { withLocale } = useLocalizedPath();
 </script>
 
 <template>
   <RouterLink
-    :to="`/uses/${item.id}`"
+    :to="withLocale(`/uses/${item.id}`)"
     class="flex gap-4 p-4 transition-all duration-300 md:flex-col rounded-2xl border border-border/20 bg-surface/30 hover:border-primary/40 hover:bg-surface-raised hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 group"
   >
     <div

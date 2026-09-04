@@ -10,6 +10,7 @@ import AppPasswordInput from "@/components/shared/AppPasswordInput.vue";
 import { ADMIN_ACCESS_DENIED, useLoginMutation } from "@/composables/queries/useAuth";
 import { fadeUp } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
+import { useLocalizedPath } from "@/composables/useLocalizedPath";
 import { useZodForm } from "@/composables/useZodForm";
 import { loginRequestSchema } from "@/schemas/auth.schema";
 import type { ErrorResponse } from "@/types/api";
@@ -17,6 +18,7 @@ import type { ErrorResponse } from "@/types/api";
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
 // src/locales/<locale>/views/admin/LoginView.json
 const t = useT("views.admin.LoginView");
+const { withLocale } = useLocalizedPath();
 
 const route = useRoute();
 const router = useRouter();
@@ -58,7 +60,7 @@ const errorMessage = computed(() => {
 <template>
   <div class="flex items-center justify-center min-h-screen px-4 py-12 bg-background">
     <RouterLink
-      to="/"
+      :to="withLocale('/')"
       class="absolute inline-flex items-center gap-1.5 text-sm font-medium transition-colors top-6 left-4 sm:left-6 text-content/60 hover:text-primary"
     >
       <IconArrowLeft class="w-4 h-4" />

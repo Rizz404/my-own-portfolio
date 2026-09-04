@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRoute, useRouter } from "vue-router";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import {
   Languages as IconLanguages,
@@ -12,21 +12,25 @@ import {
 import { useThemeStore } from "@/stores/themeStores";
 import { useI18nStore, type LocalePreference } from "@/stores/i18nStores";
 import { useT } from "@/composables/useT";
+import { useLocalizedPath } from "@/composables/useLocalizedPath";
 
 const themeStore = useThemeStore();
+const route = useRoute();
+const router = useRouter();
 
 // * Namespace translation buat komponen ini, ikutin path file JSON-nya:
 // src/locales/<locale>/components/user/UserHeader.json
 const t = useT("components.user.UserHeader");
 
 const i18nStore = useI18nStore();
+const { withLocale } = useLocalizedPath();
 
 const navLinks = computed(() => [
-  { name: t("nav.home"), path: "/" },
-  { name: t("nav.about"), path: "/about" },
-  // { name: t("nav.blog"), path: "/blogs" },
-  { name: t("nav.projects"), path: "/projects" },
-  { name: t("nav.uses"), path: "/uses" },
+  { name: t("nav.home"), path: withLocale("/") },
+  { name: t("nav.about"), path: withLocale("/about") },
+  // { name: t("nav.blog"), path: withLocale("/blogs") },
+  { name: t("nav.projects"), path: withLocale("/projects") },
+  { name: t("nav.uses"), path: withLocale("/uses") },
 ]);
 
 const languageOptions = computed<{ value: LocalePreference; label: string }[]>(() => [
@@ -34,6 +38,21 @@ const languageOptions = computed<{ value: LocalePreference; label: string }[]>((
   { value: "en", label: t("languageSwitcher.english") },
   { value: "id", label: t("languageSwitcher.indonesian") },
 ]);
+
+// * Ganti bahasa gak cuma nyimpen preferensi (i18nStore.setLocalePreference udah nge-sync
+// vue-i18n & header Accept-Language, lihat i18nStores.ts) - begitu URL-nya kebawa prefix
+// locale, halaman yang lagi dibuka juga harus dipindah ke prefix yang baru biar URL & bahasa
+// yang ditampilin gak beda sendiri. `route.name/params` dipertahanin biar tetep di halaman
+// yang sama (mis. lagi di detail project id=5, cuma locale-nya yang ganti).
+const selectLocale = (preference: LocalePreference) => {
+  i18nStore.setLocalePreference(preference);
+  router.push({
+    name: route.name ?? undefined,
+    params: { ...route.params, locale: i18nStore.currentLocale },
+    query: route.query,
+    hash: route.hash,
+  });
+};
 </script>
 
 <template>
@@ -41,7 +60,7 @@ const languageOptions = computed<{ value: LocalePreference; label: string }[]>((
     class="sticky top-0 z-50 w-full transition-colors duration-300 border-b border-border bg-background/80 backdrop-blur-md"
   >
     <div class="flex items-center justify-between h-16 md:h-20">
-      <RouterLink to="/" class="flex items-center gap-3 shrink-0 group">
+      <RouterLink :to="withLocale('/')" class="flex items-center gap-3 shrink-0 group">
         <img
           src="/images/logo.png"
           alt="Logo"
@@ -92,7 +111,7 @@ const languageOptions = computed<{ value: LocalePreference; label: string }[]>((
             >
               <MenuItem v-for="option in languageOptions" :key="option.value" v-slot="{ active }">
                 <button
-                  @click="i18nStore.setLocalePreference(option.value)"
+                  @click="selectLocale(option.value)"
                   :class="[
                     'flex w-full items-center justify-between px-3 py-2 text-sm transition-colors',
                     active ? 'bg-primary/10 text-primary' : 'text-content/80',

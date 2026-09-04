@@ -11,6 +11,7 @@ import type { ExperienceQueryParams } from "@/types/experience";
 import type { Skill, SkillQueryParams } from "@/types/skill";
 import { computed, ref } from "vue";
 import { useT } from "@/composables/useT";
+import { useLocalizedPath } from "@/composables/useLocalizedPath";
 import { fadeUp, revealUp, staggerDelay } from "@/composables/useMotionPresets";
 import { User as IconUser } from "@lucide/vue";
 
@@ -51,6 +52,7 @@ const categoryDotClass = (index: number) => categoryDotColors[index % categoryDo
 // src/locales/<locale>/views/user/AboutView.json
 const NS = "views.user.AboutView";
 const t = useT(NS);
+const { withLocale } = useLocalizedPath();
 </script>
 
 <template>
@@ -83,7 +85,7 @@ const t = useT(NS);
         <p>
           {{ t("hero.usesPagePrefix") }}
           <RouterLink
-            to="/uses"
+            :to="withLocale('/uses')"
             class="underline transition-colors text-primary hover:text-primary/80"
             >{{ t("hero.usesPageLink") }}</RouterLink
           >.

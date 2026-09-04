@@ -4,6 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 import AppButton from "@/components/shared/AppButton.vue";
 import { Compass as IconCompass } from "@lucide/vue";
 import { useT } from "@/composables/useT";
+import { useLocalizedPath } from "@/composables/useLocalizedPath";
 import { fadeUp } from "@/composables/useMotionPresets";
 
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
@@ -12,14 +13,17 @@ const t = useT("views.shared.NotFoundView");
 
 const route = useRoute();
 const router = useRouter();
+const { withLocale } = useLocalizedPath();
 
 // * Dipakai buat catch-all "/admin/:pathMatch(.*)*" (router/routes/admin.ts) maupun
-// catch-all publik "/:pathMatch(.*)*" (router/routes/user.ts) - biar tombol baliknya
-// nyambung ke tempat yang relevan, bukan ke satu tujuan yang sama.
+// catch-all publik ":pathMatch(.*)*" di dalam grup "/:locale(en|id)" (router/routes/user.ts)
+// - biar tombol baliknya nyambung ke tempat yang relevan, bukan ke satu tujuan yang sama.
 const isAdminArea = computed(() => route.path.startsWith("/admin"));
 
 const goHome = () => {
-  router.push(isAdminArea.value ? { name: "AdminDashboard" } : { name: "Home" });
+  // * "Home" sekarang butuh param locale - push by name di sini bakal error kalau
+  // param-nya gak dikasih, jadi dilewatin string path yang udah dikasih prefix locale.
+  router.push(isAdminArea.value ? { name: "AdminDashboard" } : withLocale("/"));
 };
 </script>
 

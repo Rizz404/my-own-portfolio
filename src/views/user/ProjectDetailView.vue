@@ -9,10 +9,12 @@ import { formatDate } from "@/utils/dateUtil";
 import { fadeUp } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
 import { useDocumentTitle } from "@/composables/useDocumentTitle";
+import { useLocalizedPath } from "@/composables/useLocalizedPath";
 
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
 // src/locales/<locale>/views/user/ProjectDetailView.json
 const t = useT("views.user.ProjectDetailView");
+const { withLocale } = useLocalizedPath();
 
 const route = useRoute();
 const projectId = route.params.id as string;
@@ -84,7 +86,7 @@ const scrollImageStrip = (dir: "next" | "prev") => {
 <template>
   <div class="max-w-4xl mx-auto mt-8 mb-20 md:mt-12">
     <RouterLink
-      to="/projects"
+      :to="withLocale('/projects')"
       class="inline-flex items-center gap-2 mb-8 text-sm font-medium transition-colors text-content/60 hover:text-success"
     >
       <IconArrowLeft class="w-4 h-4" /> {{ t("back") }}
