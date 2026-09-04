@@ -2,7 +2,13 @@
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-import { Languages as IconLanguages, Sun as IconSun, Moon as IconMoon, Monitor as IconMonitor, Check as IconCheck } from "@lucide/vue";
+import {
+  Languages as IconLanguages,
+  Sun as IconSun,
+  Moon as IconMoon,
+  Monitor as IconMonitor,
+  Check as IconCheck,
+} from "@lucide/vue";
 import { useThemeStore } from "@/stores/themeStores";
 import { useI18nStore, type LocalePreference } from "@/stores/i18nStores";
 import { useT } from "@/composables/useT";
@@ -37,7 +43,7 @@ const languageOptions = computed<{ value: LocalePreference; label: string }[]>((
     <div class="flex items-center justify-between h-16 md:h-20">
       <RouterLink to="/" class="flex items-center gap-3 shrink-0 group">
         <img
-          src="https://i.pinimg.com/736x/05/68/42/0568424eab5583658cf6641c69573b78.jpg"
+          src="/images/logo.png"
           alt="Logo"
           class="object-cover w-8 h-8 transition-transform duration-300 ring-2 ring-primary/20 rounded-xs group-hover:scale-105"
         />

@@ -55,7 +55,7 @@ const exploreLinks = computed(() => [
           <div>
             <div class="flex items-center gap-3 mb-4">
               <img
-                src="https://i.pinimg.com/736x/05/68/42/0568424eab5583658cf6641c69573b78.jpg"
+                src="/images/logo.png"
                 alt="Logo"
                 class="object-cover w-6 h-6 rounded-full ring-1 ring-primary/20"
               />

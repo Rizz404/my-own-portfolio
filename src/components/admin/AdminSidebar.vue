@@ -1,7 +1,17 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { RouterLink, useRouter } from "vue-router";
-import { LayoutDashboard as IconLayoutDashboard, FileText as IconFileText, FolderKanban as IconFolderKanban, Briefcase as IconBriefcase, Sparkles as IconSparkles, Package as IconPackage, Users as IconUsers, LogOut as IconLogOut, X as IconX } from "@lucide/vue";
+import {
+  LayoutDashboard as IconLayoutDashboard,
+  FileText as IconFileText,
+  FolderKanban as IconFolderKanban,
+  Briefcase as IconBriefcase,
+  Sparkles as IconSparkles,
+  Package as IconPackage,
+  Users as IconUsers,
+  LogOut as IconLogOut,
+  X as IconX,
+} from "@lucide/vue";
 import { authStores } from "@/stores/authStores";
 import { useT } from "@/composables/useT";
 
@@ -53,7 +63,7 @@ const handleLogout = () => {
     <div class="flex items-center justify-between h-16 px-5 border-b shrink-0 border-border/50">
       <RouterLink :to="{ name: 'AdminDashboard' }" class="flex items-center gap-2.5 group">
         <img
-          src="https://i.pinimg.com/736x/05/68/42/0568424eab5583658cf6641c69573b78.jpg"
+          src="/images/logo.png"
           alt="Logo"
           class="object-cover w-8 h-8 transition-transform duration-300 ring-2 ring-primary/20 rounded-xs group-hover:scale-105"
         />
@@ -81,7 +91,9 @@ const handleLogout = () => {
           @click="navigate($event)"
           :class="[
             'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-            isActive ? 'bg-primary/10 text-primary' : 'text-content/70 hover:bg-surface-raised hover:text-primary',
+            isActive
+              ? 'bg-primary/10 text-primary'
+              : 'text-content/70 hover:bg-surface-raised hover:text-primary',
           ]"
         >
           <component :is="item.icon" class="w-5 h-5 shrink-0" />
