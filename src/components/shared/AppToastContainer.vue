@@ -2,7 +2,7 @@
 import type { AppToastContainerProps } from "@/types/components";
 import { twMerge } from "tailwind-merge";
 import { computed } from "vue";
-import IconX from "~icons/lucide/x";
+import { X as IconX } from "@lucide/vue";
 import { useToast } from "@/composables/useToast";
 import { useT } from "@/composables/useT";
 import { alertVariantClasses, alertVariantIcons } from "@/utils/alertVariants";

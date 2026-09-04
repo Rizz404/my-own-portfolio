@@ -6,11 +6,13 @@
       "name": "my-own-portfolio",
       "dependencies": {
         "@headlessui/vue": "^1.7.23",
+        "@lucide/vue": "^1.41.0",
         "@tanstack/vue-query": "^5.101.4",
         "@vueuse/core": "^14.2.1",
         "@vueuse/motion": "^3.0.3",
         "axios": "^1.18.1",
         "pinia": "^3.0.4",
+        "simple-icons": "^16.29.0",
         "tailwind-merge": "^3.5.0",
         "vue": "^3.5.29",
         "vue-i18n": "^10.0.8",
@@ -204,6 +206,8 @@
     "@jridgewell/sourcemap-codec": ["@jridgewell/sourcemap-codec@1.5.5", "", {}, "sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og=="],
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
+
+    "@lucide/vue": ["@lucide/vue@1.41.0", "", { "peerDependencies": { "vue": ">=3.0.1" } }, "sha512-ciHtudHTeqMDzJKPI36AGboypCk8Jz3qFin3oU0nJfPc5MwXmqLXIEQvXE+yI6Sz5SnxVqREgm8rVN4KdDlnVQ=="],
 
     "@nodelib/fs.scandir": ["@nodelib/fs.scandir@2.1.5", "", { "dependencies": { "@nodelib/fs.stat": "2.0.5", "run-parallel": "^1.1.9" } }, "sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g=="],
 
@@ -874,6 +878,8 @@
     "shebang-regex": ["shebang-regex@3.0.0", "", {}, "sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A=="],
 
     "shell-quote": ["shell-quote@1.10.0", "", {}, "sha512-w1aiOKwKuRgtwAReIIj89puqg+I7GvX4IbLrvmhXbzQsj1+Zwi4VO3+fa6ZF91TWSjIxoEkKnMeHcLEODK5ZXA=="],
+
+    "simple-icons": ["simple-icons@16.29.0", "", {}, "sha512-4H94f5ZgcCcgJroc902TFlFdgPu2IU2eD7+WebN2Z14xKYrKHeJ4UQcZwzgSuH4Rgzw+jp7sbHl40NefuIEYsg=="],
 
     "sirv": ["sirv@3.0.2", "", { "dependencies": { "@polka/url": "^1.0.0-next.24", "mrmime": "^2.0.0", "totalist": "^3.0.0" } }, "sha512-2wcC/oGxHis/BoHkkPwldgiPSYcpZK3JU28WoMVv55yHJgcZ8rlXvuG9iZggz+sU1d4bRgIGASwyWqjxu3FM0g=="],
 

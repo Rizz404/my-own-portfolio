@@ -1,7 +1,5 @@
 import type { Component } from "vue";
-import IconCircleCheck from "~icons/lucide/circle-check";
-import IconInfo from "~icons/lucide/info";
-import IconTriangleAlert from "~icons/lucide/triangle-alert";
+import { CircleCheck as IconCircleCheck, Info as IconInfo, TriangleAlert as IconTriangleAlert } from "@lucide/vue";
 
 export type AlertVariant = "danger" | "success" | "warning" | "info";
 

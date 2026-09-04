@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import IconFileText from "~icons/lucide/file-text";
-import IconTrash2 from "~icons/lucide/trash-2";
-import IconLoader from "~icons/lucide/loader-2";
-import IconCalendar from "~icons/lucide/calendar";
-import IconCheck from "~icons/lucide/check";
-import IconEye from "~icons/lucide/eye";
-import IconThumbsUp from "~icons/lucide/thumbs-up";
+import { FileText as IconFileText, Trash2 as IconTrash2, Loader2 as IconLoader, Calendar as IconCalendar, Check as IconCheck, Eye as IconEye, ThumbsUp as IconThumbsUp } from "@lucide/vue";
 import type Blog from "@/types/blog";
 import { formatDate } from "@/utils/dateUtil";
 import { useT } from "@/composables/useT";

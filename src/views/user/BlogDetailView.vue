@@ -2,10 +2,7 @@
 import { useRoute } from "vue-router";
 import { useBlogQuery } from "@/composables/queries/useBlogs";
 import AppError from "@/components/shared/AppError.vue";
-import IconCalendar from "~icons/lucide/calendar";
-import IconEye from "~icons/lucide/eye";
-import IconArrowLeft from "~icons/lucide/arrow-left";
-import IconPaperclip from "~icons/lucide/paperclip";
+import { Calendar as IconCalendar, Eye as IconEye, ArrowLeft as IconArrowLeft, Paperclip as IconPaperclip } from "@lucide/vue";
 import { formatDate } from "@/utils/dateUtil";
 import { fadeUp } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";

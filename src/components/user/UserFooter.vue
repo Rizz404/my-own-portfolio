@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from "vue";
-import IconClock from "~icons/lucide/clock";
+import { Clock as IconClock } from "@lucide/vue";
 import SocialsWidget from "@/components/user/SocialsWidget.vue";
 import { useT } from "@/composables/useT";
 

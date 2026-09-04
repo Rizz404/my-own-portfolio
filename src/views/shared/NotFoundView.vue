@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import AppButton from "@/components/shared/AppButton.vue";
-import IconCompass from "~icons/lucide/compass";
+import { Compass as IconCompass } from "@lucide/vue";
 import { useT } from "@/composables/useT";
 import { fadeUp } from "@/composables/useMotionPresets";
 

@@ -12,8 +12,7 @@ import AppError from "@/components/shared/AppError.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 // import BlogCard from "@/components/user/BlogCard.vue";
 import ProjectCard from "@/components/user/ProjectCard.vue";
-import IconArrowRight from "~icons/lucide/arrow-right";
-import IconDownload from "~icons/lucide/download";
+import { ArrowRight as IconArrowRight, Download as IconDownload } from "@lucide/vue";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
 import cvUrl from "@/assets/docs/cv-rizqiansyah-ramadhan.pdf?url";
@@ -38,12 +37,14 @@ const {
   error: projectError,
 } = useProjectsQuery(projectQueryParams);
 
-// * "Pintu belakang" ke admin: tap foto profil 5x beruntun buat ke halaman
+// * Ke admin: tap foto profil 5x beruntun buat ke halaman
 // login admin, tanpa nambah tombol/link admin yang keliatan di UI publik.
 const router = useRouter();
 const { handleTap: handleAvatarTap } = useSecretTap(() => {
   router.push({ name: "AdminLogin" });
 });
+
+const myPicture: string | null = null;
 </script>
 
 <template>
@@ -100,6 +101,7 @@ const { handleTap: handleAvatarTap } = useSecretTap(() => {
           <div
             class="absolute inset-0 transition-all rounded-full bg-primary/20 blur-2xl group-hover:bg-primary/30"
           ></div>
+
           <img
             src="https://i.pinimg.com/736x/05/68/42/0568424eab5583658cf6641c69573b78.jpg"
             alt="Rizqiansyah Ramadhan"

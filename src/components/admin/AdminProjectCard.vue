@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import IconFolderKanban from "~icons/lucide/folder-kanban";
-import IconTrash2 from "~icons/lucide/trash-2";
-import IconLoader from "~icons/lucide/loader-2";
-import IconCalendar from "~icons/lucide/calendar";
-import IconCheck from "~icons/lucide/check";
+import { FolderKanban as IconFolderKanban, Trash2 as IconTrash2, Loader2 as IconLoader, Calendar as IconCalendar, Check as IconCheck } from "@lucide/vue";
 import type Project from "@/types/project";
 import { formatDate } from "@/utils/dateUtil";
 import { useT } from "@/composables/useT";

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { AppPasswordInputProps } from "@/types/components";
 import { ref } from "vue";
-import IconEye from "~icons/lucide/eye";
-import IconEyeOff from "~icons/lucide/eye-off";
+import { Eye as IconEye, EyeOff as IconEyeOff } from "@lucide/vue";
 import AppInput from "@/components/shared/AppInput.vue";
 
 // * Tipis banget di atas AppInput - cuma nambahin state + tombol toggle

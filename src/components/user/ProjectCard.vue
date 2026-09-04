@@ -2,8 +2,7 @@
 import type Project from "@/types/project";
 import { computed, ref } from "vue";
 import { RouterLink } from "vue-router";
-import IconChevronLeft from "~icons/lucide/chevron-left";
-import IconChevronRight from "~icons/lucide/chevron-right";
+import { ChevronLeft as IconChevronLeft, ChevronRight as IconChevronRight } from "@lucide/vue";
 import { useT } from "@/composables/useT";
 import AppTechStackList from "@/components/shared/AppTechStackList.vue";
 

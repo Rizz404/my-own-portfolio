@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Blog } from "@/types/blog";
-import IconCalendar from "~icons/lucide/calendar";
-import IconEye from "~icons/lucide/eye";
+import { Calendar as IconCalendar, Eye as IconEye } from "@lucide/vue";
 import { formatDate } from "@/utils/dateUtil";
 import { RouterLink } from "vue-router";
 

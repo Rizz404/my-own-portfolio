@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-import IconMenu from "~icons/lucide/menu";
-import IconLanguages from "~icons/lucide/languages";
-import IconCheck from "~icons/lucide/check";
-import IconSun from "~icons/lucide/sun";
-import IconMoon from "~icons/lucide/moon";
-import IconMonitor from "~icons/lucide/monitor";
+import { Menu as IconMenu, Languages as IconLanguages, Check as IconCheck, Sun as IconSun, Moon as IconMoon, Monitor as IconMonitor } from "@lucide/vue";
 import { useThemeStore } from "@/stores/themeStores";
 import { useI18nStore, type LocalePreference } from "@/stores/i18nStores";
 import { useT } from "@/composables/useT";

@@ -3,8 +3,7 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useUseQuery } from "@/composables/queries/useUses";
 import AppError from "@/components/shared/AppError.vue";
-import IconArrowLeft from "~icons/lucide/arrow-left";
-import IconExternalLink from "~icons/lucide/external-link";
+import { ArrowLeft as IconArrowLeft, ExternalLink as IconExternalLink } from "@lucide/vue";
 import { fadeUp } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
 

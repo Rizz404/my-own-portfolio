@@ -2,12 +2,7 @@
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import { isAxiosError } from "axios";
-import IconArrowLeft from "~icons/lucide/arrow-left";
-import IconLoader from "~icons/lucide/loader-2";
-import IconPlus from "~icons/lucide/plus";
-import IconImage from "~icons/lucide/image";
-import IconPaperclip from "~icons/lucide/paperclip";
-import IconX from "~icons/lucide/x";
+import { ArrowLeft as IconArrowLeft, Loader2 as IconLoader, Plus as IconPlus, Image as IconImage, Paperclip as IconPaperclip, X as IconX } from "@lucide/vue";
 import AppAlert from "@/components/shared/AppAlert.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";

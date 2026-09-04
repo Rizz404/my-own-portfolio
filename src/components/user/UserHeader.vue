@@ -2,11 +2,7 @@
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
-import IconLanguages from "~icons/lucide/languages";
-import IconSun from "~icons/lucide/sun";
-import IconMoon from "~icons/lucide/moon";
-import IconMonitor from "~icons/lucide/monitor";
-import IconCheck from "~icons/lucide/check";
+import { Languages as IconLanguages, Sun as IconSun, Moon as IconMoon, Monitor as IconMonitor, Check as IconCheck } from "@lucide/vue";
 import { useThemeStore } from "@/stores/themeStores";
 import { useI18nStore, type LocalePreference } from "@/stores/i18nStores";
 import { useT } from "@/composables/useT";

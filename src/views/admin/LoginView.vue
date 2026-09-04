@@ -2,8 +2,7 @@
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { isAxiosError } from "axios";
-import IconArrowLeft from "~icons/lucide/arrow-left";
-import IconLoader from "~icons/lucide/loader-2";
+import { ArrowLeft as IconArrowLeft, Loader2 as IconLoader } from "@lucide/vue";
 import AppAlert from "@/components/shared/AppAlert.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";

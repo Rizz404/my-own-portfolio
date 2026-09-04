@@ -1,15 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { RouterLink, useRouter } from "vue-router";
-import IconLayoutDashboard from "~icons/lucide/layout-dashboard";
-import IconFileText from "~icons/lucide/file-text";
-import IconFolderKanban from "~icons/lucide/folder-kanban";
-import IconBriefcase from "~icons/lucide/briefcase";
-import IconSparkles from "~icons/lucide/sparkles";
-import IconPackage from "~icons/lucide/package";
-import IconUsers from "~icons/lucide/users";
-import IconLogOut from "~icons/lucide/log-out";
-import IconX from "~icons/lucide/x";
+import { LayoutDashboard as IconLayoutDashboard, FileText as IconFileText, FolderKanban as IconFolderKanban, Briefcase as IconBriefcase, Sparkles as IconSparkles, Package as IconPackage, Users as IconUsers, LogOut as IconLogOut, X as IconX } from "@lucide/vue";
 import { authStores } from "@/stores/authStores";
 import { useT } from "@/composables/useT";
 

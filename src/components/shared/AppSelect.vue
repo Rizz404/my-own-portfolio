@@ -2,7 +2,7 @@
 import type { AppSelectProps } from "@/types/components";
 import { twMerge } from "tailwind-merge";
 import { computed, useId } from "vue";
-import IconChevronDown from "~icons/lucide/chevron-down";
+import { ChevronDown as IconChevronDown } from "@lucide/vue";
 
 const props = withDefaults(defineProps<AppSelectProps>(), {
   id: undefined,

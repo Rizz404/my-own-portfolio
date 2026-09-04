@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IconWarning from "~icons/lucide/triangle-alert";
+import { TriangleAlert as IconWarning } from "@lucide/vue";
 import { fadeUp } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
 

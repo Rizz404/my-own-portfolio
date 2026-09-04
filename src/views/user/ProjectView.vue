@@ -7,7 +7,7 @@ import ProjectCard from "@/components/user/ProjectCard.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
 import AppButton from "@/components/shared/AppButton.vue";
-import IconSearch from "~icons/lucide/search";
+import { Search as IconSearch } from "@lucide/vue";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
 import { useQuerySync } from "@/composables/useQuerySync";

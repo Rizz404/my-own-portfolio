@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, useId, watch } from "vue";
 import { twMerge } from "tailwind-merge";
-import IconX from "~icons/lucide/x";
+import { X as IconX } from "@lucide/vue";
 import type { AppModalProps } from "@/types/components";
 import { fadeIn, scaleIn } from "@/composables/useMotionPresets";
 import { lockBodyScroll, unlockBodyScroll } from "@/composables/useScrollLock";

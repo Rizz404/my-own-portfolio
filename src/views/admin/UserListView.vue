@@ -2,12 +2,7 @@
 import { computed, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
 import { refDebounced } from "@vueuse/core";
-import IconPlus from "~icons/lucide/plus";
-import IconTrash2 from "~icons/lucide/trash-2";
-import IconListChecks from "~icons/lucide/list-checks";
-import IconSearch from "~icons/lucide/search";
-import IconUsers from "~icons/lucide/users";
-import IconLoader from "~icons/lucide/loader-2";
+import { Plus as IconPlus, Trash2 as IconTrash2, ListChecks as IconListChecks, Search as IconSearch, Users as IconUsers, Loader2 as IconLoader } from "@lucide/vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppSelect from "@/components/shared/AppSelect.vue";
 import AppCheckbox from "@/components/shared/AppCheckbox.vue";
