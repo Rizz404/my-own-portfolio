@@ -8,6 +8,10 @@ declare module "vue-router" {
   interface RouteMeta {
     layout: "user" | "admin" | "blank";
     requiresAuth?: boolean;
+    // * i18n key buat document.title (lihat App.vue + useDocumentTitle), mis.
+    // "views.admin.ProjectListView.title" -> t() jadi "Projects - Rizqiansyah".
+    // Opsional - route tanpa ini jatuh ke "Rizqiansyah" polos.
+    titleKey?: string;
   }
 }
 

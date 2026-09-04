@@ -50,7 +50,7 @@ const languageOptions = computed<{ value: LocalePreference; label: string }[]>((
         <span
           class="hidden font-sans font-bold transition-colors md:block text-content group-hover:text-primary"
         >
-          MyPortfolio
+          Rizqiansyah
         </span>
       </RouterLink>
 

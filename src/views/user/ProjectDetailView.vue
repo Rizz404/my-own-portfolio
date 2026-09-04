@@ -8,6 +8,7 @@ import { ArrowLeft as IconArrowLeft, ExternalLink as IconExternalLink, Calendar 
 import { formatDate } from "@/utils/dateUtil";
 import { fadeUp } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
+import { useDocumentTitle } from "@/composables/useDocumentTitle";
 
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
 // src/locales/<locale>/views/user/ProjectDetailView.json
@@ -18,6 +19,13 @@ const projectId = route.params.id as string;
 
 // Fetch Detail Project API
 const { data: response, isLoading, isError, error } = useProjectQuery(projectId);
+
+// * Nimpa title generik "Project - Rizqiansyah" (dari App.vue) begitu proyeknya kefetch.
+// `onlyWhenPresent` biar diem aja pas masih loading.
+useDocumentTitle(
+  computed(() => response.value?.data?.name),
+  { onlyWhenPresent: true },
+);
 
 const formatEnumText = (val: string | number) => {
   if (val === undefined || val === null) return;

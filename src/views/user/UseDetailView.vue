@@ -6,6 +6,7 @@ import AppError from "@/components/shared/AppError.vue";
 import { ArrowLeft as IconArrowLeft, ExternalLink as IconExternalLink } from "@lucide/vue";
 import { fadeUp } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
+import { useDocumentTitle } from "@/composables/useDocumentTitle";
 
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
 // src/locales/<locale>/views/user/UseDetailView.json
@@ -15,6 +16,13 @@ const route = useRoute();
 const useId = route.params.id as string;
 
 const { data: response, isLoading, isError, error } = useUseQuery(useId);
+
+// * Nimpa title generik "Uses - Rizqiansyah" (dari App.vue) begitu item-nya kefetch.
+// `onlyWhenPresent` biar diem aja pas masih loading.
+useDocumentTitle(
+  computed(() => response.value?.data?.itemName),
+  { onlyWhenPresent: true },
+);
 
 const formatEnumText = (val: string | number) => {
   if (val === undefined || val === null) return "";

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useBlogQuery } from "@/composables/queries/useBlogs";
 import AppError from "@/components/shared/AppError.vue";
@@ -6,6 +7,7 @@ import { Calendar as IconCalendar, Eye as IconEye, ArrowLeft as IconArrowLeft, P
 import { formatDate } from "@/utils/dateUtil";
 import { fadeUp } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
+import { useDocumentTitle } from "@/composables/useDocumentTitle";
 
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
 // src/locales/<locale>/views/user/BlogDetailView.json
@@ -15,6 +17,13 @@ const route = useRoute();
 const blogId = route.params.id as string;
 
 const { data: response, isLoading, isError, error } = useBlogQuery(blogId);
+
+// * Nimpa title generik "Blog - Rizqiansyah" (dari App.vue) begitu artikelnya kefetch,
+// jadi mis. "Cara Setup Vue - Rizqiansyah". `onlyWhenPresent` biar diem aja pas masih loading.
+useDocumentTitle(
+  computed(() => response.value?.data?.title),
+  { onlyWhenPresent: true },
+);
 </script>
 
 <template>
