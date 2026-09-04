@@ -1,0 +1,43 @@
+{
+  "hero": {
+    "title": "Colophon",
+    "description": "A colophon is a note on how a work was made - the fonts, the tools, the little decisions. Here's a peek behind the curtain of this site."
+  },
+  "intro": {
+    "paragraph1": "This site is a single-page Vue app, built with a component-first mindset: small, reusable pieces (buttons, inputs, cards) composed into full pages, all backed by a typed API layer and cached with TanStack Query.",
+    "paragraph2": "Every screen ships in both English and Indonesian, adapts to light and dark mode, and respects your device's reduced-motion setting - the entrance animations you see are a nice-to-have, never a requirement to read the content."
+  },
+  "stack": {
+    "title": "Built With",
+    "groups": {
+      "framework": "Framework & Tooling",
+      "styling": "Styling & UI",
+      "dataState": "Data & State",
+      "motionI18n": "Motion & Internationalization"
+    }
+  },
+  "design": {
+    "typography": {
+      "title": "Typography",
+      "sans": "for headings and body copy - clean, geometric, and easy to scan",
+      "mono": "for code, dates, and anything that benefits from fixed-width alignment"
+    },
+    "palette": {
+      "title": "Color Palette",
+      "description": "The accent colors throughout this site are drawn from Ikuyo Kita of Kessoku Band: red hair, green-yellow eyes, a gold uniform button, and a maroon ribbon and shoes.",
+      "primary": "Primary - hair",
+      "success": "Success - eyes",
+      "warning": "Warning - uniform button",
+      "danger": "Danger - ribbon & shoes"
+    },
+    "craft": {
+      "title": "Motion & Accessibility",
+      "description": "Theme switching crossfades with the View Transitions API instead of animating every element by hand, and scroll/entrance animations fall back to an instant, motion-free state whenever prefers-reduced-motion is on."
+    }
+  },
+  "source": {
+    "title": "Open Source",
+    "description": "Curious how it's put together under the hood? The full source code is public on GitHub, from the component library down to the color tokens above.",
+    "viewButton": "View Source"
+  }
+}

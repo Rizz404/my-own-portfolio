@@ -1,0 +1,43 @@
+{
+  "hero": {
+    "title": "Kolofon",
+    "description": "Kolofon adalah catatan tentang bagaimana sebuah karya dibuat - font-nya, tool-nya, sampai keputusan-keputusan kecilnya. Ini sedikit bocoran di balik layar situs ini."
+  },
+  "intro": {
+    "paragraph1": "Situs ini adalah aplikasi Vue satu halaman (SPA), dibangun dengan pola pikir component-first: potongan-potongan kecil yang bisa dipakai ulang (tombol, input, card) disusun jadi halaman utuh, semuanya didukung API layer yang typed dan di-cache pakai TanStack Query.",
+    "paragraph2": "Setiap halaman tersedia dalam Bahasa Inggris dan Indonesia, menyesuaikan mode terang/gelap, dan menghormati pengaturan reduced-motion di perangkat kamu - animasi masuk yang kamu lihat itu cuma pemanis, bukan syarat buat bisa baca kontennya."
+  },
+  "stack": {
+    "title": "Dibangun Dengan",
+    "groups": {
+      "framework": "Framework & Tooling",
+      "styling": "Styling & UI",
+      "dataState": "Data & State",
+      "motionI18n": "Motion & Internasionalisasi"
+    }
+  },
+  "design": {
+    "typography": {
+      "title": "Tipografi",
+      "sans": "dipakai untuk judul dan teks isi - bersih, geometris, dan enak dipindai",
+      "mono": "dipakai untuk kode, tanggal, dan hal-hal yang enak dibaca dengan lebar karakter tetap"
+    },
+    "palette": {
+      "title": "Palet Warna",
+      "description": "Warna aksen di seluruh situs ini diambil dari Ikuyo Kita dari Kessoku Band: rambut merah, mata hijau-kuning, kancing seragam emas, serta pita dan sepatu maroon.",
+      "primary": "Primary - rambut",
+      "success": "Success - mata",
+      "warning": "Warning - kancing seragam",
+      "danger": "Danger - pita & sepatu"
+    },
+    "craft": {
+      "title": "Motion & Aksesibilitas",
+      "description": "Ganti tema pakai crossfade dari View Transitions API, bukan animasi manual di tiap elemen, dan animasi scroll/entrance-nya otomatis jadi instan tanpa gerakan begitu prefers-reduced-motion aktif."
+    }
+  },
+  "source": {
+    "title": "Open Source",
+    "description": "Penasaran gimana situs ini dirakit di baliknya? Kode sumbernya publik di GitHub, dari component library sampai ke color token di atas.",
+    "viewButton": "Lihat Kode Sumber"
+  }
+}
