@@ -7,5 +7,9 @@
   "empty": {
     "title": "No gear found.",
     "subtitle": "Check back later for updates on my setup."
+  },
+  "stats": {
+    "hardware": "{count} Hardware",
+    "software": "{count} Software"
   }
 }

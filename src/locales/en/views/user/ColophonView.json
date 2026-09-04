@@ -5,7 +5,14 @@
   },
   "intro": {
     "paragraph1": "This site is a single-page Vue app, built with a component-first mindset: small, reusable pieces (buttons, inputs, cards) composed into full pages, all backed by a typed API layer and cached with TanStack Query.",
-    "paragraph2": "Every screen ships in both English and Indonesian, adapts to light and dark mode, and respects your device's reduced-motion setting - the entrance animations you see are a nice-to-have, never a requirement to read the content."
+    "paragraph2": "Every screen ships in both English and Indonesian, adapts to light and dark mode, and respects your device's reduced-motion setting - the entrance animations you see are a nice-to-have, never a requirement to read the content.",
+    "highlightsTitle": "At a Glance",
+    "highlights": {
+      "componentFirst": "Component-first architecture",
+      "typedAndCached": "Typed API layer, cached with TanStack Query",
+      "bilingual": "Ships in English and Indonesian",
+      "adaptive": "Light/dark mode and reduced-motion aware"
+    }
   },
   "stack": {
     "title": "Built With",

@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import AppButton from "@/components/shared/AppButton.vue";
 import IconGithub from "~icons/lucide/github";
-import { ExternalLink as IconExternalLink } from "@lucide/vue";
+import {
+  ExternalLink as IconExternalLink,
+  Component as IconComponent,
+  Database as IconDatabase,
+  Languages as IconLanguages,
+  MoonStar as IconMoonStar,
+} from "@lucide/vue";
 import { useT } from "@/composables/useT";
 import { fadeUp, revealUp, staggerDelay } from "@/composables/useMotionPresets";
 
@@ -31,23 +37,51 @@ const paletteSwatches = [
   { dotClass: "bg-warning", labelKey: "warning" },
   { dotClass: "bg-danger", labelKey: "danger" },
 ];
+
+// * Kartu "At a Glance" di sebelah intro - satu poin per paragraf intro di atas, dot/badge
+// warnanya ngikutin gilirian 4 warna yang sama biar konsisten sama section lain di halaman ini.
+const highlights = [
+  { key: "componentFirst", icon: IconComponent, accentClass: "bg-primary/10 text-primary" },
+  { key: "typedAndCached", icon: IconDatabase, accentClass: "bg-success/10 text-success" },
+  { key: "bilingual", icon: IconLanguages, accentClass: "bg-warning/10 text-warning" },
+  { key: "adaptive", icon: IconMoonStar, accentClass: "bg-danger/10 text-danger" },
+];
 </script>
 
 <template>
   <div class="mt-8 mb-20 md:mt-12">
-    <section v-motion="fadeUp()" class="max-w-2xl">
+    <section v-motion="fadeUp()">
       <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">{{ t("hero.title") }}</h1>
-      <p class="text-lg text-content/80">{{ t("hero.description") }}</p>
+      <p class="max-w-3xl text-lg text-content/80">{{ t("hero.description") }}</p>
     </section>
 
-    <!-- * Intro - dua paragraf penjelas sebelum masuk ke daftar stack, biar halamannya gak
-         langsung loncat ke list kering -->
-    <section
-      v-motion="revealUp()"
-      class="max-w-2xl mt-8 space-y-4 text-base leading-relaxed text-content/80"
-    >
-      <p>{{ t("intro.paragraph1") }}</p>
-      <p>{{ t("intro.paragraph2") }}</p>
+    <!-- * Intro - dua paragraf penjelas sebelum masuk ke daftar stack, ditemenin kartu "At
+         a Glance" di kanan biar section-nya gak keliatan ngambang sendirian di layar lebar -->
+    <section v-motion="revealUp()" class="grid grid-cols-1 gap-8 mt-8 lg:grid-cols-3 lg:items-start">
+      <div class="space-y-4 text-base leading-relaxed lg:col-span-2 text-content/80">
+        <p>{{ t("intro.paragraph1") }}</p>
+        <p>{{ t("intro.paragraph2") }}</p>
+      </div>
+
+      <div class="p-6 border rounded-2xl border-border/50 bg-surface/30">
+        <h2 class="mb-4 text-sm font-semibold tracking-wide uppercase text-content/60">
+          {{ t("intro.highlightsTitle") }}
+        </h2>
+        <ul class="space-y-4">
+          <li v-for="highlight in highlights" :key="highlight.key" class="flex items-start gap-3">
+            <span
+              class="flex items-center justify-center rounded-full size-8 shrink-0"
+              :class="highlight.accentClass"
+              aria-hidden="true"
+            >
+              <component :is="highlight.icon" class="size-4" />
+            </span>
+            <span class="text-sm leading-relaxed text-content/80">{{
+              t(`intro.highlights.${highlight.key}`)
+            }}</span>
+          </li>
+        </ul>
+      </div>
     </section>
 
     <!-- * Built With -->

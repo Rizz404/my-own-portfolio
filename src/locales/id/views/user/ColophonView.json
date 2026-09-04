@@ -5,7 +5,14 @@
   },
   "intro": {
     "paragraph1": "Situs ini adalah aplikasi Vue satu halaman (SPA), dibangun dengan pola pikir component-first: potongan-potongan kecil yang bisa dipakai ulang (tombol, input, card) disusun jadi halaman utuh, semuanya didukung API layer yang typed dan di-cache pakai TanStack Query.",
-    "paragraph2": "Setiap halaman tersedia dalam Bahasa Inggris dan Indonesia, menyesuaikan mode terang/gelap, dan menghormati pengaturan reduced-motion di perangkat kamu - animasi masuk yang kamu lihat itu cuma pemanis, bukan syarat buat bisa baca kontennya."
+    "paragraph2": "Setiap halaman tersedia dalam Bahasa Inggris dan Indonesia, menyesuaikan mode terang/gelap, dan menghormati pengaturan reduced-motion di perangkat kamu - animasi masuk yang kamu lihat itu cuma pemanis, bukan syarat buat bisa baca kontennya.",
+    "highlightsTitle": "Sekilas Info",
+    "highlights": {
+      "componentFirst": "Arsitektur component-first",
+      "typedAndCached": "API layer typed, di-cache pakai TanStack Query",
+      "bilingual": "Tersedia dalam Bahasa Inggris dan Indonesia",
+      "adaptive": "Mendukung mode terang/gelap dan reduced-motion"
+    }
   },
   "stack": {
     "title": "Dibangun Dengan",

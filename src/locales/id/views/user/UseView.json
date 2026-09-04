@@ -7,5 +7,9 @@
   "empty": {
     "title": "Belum ada perlengkapan yang ditemukan.",
     "subtitle": "Cek lagi nanti untuk pembaruan seputar perlengkapan saya."
+  },
+  "stats": {
+    "hardware": "{count} Perangkat Keras",
+    "software": "{count} Perangkat Lunak"
   }
 }

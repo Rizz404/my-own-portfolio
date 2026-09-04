@@ -32,11 +32,36 @@ const isEmpty = computed(
 
 <template>
   <section class="mt-8 mb-20 md:mt-12">
-    <div class="mb-12">
-      <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">{{ t("title") }}</h1>
-      <p class="max-w-2xl mb-8 text-lg text-content/80">
-        {{ t("subtitle") }}
-      </p>
+    <div class="flex flex-col gap-6 mb-12 md:flex-row md:items-end md:justify-between">
+      <div>
+        <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">{{ t("title") }}</h1>
+        <p class="max-w-3xl text-lg text-content/80">
+          {{ t("subtitle") }}
+        </p>
+      </div>
+
+      <!-- * Pill jumlah item per kategori - ngisi ruang kanan yang tadinya kosong pas subtitle
+           di kiri gak sampe selebar section, sekalian kasih info sekilas jumlah gear -->
+      <div v-if="!isLoading && !isError && !isEmpty" class="flex flex-wrap gap-3 shrink-0">
+        <div
+          v-if="hardwareList.length > 0"
+          class="flex items-center gap-2 px-4 py-2 border rounded-full border-danger/25 bg-danger/5"
+        >
+          <span class="rounded-full size-2 bg-danger shrink-0" aria-hidden="true"></span>
+          <span class="text-sm font-medium text-content/80">
+            {{ t("stats.hardware", { count: hardwareList.length }) }}
+          </span>
+        </div>
+        <div
+          v-if="softwareList.length > 0"
+          class="flex items-center gap-2 px-4 py-2 border rounded-full border-success/25 bg-success/5"
+        >
+          <span class="rounded-full size-2 bg-success shrink-0" aria-hidden="true"></span>
+          <span class="text-sm font-medium text-content/80">
+            {{ t("stats.software", { count: softwareList.length }) }}
+          </span>
+        </div>
+      </div>
     </div>
 
     <div v-if="isLoading" class="space-y-20">

@@ -3,6 +3,14 @@
     "title": "Let's Connect",
     "description": "Got a backend challenge, an open-source idea, or just want to talk shop over coffee and code? Drop a message below or reach out directly - my inbox is always open, whichever way you choose."
   },
+  "quickFacts": {
+    "title": "Quick Facts",
+    "items": {
+      "responseTime": "Usually replies within 24-48 hours",
+      "openTo": "Open to freelance, full-time, and collaborations",
+      "location": "Based in Indonesia (GMT+7)"
+    }
+  },
   "form": {
     "title": "Send a Message",
     "description": "Fill this out and it'll open straight in your email app, ready to send - no server, no tracking, just a regular email addressed to me.",

@@ -14,6 +14,9 @@ import {
   Check as IconCheck,
   Send as IconSend,
   Loader2 as IconLoader,
+  Clock as IconClock,
+  Handshake as IconHandshake,
+  MapPin as IconMapPin,
 } from "@lucide/vue";
 
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
@@ -57,6 +60,14 @@ const onSubmit = handleSubmit(async (data) => {
   reset();
 });
 
+// * Kartu "Quick Facts" di sebelah hero - biar section itu gak cuma judul+deskripsi doang
+// yang ngambang sendirian pas layarnya lebar, warnanya gilir 3 dari 4 aksen warna Kita.
+const quickFacts = [
+  { key: "responseTime", icon: IconClock, accentClass: "bg-primary/10 text-primary" },
+  { key: "openTo", icon: IconHandshake, accentClass: "bg-success/10 text-success" },
+  { key: "location", icon: IconMapPin, accentClass: "bg-warning/10 text-warning" },
+];
+
 const copied = ref(false);
 const copyEmail = async () => {
   try {
@@ -72,9 +83,31 @@ const copyEmail = async () => {
 
 <template>
   <div class="mt-8 mb-20 md:mt-12">
-    <section v-motion="fadeUp()" class="max-w-2xl">
-      <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">{{ t("hero.title") }}</h1>
-      <p class="text-lg text-content/80">{{ t("hero.description") }}</p>
+    <section v-motion="fadeUp()" class="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:items-start">
+      <div class="lg:col-span-2">
+        <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">{{ t("hero.title") }}</h1>
+        <p class="max-w-3xl text-lg text-content/80">{{ t("hero.description") }}</p>
+      </div>
+
+      <div class="p-6 border rounded-2xl border-border/50 bg-surface/30">
+        <h2 class="mb-4 text-sm font-semibold tracking-wide uppercase text-content/60">
+          {{ t("quickFacts.title") }}
+        </h2>
+        <ul class="space-y-4">
+          <li v-for="fact in quickFacts" :key="fact.key" class="flex items-start gap-3">
+            <span
+              class="flex items-center justify-center rounded-full size-8 shrink-0"
+              :class="fact.accentClass"
+              aria-hidden="true"
+            >
+              <component :is="fact.icon" class="size-4" />
+            </span>
+            <span class="text-sm leading-relaxed text-content/80">{{
+              t(`quickFacts.items.${fact.key}`)
+            }}</span>
+          </li>
+        </ul>
+      </div>
     </section>
 
     <section class="grid grid-cols-1 gap-8 mt-12 lg:grid-cols-3 lg:items-start">

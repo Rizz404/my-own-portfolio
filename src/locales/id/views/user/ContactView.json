@@ -3,6 +3,14 @@
     "title": "Mari Terhubung",
     "description": "Punya tantangan backend, ide open-source, atau cuma mau ngobrol soal kode sambil ngopi? Kirim pesan lewat form di bawah, atau hubungi langsung - kotak masuk saya selalu terbuka, mau lewat cara yang mana pun."
   },
+  "quickFacts": {
+    "title": "Info Singkat",
+    "items": {
+      "responseTime": "Biasanya balas dalam 24-48 jam",
+      "openTo": "Terbuka untuk freelance, full-time, dan kolaborasi",
+      "location": "Berbasis di Indonesia (GMT+7)"
+    }
+  },
   "form": {
     "title": "Kirim Pesan",
     "description": "Isi form ini dan aplikasi email kamu bakal kebuka otomatis, siap dikirim - tanpa server, tanpa tracking, cuma email biasa yang ditujukan ke saya.",
