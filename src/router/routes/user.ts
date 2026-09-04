@@ -48,6 +48,18 @@ export const userRoutes: RouteRecordRaw[] = [
     component: () => import("@/views/user/UseDetailView.vue"),
     meta: { layout: "user" },
   },
+  {
+    path: "/colophon",
+    name: "Colophon",
+    component: () => import("@/views/user/ColophonView.vue"),
+    meta: { layout: "user" },
+  },
+  {
+    path: "/contact",
+    name: "Contact",
+    component: () => import("@/views/user/ContactView.vue"),
+    meta: { layout: "user" },
+  },
   // * Catch-all publik - vue-router 4 nge-rank route berdasarkan spesifisitas segmen,
   // jadi "/admin/:pathMatch(.*)*" (lihat routes/admin.ts) tetep menang buat path /admin/**
   // walau catch-all ini terdaftar duluan di array gabungan router/index.ts.
