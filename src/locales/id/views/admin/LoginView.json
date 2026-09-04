@@ -3,7 +3,7 @@
   "subtitle": "Masuk untuk mengelola konten portofolio",
   "backToSite": "Kembali ke situs",
   "emailLabel": "Email",
-  "emailPlaceholder": "kamu@contoh.com",
+  "emailPlaceholder": "kamu{'@'}contoh.com",
   "passwordLabel": "Kata Sandi",
   "passwordPlaceholder": "••••••••",
   "showPassword": "Tampilkan kata sandi",
