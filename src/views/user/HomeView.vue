@@ -19,11 +19,13 @@ import {
 } from "@lucide/vue";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
+import { useLocalizedPath } from "@/composables/useLocalizedPath";
 import cvUrl from "@/assets/docs/cv-rizqiansyah-ramadhan.pdf?url";
 
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
 // src/locales/<locale>/views/user/HomeView.json
 const t = useT("views.user.HomeView");
+const { withLocale } = useLocalizedPath();
 
 // const blogQueryParams = ref<BlogQueryParams>({ page: 1, size: 4 });
 // const {
@@ -75,7 +77,7 @@ const myPicture: string | null = null;
           </p>
 
           <div class="flex flex-wrap items-center gap-3 sm:gap-4">
-            <RouterLink to="/about">
+            <RouterLink :to="withLocale('/about')">
               <AppButton
                 variant="primary"
                 size="lg"
@@ -174,7 +176,7 @@ const myPicture: string | null = null;
           {{ t("selectedProjects.title") }}
         </h2>
         <RouterLink
-          to="/projects"
+          :to="withLocale('/projects')"
           class="inline-flex items-center gap-1.5 text-sm font-medium transition-colors group text-danger hover:brightness-110"
         >
           {{ t("selectedProjects.viewAll") }}
