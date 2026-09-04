@@ -14,4 +14,14 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  server: {
+    // * Mirror rewrite /api/v1 di vercel.json biar VITE_API_BASE_URL=/api/v1 juga jalan pas `vite dev`
+    // ! hapus kalo semisal udah ganti backend
+    proxy: {
+      "/api/v1": {
+        target: "http://31.97.109.89:8001",
+        changeOrigin: true,
+      },
+    },
+  },
 });
