@@ -12,12 +12,12 @@ export const userRoutes: RouteRecordRaw[] = [
     component: () => import("@/views/user/AboutView.vue"),
     meta: { layout: "user" },
   },
-  {
-    path: "/blogs",
-    name: "Blogs",
-    component: () => import("@/views/user/BlogView.vue"),
-    meta: { layout: "user" },
-  },
+  // {
+  //   path: "/blogs",
+  //   name: "Blogs",
+  //   component: () => import("@/views/user/BlogView.vue"),
+  //   meta: { layout: "user" },
+  // },
   {
     path: "/blogs/:id",
     name: "Blog",

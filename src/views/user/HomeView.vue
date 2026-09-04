@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { useProjectsQuery } from "@/composables/queries/useProjects";
-import { useBlogsQuery } from "@/composables/queries/useBlogs";
+// import { useBlogsQuery } from "@/composables/queries/useBlogs";
 import SocialsWidget from "@/components/user/SocialsWidget.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useSecretTap } from "@/composables/useSecretTap";
 import type { ProjectQueryParams } from "@/types/project";
-import type { BlogQueryParams } from "@/types/blog";
+// import type { BlogQueryParams } from "@/types/blog";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
 import AppButton from "@/components/shared/AppButton.vue";
-import BlogCard from "@/components/user/BlogCard.vue";
+// import BlogCard from "@/components/user/BlogCard.vue";
 import ProjectCard from "@/components/user/ProjectCard.vue";
 import IconArrowRight from "~icons/lucide/arrow-right";
 import IconDownload from "~icons/lucide/download";
@@ -22,13 +22,13 @@ import cvUrl from "@/assets/docs/cv-rizqiansyah-ramadhan.pdf?url";
 // src/locales/<locale>/views/user/HomeView.json
 const t = useT("views.user.HomeView");
 
-const blogQueryParams = ref<BlogQueryParams>({ page: 1, size: 4 });
-const {
-  data: blogResponse,
-  isLoading: isBlogLoading,
-  isError: isBlogError,
-  error: blogError,
-} = useBlogsQuery(blogQueryParams);
+// const blogQueryParams = ref<BlogQueryParams>({ page: 1, size: 4 });
+// const {
+//   data: blogResponse,
+//   isLoading: isBlogLoading,
+//   isError: isBlogError,
+//   error: blogError,
+// } = useBlogsQuery(blogQueryParams);
 
 const projectQueryParams = ref<ProjectQueryParams>({ page: 1, size: 4 });
 const {
@@ -115,10 +115,8 @@ const { handleTap: handleAvatarTap } = useSecretTap(() => {
     <!-- * Latest Blog - background di-tint maroon (danger - pita/sepatu Kita), beda dari
          hero (netral) & Selected Projects (hijau-kuning), biar tiap section kerasa
          identitasnya sendiri-sendiri -->
-    <section class="p-6 mt-20 rounded-3xl bg-danger/8 md:mt-32 md:p-10">
+    <!-- <section class="p-6 mt-20 rounded-3xl bg-danger/8 md:mt-32 md:p-10">
       <div class="flex items-end justify-between mb-6">
-        <!-- * Aksen maroon (danger - pita/sepatu Kita) khusus buat identitas section Blog,
-             biar section-section di Home gak semuanya merah primary -->
         <h2 class="flex items-center gap-2.5 text-2xl font-bold md:text-3xl">
           <span class="rounded-full size-2.5 bg-danger shrink-0" aria-hidden="true"></span>
           {{ t("latestBlogs.title") }}
@@ -147,20 +145,20 @@ const { handleTap: handleAvatarTap } = useSecretTap(() => {
           :blog="blog"
         />
       </div>
-    </section>
+    </section> -->
 
     <!-- * Selected Project - background di-tint tipis pake success (hijau-kuning, mata
          Kita), bukan surface abu-abu netral, biar section ini punya identitas warna sendiri -->
-    <section class="p-6 mt-20 mb-20 rounded-3xl bg-success/8 md:mt-32 md:p-10">
+    <section class="p-6 mt-20 mb-20 rounded-3xl bg-danger/8 md:mt-32 md:p-10">
       <div class="flex items-end justify-between mb-6">
         <!-- * Aksen success (hijau-kuning, mata Kita) khusus buat identitas section Projects -->
         <h2 class="flex items-center gap-2.5 text-2xl font-bold md:text-3xl">
-          <span class="rounded-full size-2.5 bg-success shrink-0" aria-hidden="true"></span>
+          <span class="rounded-full size-2.5 bg-danger shrink-0" aria-hidden="true"></span>
           {{ t("selectedProjects.title") }}
         </h2>
         <RouterLink
           to="/projects"
-          class="inline-flex items-center gap-1.5 text-sm font-medium transition-colors group text-success hover:brightness-110"
+          class="inline-flex items-center gap-1.5 text-sm font-medium transition-colors group text-danger hover:brightness-110"
         >
           {{ t("selectedProjects.viewAll") }}
           <IconArrowRight class="transition-transform size-4 group-hover:translate-x-1" />

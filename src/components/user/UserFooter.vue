@@ -34,7 +34,7 @@ const t = useT("components.user.UserFooter");
 const navigateLinks = computed(() => [
   { name: t("nav.home"), path: "/" },
   { name: t("nav.about"), path: "/about" },
-  { name: t("nav.blog"), path: "/blogs" },
+  // { name: t("nav.blog"), path: "/blogs" },
   { name: t("nav.projects"), path: "/projects" },
   { name: t("nav.uses"), path: "/uses" },
 ]);

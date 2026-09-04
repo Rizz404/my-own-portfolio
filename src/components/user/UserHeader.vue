@@ -22,7 +22,7 @@ const i18nStore = useI18nStore();
 const navLinks = computed(() => [
   { name: t("nav.home"), path: "/" },
   { name: t("nav.about"), path: "/about" },
-  { name: t("nav.blog"), path: "/blogs" },
+  // { name: t("nav.blog"), path: "/blogs" },
   { name: t("nav.projects"), path: "/projects" },
   { name: t("nav.uses"), path: "/uses" },
 ]);
