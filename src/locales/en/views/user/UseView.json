@@ -3,5 +3,9 @@
   "subtitle": "A curated list of the tech stack, gadgets, and software I use every day to build code and stay productive.",
   "errorLoad": "Failed to load gear",
   "hardware": "Hardware",
-  "software": "Software"
+  "software": "Software",
+  "empty": {
+    "title": "No gear found.",
+    "subtitle": "Check back later for updates on my setup."
+  }
 }

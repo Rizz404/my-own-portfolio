@@ -3,5 +3,9 @@
   "subtitle": "Daftar kurasi tech stack, gadget, dan software yang saya gunakan setiap hari untuk menulis kode dan tetap produktif.",
   "errorLoad": "Gagal memuat perlengkapan",
   "hardware": "Perangkat Keras",
-  "software": "Perangkat Lunak"
+  "software": "Perangkat Lunak",
+  "empty": {
+    "title": "Belum ada perlengkapan yang ditemukan.",
+    "subtitle": "Cek lagi nanti untuk pembaruan seputar perlengkapan saya."
+  }
 }

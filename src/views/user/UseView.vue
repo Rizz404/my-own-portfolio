@@ -5,6 +5,7 @@ import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
 import UseCard from "@/components/user/UseCard.vue";
 import UseTile from "@/components/user/UseTile.vue";
+import { Wrench as IconWrench } from "@lucide/vue";
 import { fadeUp, revealUp, staggerDelay } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
 
@@ -23,6 +24,10 @@ const softwareList = computed(() => {
   if (!response.value?.data) return [];
   return response.value.data.filter((item) => String(item.category).toLowerCase() === "software");
 });
+
+const isEmpty = computed(
+  () => hardwareList.value.length === 0 && softwareList.value.length === 0,
+);
 </script>
 
 <template>
@@ -57,6 +62,16 @@ const softwareList = computed(() => {
     </div>
 
     <AppError v-else-if="isError" :title="t('errorLoad')" :message="error?.message" />
+
+    <div
+      v-else-if="isEmpty"
+      v-motion="fadeUp()"
+      class="py-16 text-center border border-dashed rounded-2xl border-border/50 text-content/60"
+    >
+      <IconWrench class="w-12 h-12 mx-auto mb-4 opacity-20" />
+      <p class="text-lg font-medium">{{ t("empty.title") }}</p>
+      <p class="text-sm">{{ t("empty.subtitle") }}</p>
+    </div>
 
     <div v-else class="space-y-20">
       <div
