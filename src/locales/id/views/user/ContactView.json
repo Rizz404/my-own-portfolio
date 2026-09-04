@@ -1,0 +1,35 @@
+{
+  "hero": {
+    "title": "Mari Terhubung",
+    "description": "Punya tantangan backend, ide open-source, atau cuma mau ngobrol soal kode sambil ngopi? Kirim pesan lewat form di bawah, atau hubungi langsung - kotak masuk saya selalu terbuka, mau lewat cara yang mana pun."
+  },
+  "form": {
+    "title": "Kirim Pesan",
+    "description": "Isi form ini dan aplikasi email kamu bakal kebuka otomatis, siap dikirim - tanpa server, tanpa tracking, cuma email biasa yang ditujukan ke saya.",
+    "nameLabel": "Nama",
+    "namePlaceholder": "Nama kamu",
+    "emailLabel": "Email Kamu",
+    "emailPlaceholder": "kamu@contoh.com",
+    "messageLabel": "Pesan",
+    "messagePlaceholder": "Ceritain sedikit apa yang lagi kamu pikirkan...",
+    "submit": "Kirim Pesan",
+    "submitting": "Membuka aplikasi email...",
+    "mailClientToast": "Aplikasi email kamu terbuka dengan pesan yang siap dikirim."
+  },
+  "email": {
+    "title": "Email",
+    "description": "Lebih suka pakai aplikasi email sendiri? Ini alamatnya langsung.",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "copiedToast": "Email berhasil disalin!",
+    "copyError": "Gagal menyalin email, coba salin manual ya."
+  },
+  "availability": {
+    "title": "Saat Ini",
+    "description": "Terbuka untuk peluang backend engineering, pekerjaan freelance API, dan kolaborasi open-source yang menarik."
+  },
+  "socials": {
+    "title": "Temukan Saya di Tempat Lain",
+    "description": "Saya juga cukup aktif di platform-platform ini - jangan ragu buat follow, connect, atau kirim DM."
+  }
+}

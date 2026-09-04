@@ -1,0 +1,35 @@
+{
+  "hero": {
+    "title": "Let's Connect",
+    "description": "Got a backend challenge, an open-source idea, or just want to talk shop over coffee and code? Drop a message below or reach out directly - my inbox is always open, whichever way you choose."
+  },
+  "form": {
+    "title": "Send a Message",
+    "description": "Fill this out and it'll open straight in your email app, ready to send - no server, no tracking, just a regular email addressed to me.",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your name",
+    "emailLabel": "Your Email",
+    "emailPlaceholder": "you@example.com",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Tell me a bit about what's on your mind...",
+    "submit": "Send Message",
+    "submitting": "Opening your email app...",
+    "mailClientToast": "Opening your email app with the message ready to send."
+  },
+  "email": {
+    "title": "Email",
+    "description": "Prefer your own email client instead? Here's the address directly.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copiedToast": "Email copied to clipboard!",
+    "copyError": "Couldn't copy the email, please copy it manually."
+  },
+  "availability": {
+    "title": "Currently",
+    "description": "Open to backend engineering opportunities, freelance API work, and interesting open-source collaborations."
+  },
+  "socials": {
+    "title": "Find Me Elsewhere",
+    "description": "I'm also fairly active on these platforms - feel free to follow, connect, or send a DM."
+  }
+}
