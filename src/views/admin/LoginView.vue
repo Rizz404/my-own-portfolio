@@ -71,7 +71,7 @@ const errorMessage = computed(() => {
     >
       <div class="mb-8 text-center">
         <img
-          src="https://i.pinimg.com/736x/05/68/42/0568424eab5583658cf6641c69573b78.jpg"
+          src="/images/logo.png"
           alt="Logo"
           class="object-cover w-12 h-12 mx-auto mb-4 ring-2 ring-primary/20 rounded-xs"
         />
