@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import { isAxiosError } from "axios";
-import { ArrowLeft as IconArrowLeft, Loader2 as IconLoader, Plus as IconPlus, Trash2 as IconTrash2, Image as IconImage, X as IconX } from "@lucide/vue";
+import { ArrowLeft as IconArrowLeft, Loader2 as IconLoader, Plus as IconPlus, Trash2 as IconTrash2, Image as IconImage, X as IconX, GripVertical as IconGripVertical } from "@lucide/vue";
 import AppAlert from "@/components/shared/AppAlert.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";
@@ -166,6 +166,47 @@ function selectActiveTechOption() {
 
 function removeTechSelection(index: number) {
   techStackSelections.value.splice(index, 1);
+}
+
+// * Reorder techStackSelections via native HTML5 Drag & Drop - draggedTechIndex nyimpen
+// index chip yang lagi di-drag, dropTargetTechIndex buat highlight posisi drop biar admin
+// dapet feedback visual pas hover di atas chip lain.
+const draggedTechIndex = ref<number | null>(null);
+const dropTargetTechIndex = ref<number | null>(null);
+
+function onTechDragStart(index: number, event: DragEvent) {
+  draggedTechIndex.value = index;
+  if (event.dataTransfer) {
+    event.dataTransfer.effectAllowed = "move";
+    // * Firefox butuh setData buat drag-nya jalan, walau datanya sendiri gak dipakai -
+    // urutan baru dihitung dari draggedTechIndex/dropTargetTechIndex, bukan dataTransfer.
+    event.dataTransfer.setData("text/plain", String(index));
+  }
+}
+
+function onTechDragOver(index: number, event: DragEvent) {
+  event.preventDefault();
+  if (event.dataTransfer) event.dataTransfer.dropEffect = "move";
+  dropTargetTechIndex.value = index;
+}
+
+function onTechDrop(index: number) {
+  const fromIndex = draggedTechIndex.value;
+  if (fromIndex === null || fromIndex === index) {
+    resetTechDragState();
+    return;
+  }
+
+  const reordered = [...techStackSelections.value];
+  const [moved] = reordered.splice(fromIndex, 1);
+  if (moved) reordered.splice(index, 0, moved);
+  techStackSelections.value = reordered;
+  resetTechDragState();
+}
+
+function resetTechDragState() {
+  draggedTechIndex.value = null;
+  dropTargetTechIndex.value = null;
 }
 
 function syncDynamicFields() {
@@ -478,9 +519,19 @@ const onSubmit = (event?: Event) => {
         <div v-else class="flex flex-wrap gap-2">
           <span
             v-for="(tech, index) in techStackSelections"
-            :key="`${tech.slug}-${index}`"
-            class="inline-flex items-center gap-1.5 py-1 pl-1.5 pr-2 text-sm border rounded-full border-border bg-surface-raised text-content"
+            :key="tech.slug"
+            draggable="true"
+            class="inline-flex items-center gap-1 py-1 pl-1 pr-2 text-sm transition-opacity border rounded-full cursor-grab active:cursor-grabbing border-border bg-surface-raised text-content"
+            :class="[
+              draggedTechIndex === index ? 'opacity-40' : '',
+              dropTargetTechIndex === index && draggedTechIndex !== index ? 'ring-2 ring-primary' : '',
+            ]"
+            @dragstart="onTechDragStart(index, $event)"
+            @dragover="onTechDragOver(index, $event)"
+            @drop="onTechDrop(index)"
+            @dragend="resetTechDragState"
           >
+            <IconGripVertical aria-hidden="true" class="size-3.5 shrink-0 text-content/30" />
             <img :src="tech.iconUrl" :alt="tech.label" loading="lazy" class="object-contain rounded-full size-5 shrink-0" />
             {{ tech.label }}
             <button
