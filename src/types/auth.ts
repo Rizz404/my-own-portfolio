@@ -12,6 +12,7 @@ export interface RegisterRequest {
   nickname: string;
 }
 
+// * Refresh token juga ngembaliin response ini, cuma dapet token baru, sisanya sama
 export interface AuthResponse {
   token: string;
   refreshToken: string;
@@ -20,10 +21,4 @@ export interface AuthResponse {
 
 export interface RefreshTokenRequest {
   refreshToken: string;
-}
-
-// * Refresh cuma minta accessToken baru (token) - refreshToken-nya sendiri gak dirotate,
-// tetep yang lama dipakai sampai dia expired (1 bulan) atau logout.
-export interface RefreshTokenResponse {
-  token: string;
 }
