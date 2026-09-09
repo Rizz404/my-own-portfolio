@@ -25,7 +25,27 @@ export const useLoginMutation = () => {
       return response;
     },
     onSuccess: (response) => {
-      authStore.login(response.data.token, response.data.user);
+      authStore.login(response.data.token, response.data.refreshToken, response.data.user);
     },
   });
+};
+
+// * Dipanggil dari luar reactive context (lewat setRefreshHandler di axiosClient, diwire di
+// main.ts) waktu ada request yang balik 401 - bukan useMutation karena axios interceptor
+// bukan komponen Vue. Balikin accessToken baru kalau refresh sukses, null kalau refreshToken-nya
+// gak ada/udah invalid (expired 1 bulan) - axiosClient bakal logout otomatis lewat unauthorizedHandler.
+export const refreshAccessToken = async (): Promise<string | null> => {
+  const authStore = authStores();
+  const currentRefreshToken = authStore.refreshToken;
+
+  if (!currentRefreshToken) return null;
+
+  try {
+    const response = await authService.refresh({ refreshToken: currentRefreshToken });
+    authStore.setAccessToken(response.data.token);
+
+    return response.data.token;
+  } catch {
+    return null;
+  }
 };
