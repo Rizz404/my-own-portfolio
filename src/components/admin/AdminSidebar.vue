@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import {
   LayoutDashboard as IconLayoutDashboard,
-  FileText as IconFileText,
+  // FileText as IconFileText, // * ikut nonaktif bareng nav "Blogs" di bawah
   FolderKanban as IconFolderKanban,
   Briefcase as IconBriefcase,
   Sparkles as IconSparkles,
@@ -32,7 +32,10 @@ const router = useRouter();
 
 const navItems = computed(() => [
   { label: t("nav.dashboard"), icon: IconLayoutDashboard, to: { name: "AdminDashboard" } },
-  { label: t("nav.blogs"), icon: IconFileText, to: { name: "AdminBlogs" } },
+  // * Blog lagi dinonaktifkan sementara (lihat komentar route AdminBlogs di routes/admin.ts) -
+  // item nav-nya ikut di-comment biar RouterLink gak coba resolve nama route yang gak ada
+  // (bakal throw pas render & bikin seluruh halaman admin blank).
+  // { label: t("nav.blogs"), icon: IconFileText, to: { name: "AdminBlogs" } },
   { label: t("nav.projects"), icon: IconFolderKanban, to: { name: "AdminProjects" } },
   { label: t("nav.experiences"), icon: IconBriefcase, to: { name: "AdminExperiences" } },
   { label: t("nav.skills"), icon: IconSparkles, to: { name: "AdminSkills" } },
