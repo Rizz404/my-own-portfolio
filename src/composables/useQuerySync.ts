@@ -9,7 +9,9 @@ import { watch, type Ref } from "vue";
  * Cara kerja:
  * - Tipe decode/encode tiap field ditebak dari value awal `params.value` pas
  *   composable ini dipanggil (array -> comma-separated string, number -> number,
- *   boolean -> "true"/"false", sisanya string) - makanya field opsional yang mau
+ *   boolean -> "true"/"false", sisanya string). Optional boolean isCurrent/isPublished
+ *   dan number minViews/maxViews memakai tipe eksplisit meskipun default undefined.
+ *   Parameter berulang digabung dengan koma. Makanya field opsional yang mau
  *   ikut di-sync (mis. `status`) wajib dikasih key-nya di literal awal (boleh
  *   `undefined`), bukan cuma dideklarasiin di tipe.
  * - Field yang nilainya balik ke default otomatis dibuang dari URL, biar gak
@@ -35,11 +37,17 @@ export function useQuerySync<T extends Record<string, unknown>>(params: Ref<T>) 
   function decodeValue(key: string, raw: string): unknown {
     const defaultValue = defaults[key];
     if (Array.isArray(defaultValue)) return raw.split(",").filter(Boolean);
-    if (typeof defaultValue === "number") {
+    if (typeof defaultValue === "number" || ["minViews", "maxViews"].includes(key)) {
       const num = Number(raw);
-      return Number.isNaN(num) ? defaultValue : num;
+      if (!Number.isSafeInteger(num) || num < (["minViews", "maxViews"].includes(key) ? 0 : 1))
+        return defaultValue;
+      return key === "size" ? Math.min(num, 100) : num;
     }
-    if (typeof defaultValue === "boolean") return raw === "true";
+    if (typeof defaultValue === "boolean" || ["isCurrent", "isPublished"].includes(key)) {
+      if (raw === "true") return true;
+      if (raw === "false") return false;
+      return defaultValue;
+    }
     return raw;
   }
 
@@ -53,7 +61,8 @@ export function useQuerySync<T extends Record<string, unknown>>(params: Ref<T>) 
   // reload / paste link yang ada query-nya).
   const patch: Partial<T> = {};
   for (const key of Object.keys(defaults)) {
-    const raw = route.query[key];
+    const queryValue = route.query[key];
+    const raw = Array.isArray(queryValue) ? queryValue.filter(Boolean).join(",") : queryValue;
     if (typeof raw === "string" && raw !== "") {
       (patch as Record<string, unknown>)[key] = decodeValue(key, raw);
     }
