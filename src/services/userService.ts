@@ -35,17 +35,7 @@ export const userService = {
 
   async getUsers(request: UserQueryParams) {
     const response = await axiosClient.get<PagedResponse<User[]>>(USER_URL, {
-      params: {
-        cursor: request.cursor,
-        page: request.page,
-        size: request.size,
-        sortBy: request.sortBy,
-        sortDir: request.sortDir,
-        search: request.search,
-        role: request.role,
-        provider: request.provider,
-        gender: request.gender,
-      },
+      params: request,
     });
     return response.data;
   },

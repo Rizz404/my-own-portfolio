@@ -39,14 +39,7 @@ export const blogService = {
 
   async getBlogs(request: BlogQueryParams) {
     const response = await axiosClient.get<PagedResponse<Blog[]>>(BLOG_URL, {
-      params: {
-        cursor: request.cursor,
-        page: request.page,
-        size: request.size,
-        sortBy: request.sortBy,
-        sortDir: request.sortDir,
-        search: request.search,
-      },
+      params: request,
     });
     return response.data;
   },

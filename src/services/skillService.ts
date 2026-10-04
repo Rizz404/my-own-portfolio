@@ -35,15 +35,7 @@ export const skillService = {
 
   async getSkills(request: SkillQueryParams) {
     const response = await axiosClient.get<PagedResponse<Skill[]>>(USE_URL, {
-      params: {
-        cursor: request.cursor,
-        page: request.page,
-        size: request.size,
-        sortBy: request.sortBy,
-        sortDir: request.sortDir,
-        search: request.search,
-        category: request.category,
-      },
+      params: request,
     });
     return response.data;
   },

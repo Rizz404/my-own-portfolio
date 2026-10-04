@@ -20,13 +20,7 @@ export const blogAttachmentService = {
 
   async getBlogAttachments(request: BlogAttachmentQueryParams) {
     const response = await axiosClient.get<PagedResponse<BlogAttachment[]>>(BLOG_ATTACHMENT_URL, {
-      params: {
-        cursor: request.cursor,
-        page: request.page,
-        size: request.size,
-        sortBy: request.sortBy,
-        sortDir: request.sortDir,
-      },
+      params: request,
     });
     return response.data;
   },

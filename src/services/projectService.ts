@@ -39,15 +39,7 @@ export const projectService = {
 
   async getProjects(request: ProjectQueryParams) {
     const response = await axiosClient.get<PagedResponse<Project[]>>(PROJECT_URL, {
-      params: {
-        cursor: request.cursor,
-        page: request.page,
-        size: request.size,
-        sortBy: request.sortBy,
-        sortDir: request.sortDir,
-        search: request.search,
-        status: request.status,
-      },
+      params: request,
     });
     return response.data;
   },

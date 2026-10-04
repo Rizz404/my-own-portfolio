@@ -39,15 +39,7 @@ export const useService = {
 
   async getUses(request: UseQueryParams) {
     const response = await axiosClient.get<PagedResponse<Use[]>>(USE_URL, {
-      params: {
-        cursor: request.cursor,
-        page: request.page,
-        size: request.size,
-        sortBy: request.sortBy,
-        sortDir: request.sortDir,
-        search: request.search,
-        category: request.category,
-      },
+      params: request,
     });
     return response.data;
   },
