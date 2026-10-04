@@ -4,13 +4,17 @@ import { useRoute, useRouter, RouterLink } from "vue-router";
 import { isAxiosError } from "axios";
 import { ArrowLeft as IconArrowLeft, Loader2 as IconLoader, Image as IconImage } from "@lucide/vue";
 import AppAlert from "@/components/shared/AppAlert.vue";
+import AppFilePicker from "@/components/shared/AppFilePicker.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";
 import AppTextarea from "@/components/shared/AppTextarea.vue";
 import AppSelect from "@/components/shared/AppSelect.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
-import { useUserMultipartMutation, useUserUpdateMultipartMutation } from "@/composables/queries/useUsers";
+import {
+  useUserMultipartMutation,
+  useUserUpdateMultipartMutation,
+} from "@/composables/queries/useUsers";
 import { userService } from "@/services/userService";
 import { setAcceptLanguage } from "@/api/axiosClient";
 import { useI18nStore } from "@/stores/i18nStores";
@@ -113,7 +117,10 @@ function formatLabel(key: string) {
 }
 
 const roleOptions = enumStringKeys(Role).map((key) => ({ label: formatLabel(key), value: key }));
-const providerOptions = enumStringKeys(AuthProvider).map((key) => ({ label: formatLabel(key), value: key }));
+const providerOptions = enumStringKeys(AuthProvider).map((key) => ({
+  label: formatLabel(key),
+  value: key,
+}));
 const genderOptions = [
   { label: t("genderUnspecified"), value: "" },
   ...enumStringKeys(Gender).map((key) => ({ label: formatLabel(key), value: key })),
@@ -148,7 +155,6 @@ const genderModel = computed({
 // dari UserRequest), dikirim lewat field terpisah di UserMultipartRequest/
 // UpdateUserMultipartRequest (lihat userService.ts).
 const profilePictFile = ref<File | undefined>(undefined);
-const profilePictInputRef = ref<HTMLInputElement | null>(null);
 const existingProfilePict = ref<string | null>(null);
 
 const profilePictPreview = computed(() => {
@@ -156,8 +162,8 @@ const profilePictPreview = computed(() => {
   return existingProfilePict.value;
 });
 
-function onProfilePictChange(event: Event) {
-  profilePictFile.value = (event.target as HTMLInputElement).files?.[0] ?? undefined;
+function onProfilePictChange(files: File[]) {
+  profilePictFile.value = files[0];
   // * Backend nolak kalau profilePictUrl (string lama, keisi lewat loadUserForEdit() pas
   // edit) & profilePictFile dikirim bareng dalam satu request ("Cannot accept both
   // 'profilePictUrl' string and 'profilePictFile'. Choose one") - begitu ada file baru
@@ -235,7 +241,11 @@ const onSubmit = handleSubmit(async (data) => {
 
   try {
     if (isEdit.value && userId.value) {
-      await updateMutation.mutateAsync({ id: userId.value, userRequest, profilePictFile: profilePictFile.value });
+      await updateMutation.mutateAsync({
+        id: userId.value,
+        userRequest,
+        profilePictFile: profilePictFile.value,
+      });
       toast.success(t("toast.updated"));
     } else {
       await createMutation.mutateAsync({ userRequest, profilePictFile: profilePictFile.value });
@@ -259,7 +269,9 @@ const onSubmit = handleSubmit(async (data) => {
         <IconArrowLeft class="size-5" />
       </RouterLink>
       <div>
-        <h2 class="text-2xl font-bold text-content">{{ isEdit ? t("editTitle") : t("createTitle") }}</h2>
+        <h2 class="text-2xl font-bold text-content">
+          {{ isEdit ? t("editTitle") : t("createTitle") }}
+        </h2>
         <p class="mt-1 text-sm text-content/60">
           {{ isEdit ? t("editSubtitle") : t("createSubtitle") }}
         </p>
@@ -343,13 +355,21 @@ const onSubmit = handleSubmit(async (data) => {
             <p class="text-xs font-semibold tracking-wide uppercase text-content/50">
               {{ t("translations.en") }}
             </p>
-            <AppTextarea v-model="enBio" :label="t('bioLabel')" @blur="validateField('translations')" />
+            <AppTextarea
+              v-model="enBio"
+              :label="t('bioLabel')"
+              @blur="validateField('translations')"
+            />
           </div>
           <div class="space-y-4">
             <p class="text-xs font-semibold tracking-wide uppercase text-content/50">
               {{ t("translations.id") }}
             </p>
-            <AppTextarea v-model="idBio" :label="t('bioLabel')" @blur="validateField('translations')" />
+            <AppTextarea
+              v-model="idBio"
+              :label="t('bioLabel')"
+              @blur="validateField('translations')"
+            />
           </div>
         </div>
         <p v-if="errors.translations" class="text-xs text-danger">{{ errors.translations }}</p>
@@ -357,7 +377,12 @@ const onSubmit = handleSubmit(async (data) => {
 
       <section class="p-5 space-y-4 border rounded-card border-border bg-surface">
         <h3 class="font-semibold text-content">{{ t("profilePict.title") }}</h3>
-        <div class="flex items-center gap-4">
+        <AppFilePicker
+          accept="image/*"
+          :label="t('profilePict.choose')"
+          :hint="t('profilePict.hint')"
+          @select="onProfilePictChange"
+        >
           <img
             v-if="profilePictPreview"
             :src="profilePictPreview"
@@ -370,20 +395,7 @@ const onSubmit = handleSubmit(async (data) => {
           >
             <IconImage class="size-6" />
           </div>
-          <div>
-            <input
-              ref="profilePictInputRef"
-              type="file"
-              accept="image/*"
-              class="hidden"
-              @change="onProfilePictChange"
-            />
-            <AppButton type="button" variant="secondary" size="sm" @click="profilePictInputRef?.click()">
-              {{ t("profilePict.choose") }}
-            </AppButton>
-            <p class="mt-1 text-xs text-content/50">{{ t("profilePict.hint") }}</p>
-          </div>
-        </div>
+        </AppFilePicker>
       </section>
 
       <AppAlert v-if="errorMessage" variant="danger">{{ errorMessage }}</AppAlert>

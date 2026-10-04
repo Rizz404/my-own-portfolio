@@ -2,8 +2,17 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import { isAxiosError } from "axios";
-import { ArrowLeft as IconArrowLeft, Loader2 as IconLoader, Plus as IconPlus, Trash2 as IconTrash2, Image as IconImage, X as IconX, GripVertical as IconGripVertical } from "@lucide/vue";
+import {
+  ArrowLeft as IconArrowLeft,
+  Loader2 as IconLoader,
+  Plus as IconPlus,
+  Trash2 as IconTrash2,
+  Image as IconImage,
+  X as IconX,
+  GripVertical as IconGripVertical,
+} from "@lucide/vue";
 import AppAlert from "@/components/shared/AppAlert.vue";
+import AppFilePicker from "@/components/shared/AppFilePicker.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";
 import AppRichTextEditor from "@/components/shared/AppRichTextEditor.vue";
@@ -15,7 +24,11 @@ import {
   useProjectMultipartMutation,
   useProjectUpdateMultipartMutation,
 } from "@/composables/queries/useProjects";
-import { useTechIconsQuery, searchTechIcons, type TechIconOption } from "@/composables/queries/useTechIcons";
+import {
+  useTechIconsQuery,
+  searchTechIcons,
+  type TechIconOption,
+} from "@/composables/queries/useTechIcons";
 import { projectService } from "@/services/projectService";
 import { setAcceptLanguage } from "@/api/axiosClient";
 import { useI18nStore } from "@/stores/i18nStores";
@@ -230,7 +243,6 @@ function syncDynamicFields() {
 // bagian dari ProjectRequest), dan dikirim lewat field terpisah di
 // ProjectMultipartRequest/UpdateProjectMultipartRequest (lihat projectService.ts).
 const logoFile = ref<File | undefined>(undefined);
-const logoInputRef = ref<HTMLInputElement | null>(null);
 const existingLogoUrl = ref<string | null>(null);
 
 const logoPreview = computed(() => {
@@ -238,8 +250,8 @@ const logoPreview = computed(() => {
   return existingLogoUrl.value;
 });
 
-function onLogoFileChange(event: Event) {
-  logoFile.value = (event.target as HTMLInputElement).files?.[0] ?? undefined;
+function onLogoFileChange(files: File[]) {
+  logoFile.value = files[0];
   // * Backend nolak kalau logoUrl (string lama, keisi lewat loadProjectForEdit() pas
   // edit) & logoFile dikirim bareng dalam satu request ("Cannot accept both 'logoUrl'
   // string and 'logoFile'. Choose one") - begitu ada file baru dipilih, logoUrl lama
@@ -248,15 +260,14 @@ function onLogoFileChange(event: Event) {
 }
 
 const newImageFiles = ref<File[]>([]);
-const imagesInputRef = ref<HTMLInputElement | null>(null);
 const existingImageUrls = ref<string[]>([]);
 
-const newImagePreviews = computed(() => newImageFiles.value.map((file) => URL.createObjectURL(file)));
+const newImagePreviews = computed(() =>
+  newImageFiles.value.map((file) => URL.createObjectURL(file)),
+);
 
-function onImageFilesChange(event: Event) {
-  const input = event.target as HTMLInputElement;
-  newImageFiles.value = [...newImageFiles.value, ...Array.from(input.files ?? [])];
-  input.value = "";
+function onImageFilesChange(files: File[]) {
+  newImageFiles.value = [...newImageFiles.value, ...files];
 }
 
 function removeNewImage(index: number) {
@@ -288,8 +299,16 @@ async function loadProjectForEdit(id: string) {
 
     reset({
       translations: [
-        { locale: LanguageCode.en, name: enResponse.data.name, description: enResponse.data.description ?? "" },
-        { locale: LanguageCode.id, name: idResponse.data.name, description: idResponse.data.description ?? "" },
+        {
+          locale: LanguageCode.en,
+          name: enResponse.data.name,
+          description: enResponse.data.description ?? "",
+        },
+        {
+          locale: LanguageCode.id,
+          name: idResponse.data.name,
+          description: idResponse.data.description ?? "",
+        },
       ],
       status: project.status,
       logoUrl: project.logoUrl,
@@ -389,7 +408,9 @@ const onSubmit = (event?: Event) => {
         <IconArrowLeft class="size-5" />
       </RouterLink>
       <div>
-        <h2 class="text-2xl font-bold text-content">{{ isEdit ? t("editTitle") : t("createTitle") }}</h2>
+        <h2 class="text-2xl font-bold text-content">
+          {{ isEdit ? t("editTitle") : t("createTitle") }}
+        </h2>
         <p class="mt-1 text-sm text-content/60">
           {{ isEdit ? t("editSubtitle") : t("createSubtitle") }}
         </p>
@@ -491,11 +512,18 @@ const onSubmit = (event?: Event) => {
               {{ t("techStack.searching") }}
             </p>
             <ul v-else-if="techSearchResults.length" role="listbox" class="overflow-auto max-h-56">
-              <li v-for="(option, index) in techSearchResults" :key="option.slug" role="option" :aria-selected="index === techActiveIndex">
+              <li
+                v-for="(option, index) in techSearchResults"
+                :key="option.slug"
+                role="option"
+                :aria-selected="index === techActiveIndex"
+              >
                 <button
                   type="button"
                   class="flex items-center w-full gap-2 px-3 py-2 text-sm text-left"
-                  :class="index === techActiveIndex ? 'bg-surface-raised' : 'hover:bg-surface-raised'"
+                  :class="
+                    index === techActiveIndex ? 'bg-surface-raised' : 'hover:bg-surface-raised'
+                  "
                   @mousedown.prevent="addTechSelection(option)"
                   @mouseenter="techActiveIndex = index"
                 >
@@ -524,7 +552,9 @@ const onSubmit = (event?: Event) => {
             class="inline-flex items-center gap-1 py-1 pl-1 pr-2 text-sm transition-opacity border rounded-full cursor-grab active:cursor-grabbing border-border bg-surface-raised text-content"
             :class="[
               draggedTechIndex === index ? 'opacity-40' : '',
-              dropTargetTechIndex === index && draggedTechIndex !== index ? 'ring-2 ring-primary' : '',
+              dropTargetTechIndex === index && draggedTechIndex !== index
+                ? 'ring-2 ring-primary'
+                : '',
             ]"
             @dragstart="onTechDragStart(index, $event)"
             @dragover="onTechDragOver(index, $event)"
@@ -532,7 +562,12 @@ const onSubmit = (event?: Event) => {
             @dragend="resetTechDragState"
           >
             <IconGripVertical aria-hidden="true" class="size-3.5 shrink-0 text-content/30" />
-            <img :src="tech.iconUrl" :alt="tech.label" loading="lazy" class="object-contain rounded-full size-5 shrink-0" />
+            <img
+              :src="tech.iconUrl"
+              :alt="tech.label"
+              loading="lazy"
+              class="object-contain rounded-full size-5 shrink-0"
+            />
             {{ tech.label }}
             <button
               type="button"
@@ -559,7 +594,12 @@ const onSubmit = (event?: Event) => {
         </p>
         <div v-for="(row, index) in projectLinkRows" :key="index" class="flex items-start gap-3">
           <AppSelect v-model="row.type" :options="linkTypeOptions" class="w-44 shrink-0" />
-          <AppInput v-model="row.url" type="url" :placeholder="t('links.urlPlaceholder')" class="flex-1" />
+          <AppInput
+            v-model="row.url"
+            type="url"
+            :placeholder="t('links.urlPlaceholder')"
+            class="flex-1"
+          />
           <button
             type="button"
             class="p-2.5 mt-0.5 rounded-lg text-content/50 hover:bg-danger/10 hover:text-danger"
@@ -576,7 +616,12 @@ const onSubmit = (event?: Event) => {
 
         <div>
           <p class="block mb-1.5 text-sm font-medium text-content/80">{{ t("logo.label") }}</p>
-          <div class="flex items-center gap-4">
+          <AppFilePicker
+            accept="image/*"
+            :label="t('logo.choose')"
+            :hint="t('logo.hint')"
+            @select="onLogoFileChange"
+          >
             <img
               v-if="logoPreview"
               :src="logoPreview"
@@ -589,21 +634,21 @@ const onSubmit = (event?: Event) => {
             >
               <IconImage class="size-6" />
             </div>
-            <div>
-              <input ref="logoInputRef" type="file" accept="image/*" class="hidden" @change="onLogoFileChange" />
-              <AppButton type="button" variant="secondary" size="sm" @click="logoInputRef?.click()">
-                {{ t("logo.choose") }}
-              </AppButton>
-              <p class="mt-1 text-xs text-content/50">{{ t("logo.hint") }}</p>
-            </div>
-          </div>
+          </AppFilePicker>
         </div>
 
         <div>
           <p class="block mb-2 text-sm font-medium text-content/80">{{ t("images.label") }}</p>
-          <div v-if="existingImageUrls.length || newImagePreviews.length" class="flex flex-wrap gap-3 mb-3">
+          <div
+            v-if="existingImageUrls.length || newImagePreviews.length"
+            class="flex flex-wrap gap-3 mb-3"
+          >
             <div v-for="url in existingImageUrls" :key="url" class="relative group">
-              <img :src="url" :alt="t('images.label')" class="object-cover border rounded-lg size-20 border-border bg-background" />
+              <img
+                :src="url"
+                :alt="t('images.label')"
+                class="object-cover border rounded-lg size-20 border-border bg-background"
+              />
               <button
                 type="button"
                 class="absolute flex items-center justify-center text-white rounded-full shadow-sm -top-1.5 -right-1.5 bg-danger size-5"
@@ -613,8 +658,16 @@ const onSubmit = (event?: Event) => {
                 <IconX class="size-3" />
               </button>
             </div>
-            <div v-for="(url, index) in newImagePreviews" :key="`new-${index}`" class="relative group">
-              <img :src="url" :alt="t('images.label')" class="object-cover border rounded-lg size-20 border-border bg-background" />
+            <div
+              v-for="(url, index) in newImagePreviews"
+              :key="`new-${index}`"
+              class="relative group"
+            >
+              <img
+                :src="url"
+                :alt="t('images.label')"
+                class="object-cover border rounded-lg size-20 border-border bg-background"
+              />
               <button
                 type="button"
                 class="absolute flex items-center justify-center text-white rounded-full shadow-sm -top-1.5 -right-1.5 bg-danger size-5"
@@ -625,25 +678,23 @@ const onSubmit = (event?: Event) => {
               </button>
             </div>
           </div>
-          <input
-            ref="imagesInputRef"
-            type="file"
+          <AppFilePicker
             accept="image/*"
             multiple
-            class="hidden"
-            @change="onImageFilesChange"
+            :label="t('images.add')"
+            @select="onImageFilesChange"
           />
-          <AppButton type="button" variant="secondary" size="sm" @click="imagesInputRef?.click()">
-            <IconPlus class="mr-1 size-4" />
-            {{ t("images.add") }}
-          </AppButton>
         </div>
       </section>
 
       <AppAlert v-if="errorMessage" variant="danger">{{ errorMessage }}</AppAlert>
 
       <div class="flex justify-end gap-3">
-        <AppButton type="button" variant="secondary" @click="router.push({ name: 'AdminProjects' })">
+        <AppButton
+          type="button"
+          variant="secondary"
+          @click="router.push({ name: 'AdminProjects' })"
+        >
           {{ t("cancel") }}
         </AppButton>
         <AppButton type="submit" :disabled="isSaving">

@@ -2,15 +2,25 @@
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import { isAxiosError } from "axios";
-import { ArrowLeft as IconArrowLeft, Loader2 as IconLoader, Plus as IconPlus, Image as IconImage, Paperclip as IconPaperclip, X as IconX } from "@lucide/vue";
+import {
+  ArrowLeft as IconArrowLeft,
+  Loader2 as IconLoader,
+  Image as IconImage,
+  Paperclip as IconPaperclip,
+  X as IconX,
+} from "@lucide/vue";
 import AppAlert from "@/components/shared/AppAlert.vue";
+import AppFilePicker from "@/components/shared/AppFilePicker.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";
 import AppTextarea from "@/components/shared/AppTextarea.vue";
 import AppCheckbox from "@/components/shared/AppCheckbox.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
-import { useBlogMultipartMutation, useBlogUpdateMultipartMutation } from "@/composables/queries/useBlogs";
+import {
+  useBlogMultipartMutation,
+  useBlogUpdateMultipartMutation,
+} from "@/composables/queries/useBlogs";
 import { blogService } from "@/services/blogService";
 import { setAcceptLanguage } from "@/api/axiosClient";
 import { useI18nStore } from "@/stores/i18nStores";
@@ -74,7 +84,6 @@ const isPublishedModel = computed({
 // mentah (bukan bagian dari BlogRequest), dan dikirim lewat field terpisah di
 // BlogMultipartRequest/UpdateBlogMultipartRequest (lihat blogService.ts).
 const featuredImageFile = ref<File | undefined>(undefined);
-const featuredImageInputRef = ref<HTMLInputElement | null>(null);
 const existingFeaturedImage = ref<string | null>(null);
 
 const featuredImagePreview = computed(() => {
@@ -82,8 +91,8 @@ const featuredImagePreview = computed(() => {
   return existingFeaturedImage.value;
 });
 
-function onFeaturedImageChange(event: Event) {
-  featuredImageFile.value = (event.target as HTMLInputElement).files?.[0] ?? undefined;
+function onFeaturedImageChange(files: File[]) {
+  featuredImageFile.value = files[0];
   // * Backend nolak kalau featuredImageUrl (string lama, keisi lewat loadBlogForEdit() pas
   // edit) & featuredImageFile dikirim bareng dalam satu request ("Cannot accept both
   // 'featuredImageUrl' string and 'featuredImageFile'. Choose one") - begitu ada file baru
@@ -92,13 +101,10 @@ function onFeaturedImageChange(event: Event) {
 }
 
 const newAttachmentFiles = ref<File[]>([]);
-const attachmentsInputRef = ref<HTMLInputElement | null>(null);
 const existingAttachments = ref<BlogAttachment[]>([]);
 
-function onAttachmentFilesChange(event: Event) {
-  const input = event.target as HTMLInputElement;
-  newAttachmentFiles.value = [...newAttachmentFiles.value, ...Array.from(input.files ?? [])];
-  input.value = "";
+function onAttachmentFilesChange(files: File[]) {
+  newAttachmentFiles.value = [...newAttachmentFiles.value, ...files];
 }
 
 function removeNewAttachment(index: number) {
@@ -106,7 +112,9 @@ function removeNewAttachment(index: number) {
 }
 
 function removeExistingAttachment(attachment: BlogAttachment) {
-  existingAttachments.value = existingAttachments.value.filter((existing) => existing.id !== attachment.id);
+  existingAttachments.value = existingAttachments.value.filter(
+    (existing) => existing.id !== attachment.id,
+  );
   values.deletedAttachmentIds = [...(values.deletedAttachmentIds ?? []), attachment.id];
 }
 
@@ -208,7 +216,9 @@ const onSubmit = handleSubmit(async (data) => {
         <IconArrowLeft class="size-5" />
       </RouterLink>
       <div>
-        <h2 class="text-2xl font-bold text-content">{{ isEdit ? t("editTitle") : t("createTitle") }}</h2>
+        <h2 class="text-2xl font-bold text-content">
+          {{ isEdit ? t("editTitle") : t("createTitle") }}
+        </h2>
         <p class="mt-1 text-sm text-content/60">
           {{ isEdit ? t("editSubtitle") : t("createSubtitle") }}
         </p>
@@ -298,8 +308,15 @@ const onSubmit = handleSubmit(async (data) => {
         <h3 class="font-semibold text-content">{{ t("media.title") }}</h3>
 
         <div>
-          <p class="block mb-1.5 text-sm font-medium text-content/80">{{ t("featuredImage.label") }}</p>
-          <div class="flex items-center gap-4">
+          <p class="block mb-1.5 text-sm font-medium text-content/80">
+            {{ t("featuredImage.label") }}
+          </p>
+          <AppFilePicker
+            accept="image/*"
+            :label="t('featuredImage.choose')"
+            :hint="t('featuredImage.hint')"
+            @select="onFeaturedImageChange"
+          >
             <img
               v-if="featuredImagePreview"
               :src="featuredImagePreview"
@@ -312,20 +329,7 @@ const onSubmit = handleSubmit(async (data) => {
             >
               <IconImage class="size-6" />
             </div>
-            <div>
-              <input
-                ref="featuredImageInputRef"
-                type="file"
-                accept="image/*"
-                class="hidden"
-                @change="onFeaturedImageChange"
-              />
-              <AppButton type="button" variant="secondary" size="sm" @click="featuredImageInputRef?.click()">
-                {{ t("featuredImage.choose") }}
-              </AppButton>
-              <p class="mt-1 text-xs text-content/50">{{ t("featuredImage.hint") }}</p>
-            </div>
-          </div>
+          </AppFilePicker>
         </div>
 
         <div>
@@ -367,17 +371,7 @@ const onSubmit = handleSubmit(async (data) => {
               </button>
             </div>
           </div>
-          <input
-            ref="attachmentsInputRef"
-            type="file"
-            multiple
-            class="hidden"
-            @change="onAttachmentFilesChange"
-          />
-          <AppButton type="button" variant="secondary" size="sm" @click="attachmentsInputRef?.click()">
-            <IconPlus class="mr-1 size-4" />
-            {{ t("attachments.add") }}
-          </AppButton>
+          <AppFilePicker multiple :label="t('attachments.add')" @select="onAttachmentFilesChange" />
         </div>
       </section>
 

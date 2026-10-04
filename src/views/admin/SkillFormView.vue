@@ -2,16 +2,29 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import { isAxiosError } from "axios";
-import { ArrowLeft as IconArrowLeft, Loader2 as IconLoader, Image as IconImage, X as IconX } from "@lucide/vue";
+import {
+  ArrowLeft as IconArrowLeft,
+  Loader2 as IconLoader,
+  Image as IconImage,
+  X as IconX,
+} from "@lucide/vue";
 import AppAlert from "@/components/shared/AppAlert.vue";
+import AppFilePicker from "@/components/shared/AppFilePicker.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";
 import AppTextarea from "@/components/shared/AppTextarea.vue";
 import AppSelect from "@/components/shared/AppSelect.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
-import { useSkillMultipartMutation, useSkillUpdateMultipartMutation } from "@/composables/queries/useSkills";
-import { useTechIconsQuery, searchTechIcons, type TechIconOption } from "@/composables/queries/useTechIcons";
+import {
+  useSkillMultipartMutation,
+  useSkillUpdateMultipartMutation,
+} from "@/composables/queries/useSkills";
+import {
+  useTechIconsQuery,
+  searchTechIcons,
+  type TechIconOption,
+} from "@/composables/queries/useTechIcons";
 import { skillService } from "@/services/skillService";
 import { setAcceptLanguage } from "@/api/axiosClient";
 import { useI18nStore } from "@/stores/i18nStores";
@@ -88,7 +101,6 @@ const categoryOptions = enumStringKeys(SkillCategory).map((key) => ({
 // SkillRequest), dikirim lewat field terpisah di SkillMultipartRequest/
 // UpdateSkillMultipartRequest (lihat skillService.ts).
 const logoFile = ref<File | undefined>(undefined);
-const logoInputRef = ref<HTMLInputElement | null>(null);
 const existingLogoUrl = ref<string | null>(null);
 
 const logoPreview = computed(() => {
@@ -96,8 +108,8 @@ const logoPreview = computed(() => {
   return existingLogoUrl.value;
 });
 
-function onLogoFileChange(event: Event) {
-  logoFile.value = (event.target as HTMLInputElement).files?.[0] ?? undefined;
+function onLogoFileChange(files: File[]) {
+  logoFile.value = files[0];
   // * Backend nolak kalau logoUrl (string lama, keisi lewat loadSkillForEdit() pas
   // edit) & logoFile dikirim bareng dalam satu request ("Cannot accept both 'logoUrl'
   // string and 'logoFile'. Choose one") - begitu ada file baru dipilih, logoUrl lama
@@ -114,7 +126,9 @@ const { data: techIconsData, isLoading: isTechIconsLoading } = useTechIconsQuery
 const techSearchQuery = ref("");
 const isTechDropdownOpen = ref(false);
 
-const techSearchResults = computed(() => searchTechIcons(techIconsData.value, techSearchQuery.value));
+const techSearchResults = computed(() =>
+  searchTechIcons(techIconsData.value, techSearchQuery.value),
+);
 
 // * Index suggestion yang lagi di-highlight, buat navigasi keyboard (↑/↓ + Enter) di
 // dropdown pencarian logo - biar admin gak wajib gerakin mouse tiap milih.
@@ -132,7 +146,6 @@ function moveTechActiveIndex(delta: number) {
 
 function selectTechLogo(option: TechIconOption) {
   logoFile.value = undefined;
-  if (logoInputRef.value) logoInputRef.value.value = "";
   values.logoUrl = option.iconUrl;
   existingLogoUrl.value = option.iconUrl;
   // * Sengaja gak nutup isTechDropdownOpen di sini - input tetap focused abis milih
@@ -153,7 +166,6 @@ function selectActiveTechLogo() {
 
 function clearLogo() {
   logoFile.value = undefined;
-  if (logoInputRef.value) logoInputRef.value.value = "";
   values.logoUrl = null;
   existingLogoUrl.value = null;
 }
@@ -219,7 +231,11 @@ const onSubmit = handleSubmit(async (data) => {
 
   try {
     if (isEdit.value && skillId.value) {
-      await updateMutation.mutateAsync({ id: skillId.value, skillRequest, logoFile: logoFile.value });
+      await updateMutation.mutateAsync({
+        id: skillId.value,
+        skillRequest,
+        logoFile: logoFile.value,
+      });
       toast.success(t("toast.updated"));
     } else {
       await createMutation.mutateAsync({ skillRequest, logoFile: logoFile.value });
@@ -243,7 +259,9 @@ const onSubmit = handleSubmit(async (data) => {
         <IconArrowLeft class="size-5" />
       </RouterLink>
       <div>
-        <h2 class="text-2xl font-bold text-content">{{ isEdit ? t("editTitle") : t("createTitle") }}</h2>
+        <h2 class="text-2xl font-bold text-content">
+          {{ isEdit ? t("editTitle") : t("createTitle") }}
+        </h2>
         <p class="mt-1 text-sm text-content/60">
           {{ isEdit ? t("editSubtitle") : t("createSubtitle") }}
         </p>
@@ -304,7 +322,12 @@ const onSubmit = handleSubmit(async (data) => {
 
       <section class="p-5 space-y-4 border rounded-card border-border bg-surface">
         <h3 class="font-semibold text-content">{{ t("logo.title") }}</h3>
-        <div class="flex items-center gap-4">
+        <AppFilePicker
+          accept="image/*"
+          :label="t('logo.choose')"
+          :hint="t('logo.hint')"
+          @select="onLogoFileChange"
+        >
           <div v-if="logoPreview" class="relative group">
             <img
               :src="logoPreview"
@@ -326,14 +349,7 @@ const onSubmit = handleSubmit(async (data) => {
           >
             <IconImage class="size-6" />
           </div>
-          <div>
-            <input ref="logoInputRef" type="file" accept="image/*" class="hidden" @change="onLogoFileChange" />
-            <AppButton type="button" variant="secondary" size="sm" @click="logoInputRef?.click()">
-              {{ t("logo.choose") }}
-            </AppButton>
-            <p class="mt-1 text-xs text-content/50">{{ t("logo.hint") }}</p>
-          </div>
-        </div>
+        </AppFilePicker>
 
         <div>
           <p class="text-xs text-content/50">{{ t("logo.searchHint") }}</p>
@@ -358,7 +374,11 @@ const onSubmit = handleSubmit(async (data) => {
               <p v-if="isTechIconsLoading" class="px-3 py-2 text-xs text-content/50">
                 {{ t("logo.searching") }}
               </p>
-              <ul v-else-if="techSearchResults.length" role="listbox" class="overflow-auto max-h-56">
+              <ul
+                v-else-if="techSearchResults.length"
+                role="listbox"
+                class="overflow-auto max-h-56"
+              >
                 <li
                   v-for="(option, index) in techSearchResults"
                   :key="option.slug"
@@ -368,7 +388,9 @@ const onSubmit = handleSubmit(async (data) => {
                   <button
                     type="button"
                     class="flex items-center w-full gap-2 px-3 py-2 text-sm text-left"
-                    :class="index === techActiveIndex ? 'bg-surface-raised' : 'hover:bg-surface-raised'"
+                    :class="
+                      index === techActiveIndex ? 'bg-surface-raised' : 'hover:bg-surface-raised'
+                    "
                     @mousedown.prevent="selectTechLogo(option)"
                     @mouseenter="techActiveIndex = index"
                   >

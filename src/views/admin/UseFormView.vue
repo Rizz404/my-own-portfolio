@@ -2,15 +2,26 @@
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import { isAxiosError } from "axios";
-import { ArrowLeft as IconArrowLeft, Loader2 as IconLoader, Plus as IconPlus, Trash2 as IconTrash2, Image as IconImage, X as IconX } from "@lucide/vue";
+import {
+  ArrowLeft as IconArrowLeft,
+  Loader2 as IconLoader,
+  Plus as IconPlus,
+  Trash2 as IconTrash2,
+  Image as IconImage,
+  X as IconX,
+} from "@lucide/vue";
 import AppAlert from "@/components/shared/AppAlert.vue";
+import AppFilePicker from "@/components/shared/AppFilePicker.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";
 import AppTextarea from "@/components/shared/AppTextarea.vue";
 import AppSelect from "@/components/shared/AppSelect.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
-import { useUseMultipartMutation, useUseUpdateMultipartMutation } from "@/composables/queries/useUses";
+import {
+  useUseMultipartMutation,
+  useUseUpdateMultipartMutation,
+} from "@/composables/queries/useUses";
 import { useService } from "@/services/useService";
 import { setAcceptLanguage } from "@/api/axiosClient";
 import { useI18nStore } from "@/stores/i18nStores";
@@ -49,7 +60,10 @@ const emptyUseRequest = (): UseRequestInput => ({
   ],
 });
 
-const { values, errors, handleSubmit, validateField, reset } = useZodForm(useRequestSchema, emptyUseRequest());
+const { values, errors, handleSubmit, validateField, reset } = useZodForm(
+  useRequestSchema,
+  emptyUseRequest(),
+);
 
 // * values.translations selalu diisi persis 2 entry - en & id - sejak initial value
 // & tiap kali reset() (lihat emptyUseRequest() & loadUseForEdit()), jadi aman
@@ -100,7 +114,6 @@ function syncDynamicFields() {
 // bagian dari UseRequest), dan dikirim lewat field terpisah di
 // UseMultipartRequest/UpdateUseMultipartRequest (lihat useService.ts).
 const logoFile = ref<File | undefined>(undefined);
-const logoInputRef = ref<HTMLInputElement | null>(null);
 const existingLogoUrl = ref<string | null>(null);
 
 const logoPreview = computed(() => {
@@ -108,8 +121,8 @@ const logoPreview = computed(() => {
   return existingLogoUrl.value;
 });
 
-function onLogoFileChange(event: Event) {
-  logoFile.value = (event.target as HTMLInputElement).files?.[0] ?? undefined;
+function onLogoFileChange(files: File[]) {
+  logoFile.value = files[0];
   // * Backend nolak kalau logoUrl (string lama, keisi lewat loadUseForEdit() pas
   // edit) & logoFile dikirim bareng dalam satu request ("Cannot accept both 'logoUrl'
   // string and 'logoFile'. Choose one") - begitu ada file baru dipilih, logoUrl lama
@@ -118,15 +131,14 @@ function onLogoFileChange(event: Event) {
 }
 
 const newPictureFiles = ref<File[]>([]);
-const picturesInputRef = ref<HTMLInputElement | null>(null);
 const existingPictureUrls = ref<string[]>([]);
 
-const newPicturePreviews = computed(() => newPictureFiles.value.map((file) => URL.createObjectURL(file)));
+const newPicturePreviews = computed(() =>
+  newPictureFiles.value.map((file) => URL.createObjectURL(file)),
+);
 
-function onPictureFilesChange(event: Event) {
-  const input = event.target as HTMLInputElement;
-  newPictureFiles.value = [...newPictureFiles.value, ...Array.from(input.files ?? [])];
-  input.value = "";
+function onPictureFilesChange(files: File[]) {
+  newPictureFiles.value = [...newPictureFiles.value, ...files];
 }
 
 function removeNewPicture(index: number) {
@@ -242,7 +254,9 @@ const onSubmit = (event?: Event) => {
         <IconArrowLeft class="size-5" />
       </RouterLink>
       <div>
-        <h2 class="text-2xl font-bold text-content">{{ isEdit ? t("editTitle") : t("createTitle") }}</h2>
+        <h2 class="text-2xl font-bold text-content">
+          {{ isEdit ? t("editTitle") : t("createTitle") }}
+        </h2>
         <p class="mt-1 text-sm text-content/60">
           {{ isEdit ? t("editSubtitle") : t("createSubtitle") }}
         </p>
@@ -313,7 +327,12 @@ const onSubmit = (event?: Event) => {
           {{ t("links.empty") }}
         </p>
         <div v-for="(row, index) in linkRows" :key="index" class="flex items-start gap-3">
-          <AppInput v-model="row.url" type="url" :placeholder="t('links.urlPlaceholder')" class="flex-1" />
+          <AppInput
+            v-model="row.url"
+            type="url"
+            :placeholder="t('links.urlPlaceholder')"
+            class="flex-1"
+          />
           <button
             type="button"
             class="p-2.5 mt-0.5 rounded-lg text-content/50 hover:bg-danger/10 hover:text-danger"
@@ -330,7 +349,12 @@ const onSubmit = (event?: Event) => {
 
         <div>
           <p class="block mb-1.5 text-sm font-medium text-content/80">{{ t("logo.label") }}</p>
-          <div class="flex items-center gap-4">
+          <AppFilePicker
+            accept="image/*"
+            :label="t('logo.choose')"
+            :hint="t('logo.hint')"
+            @select="onLogoFileChange"
+          >
             <img
               v-if="logoPreview"
               :src="logoPreview"
@@ -343,21 +367,21 @@ const onSubmit = (event?: Event) => {
             >
               <IconImage class="size-6" />
             </div>
-            <div>
-              <input ref="logoInputRef" type="file" accept="image/*" class="hidden" @change="onLogoFileChange" />
-              <AppButton type="button" variant="secondary" size="sm" @click="logoInputRef?.click()">
-                {{ t("logo.choose") }}
-              </AppButton>
-              <p class="mt-1 text-xs text-content/50">{{ t("logo.hint") }}</p>
-            </div>
-          </div>
+          </AppFilePicker>
         </div>
 
         <div>
           <p class="block mb-2 text-sm font-medium text-content/80">{{ t("pictures.label") }}</p>
-          <div v-if="existingPictureUrls.length || newPicturePreviews.length" class="flex flex-wrap gap-3 mb-3">
+          <div
+            v-if="existingPictureUrls.length || newPicturePreviews.length"
+            class="flex flex-wrap gap-3 mb-3"
+          >
             <div v-for="url in existingPictureUrls" :key="url" class="relative group">
-              <img :src="url" :alt="t('pictures.label')" class="object-cover border rounded-lg size-20 border-border bg-background" />
+              <img
+                :src="url"
+                :alt="t('pictures.label')"
+                class="object-cover border rounded-lg size-20 border-border bg-background"
+              />
               <button
                 type="button"
                 class="absolute flex items-center justify-center text-white rounded-full shadow-sm -top-1.5 -right-1.5 bg-danger size-5"
@@ -367,8 +391,16 @@ const onSubmit = (event?: Event) => {
                 <IconX class="size-3" />
               </button>
             </div>
-            <div v-for="(url, index) in newPicturePreviews" :key="`new-${index}`" class="relative group">
-              <img :src="url" :alt="t('pictures.label')" class="object-cover border rounded-lg size-20 border-border bg-background" />
+            <div
+              v-for="(url, index) in newPicturePreviews"
+              :key="`new-${index}`"
+              class="relative group"
+            >
+              <img
+                :src="url"
+                :alt="t('pictures.label')"
+                class="object-cover border rounded-lg size-20 border-border bg-background"
+              />
               <button
                 type="button"
                 class="absolute flex items-center justify-center text-white rounded-full shadow-sm -top-1.5 -right-1.5 bg-danger size-5"
@@ -379,18 +411,12 @@ const onSubmit = (event?: Event) => {
               </button>
             </div>
           </div>
-          <input
-            ref="picturesInputRef"
-            type="file"
+          <AppFilePicker
             accept="image/*"
             multiple
-            class="hidden"
-            @change="onPictureFilesChange"
+            :label="t('pictures.add')"
+            @select="onPictureFilesChange"
           />
-          <AppButton type="button" variant="secondary" size="sm" @click="picturesInputRef?.click()">
-            <IconPlus class="mr-1 size-4" />
-            {{ t("pictures.add") }}
-          </AppButton>
         </div>
       </section>
 
