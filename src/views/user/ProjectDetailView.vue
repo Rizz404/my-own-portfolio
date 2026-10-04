@@ -10,6 +10,7 @@ import { fadeUp } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
 import { useDocumentTitle } from "@/composables/useDocumentTitle";
 import { useLocalizedPath } from "@/composables/useLocalizedPath";
+import { toDisplayHtml } from "@/utils/richText";
 
 // * Namespace translation buat view ini, ikutin path file JSON-nya:
 // src/locales/<locale>/views/user/ProjectDetailView.json
@@ -28,6 +29,10 @@ useDocumentTitle(
   computed(() => response.value?.data?.name),
   { onlyWhenPresent: true },
 );
+
+// * Description disimpan sebagai HTML dari editor WYSIWYG (admin) - disanitasi dulu sebelum
+// v-html. Data lama yang masih plain text dibungkus jadi paragraf oleh toDisplayHtml().
+const descriptionHtml = computed(() => toDisplayHtml(response.value?.data?.description));
 
 const formatEnumText = (val: string | number) => {
   if (val === undefined || val === null) return;
@@ -179,14 +184,14 @@ const scrollImageStrip = (dir: "next" | "prev") => {
           <button
             v-if="response.data.imageUrls.length > 1"
             @click="scrollImageStrip('prev')"
-            class="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-black/70 text-white shadow-sm ring-1 ring-white/10 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/90 hidden md:block z-10"
+            class="absolute left-2 top-1/2 -translate-y-1/2 -translate-x-3 scale-90 p-1.5 rounded-full bg-background text-content dark:bg-content dark:text-background shadow-md ring-1 ring-border opacity-0 pointer-events-none transition duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0 group-hover:scale-100 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-x-0 focus-visible:scale-100 focus-visible:pointer-events-auto hover:scale-110 active:scale-95 hidden md:block z-10"
           >
             <IconChevronLeft class="w-5 h-5" />
           </button>
           <button
             v-if="response.data.imageUrls.length > 1"
             @click="scrollImageStrip('next')"
-            class="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-black/70 text-white shadow-sm ring-1 ring-white/10 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/90 hidden md:block z-10"
+            class="absolute right-2 top-1/2 -translate-y-1/2 translate-x-3 scale-90 p-1.5 rounded-full bg-background text-content dark:bg-content dark:text-background shadow-md ring-1 ring-border opacity-0 pointer-events-none transition duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0 group-hover:scale-100 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-x-0 focus-visible:scale-100 focus-visible:pointer-events-auto hover:scale-110 active:scale-95 hidden md:block z-10"
           >
             <IconChevronRight class="w-5 h-5" />
           </button>
@@ -199,9 +204,7 @@ const scrollImageStrip = (dir: "next" | "prev") => {
         />
       </div>
 
-      <div class="text-lg leading-relaxed text-content/90 whitespace-pre-wrap">
-        {{ response.data.description }}
-      </div>
+      <div class="text-lg leading-relaxed rich-content text-content/90" v-html="descriptionHtml"></div>
     </article>
   </div>
 </template>

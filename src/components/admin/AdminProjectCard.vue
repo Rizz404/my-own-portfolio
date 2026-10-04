@@ -4,6 +4,7 @@ import { FolderKanban as IconFolderKanban, Trash2 as IconTrash2, Loader2 as Icon
 import type Project from "@/types/project";
 import { formatDate } from "@/utils/dateUtil";
 import { useT } from "@/composables/useT";
+import { htmlToPlainText } from "@/utils/richText";
 import AppTechStackList from "@/components/shared/AppTechStackList.vue";
 
 // * Namespace translation buat komponen ini, ikutin path file JSON-nya:
@@ -132,7 +133,7 @@ const statusBadgeClass = (status: Project["status"]) => {
     </div>
 
     <p v-if="project.description" class="text-sm leading-relaxed text-content/60 line-clamp-2">
-      {{ project.description }}
+      {{ htmlToPlainText(project.description) }}
     </p>
 
     <AppTechStackList :tech-stack="project.techStack" size="sm" />

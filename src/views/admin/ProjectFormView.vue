@@ -6,7 +6,7 @@ import { ArrowLeft as IconArrowLeft, Loader2 as IconLoader, Plus as IconPlus, Tr
 import AppAlert from "@/components/shared/AppAlert.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";
-import AppTextarea from "@/components/shared/AppTextarea.vue";
+import AppRichTextEditor from "@/components/shared/AppRichTextEditor.vue";
 import AppSelect from "@/components/shared/AppSelect.vue";
 import AppCheckbox from "@/components/shared/AppCheckbox.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
@@ -67,7 +67,7 @@ function translationFor(locale: LanguageCode) {
   return values.translations.find((translation) => translation.locale === locale)!;
 }
 
-// * `description` di schema-nya nullable (`string | null | undefined`), tapi AppTextarea
+// * `description` di schema-nya nullable (`string | null | undefined`), tapi AppRichTextEditor
 // modelnya `string` - computed writable ini yang jembatanin null <-> "" di kedua arah.
 function descriptionModel(locale: LanguageCode) {
   return computed({
@@ -414,7 +414,7 @@ const onSubmit = (event?: Event) => {
               required
               @blur="validateField('translations')"
             />
-            <AppTextarea
+            <AppRichTextEditor
               v-model="enDescription"
               :label="t('descriptionLabel')"
               @blur="validateField('translations')"
@@ -430,7 +430,7 @@ const onSubmit = (event?: Event) => {
               required
               @blur="validateField('translations')"
             />
-            <AppTextarea
+            <AppRichTextEditor
               v-model="idDescription"
               :label="t('descriptionLabel')"
               @blur="validateField('translations')"

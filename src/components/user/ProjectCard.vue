@@ -5,6 +5,7 @@ import { RouterLink } from "vue-router";
 import { ChevronLeft as IconChevronLeft, ChevronRight as IconChevronRight } from "@lucide/vue";
 import { useT } from "@/composables/useT";
 import { useLocalizedPath } from "@/composables/useLocalizedPath";
+import { htmlToPlainText } from "@/utils/richText";
 import AppTechStackList from "@/components/shared/AppTechStackList.vue";
 
 const props = defineProps<{ project: Project }>();
@@ -173,7 +174,7 @@ const statusBadgeClass = computed(() => {
         </span>
       </div>
       <p class="text-base font-normal leading-relaxed md:text-sm text-content/70 line-clamp-3">
-        {{ project.description }}
+        {{ htmlToPlainText(project.description) }}
       </p>
       <AppTechStackList :tech-stack="project.techStack" size="md" class="mt-3" />
     </div>

@@ -1,0 +1,19 @@
+{
+  "toolbar": {
+    "label": "Formatting",
+    "bold": "Bold",
+    "italic": "Italic",
+    "strike": "Strikethrough",
+    "heading2": "Heading",
+    "heading3": "Subheading",
+    "bulletList": "Bullet list",
+    "orderedList": "Numbered list",
+    "blockquote": "Quote",
+    "code": "Code",
+    "link": "Link",
+    "unlink": "Remove link",
+    "undo": "Undo",
+    "redo": "Redo"
+  },
+  "linkPrompt": "Enter the link URL"
+}

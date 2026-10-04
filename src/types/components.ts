@@ -42,6 +42,10 @@ export interface AppTextareaProps extends AppFormFieldProps {
   rows?: number;
 }
 
+export interface AppRichTextEditorProps extends AppFormFieldProps {
+  placeholder?: string;
+}
+
 export interface AppSelectOption {
   label: string;
   value: string | number;

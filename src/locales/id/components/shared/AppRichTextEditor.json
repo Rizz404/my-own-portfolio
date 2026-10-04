@@ -1,0 +1,19 @@
+{
+  "toolbar": {
+    "label": "Pemformatan",
+    "bold": "Tebal",
+    "italic": "Miring",
+    "strike": "Coret",
+    "heading2": "Judul",
+    "heading3": "Subjudul",
+    "bulletList": "Daftar poin",
+    "orderedList": "Daftar bernomor",
+    "blockquote": "Kutipan",
+    "code": "Kode",
+    "link": "Tautan",
+    "unlink": "Hapus tautan",
+    "undo": "Urungkan",
+    "redo": "Ulangi"
+  },
+  "linkPrompt": "Masukkan URL tautan"
+}
