@@ -69,11 +69,9 @@ const statusBadgeClass = computed(() => {
 <template>
   <RouterLink
     :to="withLocale(`/projects/${project.id}`)"
-    class="flex gap-4 p-4 transition-all duration-300 md:flex-col rounded-2xl border border-border/20 bg-surface/30 hover:border-primary/40 hover:bg-surface-raised hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 group"
+    class="flex min-w-0 flex-col gap-3 p-3 transition-all duration-300 sm:gap-4 sm:p-4 rounded-2xl border border-border/20 bg-surface/30 hover:border-primary/40 hover:bg-surface-raised hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 group"
   >
-    <div
-      class="relative overflow-hidden rounded-md shrink-0 size-24 md:w-full md:h-auto md:aspect-video bg-surface"
-    >
+    <div class="relative overflow-hidden rounded-xl shrink-0 w-full aspect-video bg-surface">
       <Transition
         :enter-active-class="
           direction === 'next'
@@ -92,11 +90,11 @@ const statusBadgeClass = computed(() => {
           <img
             :src="images[currentIndex]"
             :alt="`${project.name} preview`"
-            class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+            class="object-contain w-full h-full transition-transform duration-700 group-hover:scale-105"
           />
         </div>
       </Transition>
-      <div class="absolute top-2 px-2 items-center justify-between w-full hidden md:flex z-10">
+      <div class="absolute top-2 px-2 items-center justify-between w-full flex z-10">
         <img
           v-if="project.logoUrl"
           :src="project.logoUrl"
@@ -113,51 +111,47 @@ const statusBadgeClass = computed(() => {
       </div>
       <button
         v-if="images.length > 1"
+        type="button"
+        :aria-label="t('previousImage')"
         @click.prevent="prevImage"
-        class="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-black/70 text-white shadow-sm ring-1 ring-white/10 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/90 hidden md:block z-10"
+        class="absolute left-2 top-1/2 -translate-y-1/2 flex size-11 items-center justify-center rounded-full bg-black/70 text-white shadow-sm ring-1 ring-white/10 opacity-100 md:opacity-0 md:group-hover:opacity-100 focus-visible:opacity-100 transition-opacity hover:bg-black/90 z-10"
       >
         <IconChevronLeft class="w-5 h-5" />
       </button>
       <button
         v-if="images.length > 1"
+        type="button"
+        :aria-label="t('nextImage')"
         @click.prevent="nextImage"
-        class="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-black/70 text-white shadow-sm ring-1 ring-white/10 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/90 hidden md:block z-10"
+        class="absolute right-2 top-1/2 -translate-y-1/2 flex size-11 items-center justify-center rounded-full bg-black/70 text-white shadow-sm ring-1 ring-white/10 opacity-100 md:opacity-0 md:group-hover:opacity-100 focus-visible:opacity-100 transition-opacity hover:bg-black/90 z-10"
       >
         <IconChevronRight class="w-5 h-5" />
       </button>
 
       <div
         v-if="images.length > 1"
-        class="absolute bottom-2 left-1/2 -translate-x-1/2 gap-1.5 hidden md:flex z-10"
+        class="absolute bottom-2 left-1/2 -translate-x-1/2 max-w-[calc(100%-7rem)] items-center overflow-x-auto flex z-10"
       >
         <button
           v-for="(_, index) in images"
           :key="index"
+          type="button"
+          :aria-label="t('showImage', { index: index + 1 })"
+          :aria-current="currentIndex === index ? 'true' : undefined"
           @click.prevent="goToImage(index)"
-          class="size-1.5 rounded-full shadow-sm ring-1 ring-black/20 transition-all duration-300"
-          :class="currentIndex === index ? 'bg-white w-4' : 'bg-white/50 hover:bg-white/80'"
-        ></button>
+          class="flex size-6 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-white"
+        >
+          <span
+            class="h-1.5 rounded-full shadow-sm ring-1 ring-black/20 transition-all duration-300"
+            :class="currentIndex === index ? 'bg-white w-4' : 'w-1.5 bg-white/50'"
+          ></span>
+        </button>
       </div>
     </div>
 
-    <div class="flex flex-col flex-1 mt-1">
-      <div class="flex items-center justify-between gap-2 mb-2 md:hidden">
-        <img
-          v-if="project.logoUrl"
-          :src="project.logoUrl"
-          :alt="`${project.name} logo`"
-          class="object-cover border rounded-md size-6 shrink-0 border-border/50 bg-surface"
-        />
-        <span
-          class="text-[9px] py-0.5 px-1.5 font-bold uppercase tracking-wider rounded"
-          :class="statusBadgeClass"
-        >
-          {{ formatEnumText(project.status) || t("unknown") }}
-        </span>
-      </div>
-
+    <div class="flex min-w-0 flex-col flex-1 mt-1">
       <h3
-        class="mb-2 text-lg font-semibold transition-colors text-content group-hover:text-primary"
+        class="mb-2 break-words text-lg font-semibold transition-colors text-content group-hover:text-primary"
       >
         {{ project.name }}
       </h3>
@@ -173,7 +167,7 @@ const statusBadgeClass = computed(() => {
           {{ formatEnumText(type) }}
         </span>
       </div>
-      <p class="text-base font-normal leading-relaxed md:text-sm text-content/70 line-clamp-3">
+      <p class="break-words text-sm font-normal leading-relaxed text-content/70 line-clamp-3">
         {{ htmlToPlainText(project.description) }}
       </p>
       <AppTechStackList :tech-stack="project.techStack" size="md" class="mt-3" />

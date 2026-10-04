@@ -1,3 +1,6 @@
 {
-  "unknown": "Unknown"
+  "unknown": "Unknown",
+  "previousImage": "Previous image",
+  "nextImage": "Next image",
+  "showImage": "Show image {index}"
 }

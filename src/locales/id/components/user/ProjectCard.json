@@ -1,3 +1,6 @@
 {
-  "unknown": "Tidak diketahui"
+  "unknown": "Tidak diketahui",
+  "previousImage": "Gambar sebelumnya",
+  "nextImage": "Gambar berikutnya",
+  "showImage": "Tampilkan gambar {index}"
 }
