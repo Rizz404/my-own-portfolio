@@ -18,7 +18,7 @@ import { useT } from "@/composables/useT";
 const t = useT("views.user.UseView");
 
 const queryParams = ref<UseQueryParams>({ ...advancedFilterDefaults("uses"), page: 1, size: 100 });
-useQuerySync(queryParams);
+useQuerySync(queryParams, { persistFilters: { resource: "uses" } });
 const { data: response, isLoading, isError, error } = useUsesQuery(queryParams);
 
 const hardwareList = computed(() => {

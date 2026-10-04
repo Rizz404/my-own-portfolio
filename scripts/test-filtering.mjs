@@ -1,13 +1,18 @@
 import assert from "node:assert/strict";
 import { createServer } from "vite";
-import { createSSRApp, h, ref } from "vue";
+import { createSSRApp, createRenderer, h, ref, nextTick } from "vue";
 import { renderToString } from "vue/server-renderer";
 import { createMemoryHistory, createRouter } from "vue-router";
 
 const server = await createServer({ server: { middlewareMode: true }, appType: "custom" });
 const previousStorage = globalThis.localStorage;
 try {
-  globalThis.localStorage = { getItem: () => null };
+  const storage = new Map();
+  globalThis.localStorage = {
+    getItem: (key) => storage.get(key) ?? null,
+    setItem: (key, value) => storage.set(key, value),
+    removeItem: (key) => storage.delete(key),
+  };
   const { default: client } = await server.ssrLoadModule("/src/api/axiosClient.ts");
   const captured = [];
   client.defaults.adapter = async (config) => {
@@ -129,6 +134,121 @@ try {
   assert.equal(restored.status, "active,development");
   assert.deepEqual(restored.sortBy, ["createdAt", "id"]);
 
+  // Mount and unmount real Vue scopes to test navigating away, mutations, and reloads.
+  const renderer = createRenderer({
+    createComment: () => ({}),
+    createText: () => ({}),
+    createElement: () => ({}),
+    insert() {},
+    remove() {},
+    setText() {},
+    setElementText() {},
+    patchProp() {},
+    parentNode: () => null,
+    nextSibling: () => null,
+  });
+  const navigationRouter = createRouter({
+    history: createMemoryHistory(),
+    routes: [
+      { path: "/admin/blogs", name: "AdminBlogs", component: { render: () => null } },
+      { path: "/admin/blogs/edit", name: "EditBlog", component: { render: () => null } },
+      { path: "/en/blogs", name: "Blogs", component: { render: () => null } },
+    ],
+  });
+  const filterOptions = { persistFilters: { resource: "blogs" } };
+  function mountFilters() {
+    let params;
+    const app = renderer.createApp({
+      setup() {
+        params = ref({ ...advancedFilterDefaults("blogs"), page: 1, size: 10, search: "" });
+        useQuerySync(params, filterOptions);
+        return () => null;
+      },
+    });
+    app.use(navigationRouter);
+    app.mount({});
+    return { params, app };
+  }
+  async function flushNavigation() {
+    await nextTick();
+    await new Promise((resolve) => setImmediate(resolve));
+  }
+  await navigationRouter.push("/admin/blogs");
+  let mounted = mountFilters();
+  mounted.params.value = {
+    ...mounted.params.value,
+    isPublished: false,
+    minViews: 0,
+    maxViews: 100,
+  };
+  const storageKey = "portfolio:advanced-filters:v1:AdminBlogs";
+  assert.equal(
+    JSON.parse(storage.get(storageKey)).isPublished,
+    "false",
+    "save immediately before leaving",
+  );
+  await flushNavigation();
+  assert.equal(navigationRouter.currentRoute.value.query.minViews, "0");
+  mounted.app.unmount();
+  await navigationRouter.push("/admin/blogs/edit");
+  const { blogService } = await server.ssrLoadModule("/src/services/blogService.ts");
+  await blogService.updateBlog({ id: "10", data: { isPublished: true } });
+  await navigationRouter.push("/admin/blogs");
+  mounted = mountFilters();
+  assert.equal(
+    mounted.params.value.isPublished,
+    false,
+    "filters survive a mutation and return from form",
+  );
+  assert.equal(mounted.params.value.minViews, 0);
+  await flushNavigation();
+  assert.equal(
+    navigationRouter.currentRoute.value.query.isPublished,
+    "false",
+    "restore the URL too",
+  );
+  mounted.app.unmount();
+  await navigationRouter.push("/en/blogs");
+  mounted = mountFilters();
+  assert.equal(
+    mounted.params.value.isPublished,
+    undefined,
+    "public and admin filters stay separate",
+  );
+  await flushNavigation();
+  mounted.app.unmount();
+  await navigationRouter.push("/admin/blogs?maxViews=50");
+  mounted = mountFilters();
+  assert.equal(mounted.params.value.maxViews, 50, "explicit shared URL replaces stored filters");
+  assert.equal(
+    mounted.params.value.isPublished,
+    undefined,
+    "do not mix an explicit URL with stored filters",
+  );
+  await flushNavigation();
+  mounted.app.unmount();
+  await navigationRouter.push("/admin/blogs");
+  mounted = mountFilters();
+  assert.equal(
+    mounted.params.value.maxViews,
+    50,
+    "a fresh mount without query restores saved filters",
+  );
+  mounted.params.value = { ...mounted.params.value, ...advancedFilterDefaults("blogs") };
+  assert.equal(storage.has(storageKey), false, "reset removes saved filters immediately");
+  await flushNavigation();
+  assert.equal(navigationRouter.currentRoute.value.query.maxViews, undefined);
+  mounted.app.unmount();
+  await navigationRouter.push("/admin/blogs");
+  mounted = mountFilters();
+  assert.equal(
+    mounted.params.value.maxViews,
+    undefined,
+    "reset filters must not return on remount",
+  );
+  await flushNavigation();
+  mounted.app.unmount();
+
   // Exercise the actual form handlers in Vue's setup context without a browser.
   const { default: panel } = await server.ssrLoadModule(
     "/src/components/shared/AppAdvancedFilters.vue",
@@ -174,8 +294,28 @@ try {
   });
   panelApp.use(i18n);
   await renderToString(panelApp);
+  const headerApp = createSSRApp({
+    render: () => h(panel, { modelValue: { isPublished: false, minViews: 0 }, resource: "blogs" }),
+  });
+  headerApp.use(i18n);
+  const activeHtml = await renderToString(headerApp);
+  assert.match(
+    activeHtml,
+    /<\/details>[\s\S]*<button/,
+    "reset button is outside the collapsed details",
+  );
+  const emptyHeaderApp = createSSRApp({
+    render: () => h(panel, { modelValue: {}, resource: "blogs" }),
+  });
+  emptyHeaderApp.use(i18n);
+  const emptyHtml = await renderToString(emptyHeaderApp);
+  assert.doesNotMatch(
+    emptyHtml,
+    /<\/details>[\s\S]*<button/,
+    "hide header reset when no filters are active",
+  );
   console.log(
-    "Filtering checks passed: 7 services, URL decoding, form validation, reset, and request encoding.",
+    "Filtering checks passed: 7 services, URL decoding, persistence across navigation/mutations, form validation, header reset, and request encoding.",
   );
 } finally {
   globalThis.localStorage = previousStorage;

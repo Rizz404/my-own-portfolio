@@ -43,7 +43,7 @@ const queryParams = ref<BlogQueryParams>({
 
 // * Sinkronin queryParams <-> URL query string SEBELUM bikin ref UI di bawah, biar
 // ref-ref itu ke-seed dari value yang udah di-override sama URL awal (kalau ada).
-useQuerySync(queryParams);
+useQuerySync(queryParams, { persistFilters: { resource: "blogs", exclude: [] } });
 
 const searchInput = ref(queryParams.value.search ?? "");
 const debouncedSearch = refDebounced(searchInput, 500);

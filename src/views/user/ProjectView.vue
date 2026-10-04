@@ -29,7 +29,7 @@ const queryParams = ref<ProjectQueryParams>({
 
 // * Sinkronin queryParams <-> URL query string SEBELUM bikin ref UI di bawah,
 // biar ref-nya ke-seed dari value yang udah di-override sama URL awal.
-useQuerySync(queryParams);
+useQuerySync(queryParams, { persistFilters: { resource: "projects" } });
 
 const searchInput = ref(queryParams.value.search ?? "");
 const debouncedSearch = refDebounced(searchInput, 500);
