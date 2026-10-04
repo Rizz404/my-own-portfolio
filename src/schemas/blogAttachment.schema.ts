@@ -10,7 +10,11 @@ export const blogAttachmentRequestSchema = z.object({
   fileType: z.enum(FileType),
 });
 
-// * Mirror dari BlogAttachmentQueryParams di src/types/blogAttachment.ts (alias BaseQueryParams)
-export const blogAttachmentQueryParamsSchema = baseQueryParamsSchema;
+// * Mirror dari BlogAttachmentQueryParams di src/types/blogAttachment.ts
+export const blogAttachmentQueryParamsSchema = baseQueryParamsSchema.extend({
+  search: z.string().optional(),
+  blogId: z.string().optional(),
+  fileType: z.string().optional(),
+});
 
 export type BlogAttachmentRequestInput = z.infer<typeof blogAttachmentRequestSchema>;

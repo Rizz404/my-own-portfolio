@@ -29,7 +29,8 @@ export const userRequestSchema = z.object({
     .array(userTranslationRequestSchema)
     .min(1, "At least one translation is required")
     .refine(
-      (translations) => new Set(translations.map((translation) => translation.locale)).size === translations.length,
+      (translations) =>
+        new Set(translations.map((translation) => translation.locale)).size === translations.length,
       { message: "Each locale can only be used once" },
     ),
 });
@@ -40,6 +41,10 @@ export const userQueryParamsSchema = baseQueryParamsSchema.extend({
   role: z.string().optional(),
   provider: z.string().optional(),
   gender: z.string().optional(),
+  email: z.string().optional(),
+  nickname: z.string().optional(),
+  dateOfBirthFrom: z.iso.date().optional(),
+  dateOfBirthTo: z.iso.date().optional(),
 });
 
 // * Mirror dari UserMultipartRequest / UpdateUserMultipartRequest di src/types/user.ts

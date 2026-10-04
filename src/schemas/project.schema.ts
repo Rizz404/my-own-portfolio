@@ -17,7 +17,8 @@ export const projectRequestSchema = z.object({
     .array(projectTranslationRequestSchema)
     .min(1, "At least one translation is required")
     .refine(
-      (translations) => new Set(translations.map((translation) => translation.locale)).size === translations.length,
+      (translations) =>
+        new Set(translations.map((translation) => translation.locale)).size === translations.length,
       { message: "Each locale can only be used once" },
     ),
   status: z.enum(ProjectStatus),
@@ -45,6 +46,10 @@ export const updateProjectMultipartRequestSchema = projectMultipartRequestSchema
 export const projectQueryParamsSchema = baseQueryParamsSchema.extend({
   search: z.string().optional(),
   status: z.string().optional(),
+  slug: z.string().optional(),
+  projectTypes: z.string().optional(),
+  linkTypes: z.string().optional(),
+  techStack: z.string().optional(),
 });
 
 export type ProjectRequestInput = z.infer<typeof projectRequestSchema>;

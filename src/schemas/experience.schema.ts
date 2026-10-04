@@ -23,12 +23,14 @@ export const experienceRequestSchema = z
       .min(1, "At least one translation is required")
       .refine(
         (translations) =>
-          new Set(translations.map((translation) => translation.locale)).size === translations.length,
+          new Set(translations.map((translation) => translation.locale)).size ===
+          translations.length,
         { message: "Each locale can only be used once" },
       ),
   })
   .refine(
-    (data) => !data.endDate || !data.startDate || new Date(data.endDate) >= new Date(data.startDate),
+    (data) =>
+      !data.endDate || !data.startDate || new Date(data.endDate) >= new Date(data.startDate),
     { message: "End date cannot be earlier than start date", path: ["endDate"] },
   );
 
@@ -36,8 +38,10 @@ export const experienceRequestSchema = z
 export const experienceQueryParamsSchema = baseQueryParamsSchema.extend({
   search: z.string().optional(),
   isCurrent: z.boolean().optional(),
-  startDate: z.string().optional(),
-  endDate: z.string().optional(),
+  startDate: z.iso.date().optional(),
+  endDate: z.iso.date().optional(),
+  companyName: z.string().optional(),
+  position: z.string().optional(),
 });
 
 export type ExperienceRequestInput = z.infer<typeof experienceRequestSchema>;

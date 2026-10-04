@@ -44,6 +44,10 @@ export const updateBlogMultipartRequestSchema = blogMultipartRequestSchema.exten
 // * Mirror dari BlogQueryParams di src/types/blog.ts
 export const blogQueryParamsSchema = baseQueryParamsSchema.extend({
   search: z.string().optional(),
+  slug: z.string().optional(),
+  isPublished: z.boolean().optional(),
+  minViews: z.number().int().min(0).optional(),
+  maxViews: z.number().int().min(0).optional(),
 });
 
 export type BlogRequestInput = z.infer<typeof blogRequestSchema>;
