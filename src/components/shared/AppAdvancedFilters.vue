@@ -21,6 +21,7 @@ const t = useT("components.shared.AppAdvancedFilters");
 const fields = computed(() => getFilterFields(props.resource, props.exclude));
 const draft = reactive<Record<string, string | number>>({});
 const error = ref("");
+const panelDetails = ref<HTMLDetailsElement | null>(null);
 const activeCount = computed(
   () =>
     fields.value.filter(({ key }) => {
@@ -98,6 +99,10 @@ function apply() {
   }
   error.value = "";
   emit("update:modelValue", next);
+  if (panelDetails.value) {
+    panelDetails.value.open = false;
+    panelDetails.value.querySelector("summary")?.focus({ preventScroll: true });
+  }
 }
 function reset() {
   const next: Record<string, unknown> = { ...props.modelValue, page: 1, cursor: undefined };
@@ -107,7 +112,7 @@ function reset() {
 }
 </script>
 <template>
-  <details class="mb-6 border rounded-xl border-border bg-surface/50 group/filters">
+  <details ref="panelDetails" class="mb-6 border rounded-xl border-border bg-surface/50 group/filters">
     <summary
       class="flex items-center gap-2 px-4 py-3 text-sm font-medium list-none cursor-pointer text-content focus-visible:outline-primary [&::-webkit-details-marker]:hidden"
     >
