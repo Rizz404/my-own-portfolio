@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from "vue";
+import { ChevronRight as IconChevronRight } from "@lucide/vue";
 import AppInput from "./AppInput.vue";
 import AppSelect from "./AppSelect.vue";
 import AppMultiSelect from "./AppMultiSelect.vue";
@@ -106,11 +107,16 @@ function reset() {
 }
 </script>
 <template>
-  <details class="mb-6 border rounded-xl border-border bg-surface/50">
+  <details class="mb-6 border rounded-xl border-border bg-surface/50 group/filters">
     <summary
-      class="px-4 py-3 text-sm font-medium cursor-pointer text-content focus-visible:outline-primary"
+      class="flex items-center gap-2 px-4 py-3 text-sm font-medium list-none cursor-pointer text-content focus-visible:outline-primary [&::-webkit-details-marker]:hidden"
     >
-      {{ t("title") }}<span v-if="activeCount" class="ml-2 text-primary">({{ activeCount }})</span>
+      <IconChevronRight
+        aria-hidden="true"
+        class="transition-transform size-4 shrink-0 group-open/filters:rotate-90 motion-reduce:transition-none"
+      />
+      <span>{{ t("title") }}</span>
+      <span v-if="activeCount" class="text-primary">({{ activeCount }})</span>
     </summary>
     <form class="p-4 border-t border-border" @submit.prevent="apply">
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

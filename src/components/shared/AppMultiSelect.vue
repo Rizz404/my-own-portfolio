@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import { ChevronDown as IconChevronDown } from "@lucide/vue";
 import type { AppSelectProps } from "@/types/components";
 const props = defineProps<Pick<AppSelectProps, "options" | "label">>();
 const model = defineModel<string>({ default: "" });
@@ -25,11 +26,15 @@ function toggle(value: string, checked: boolean) {
 <template>
   <div>
     <span v-if="label" class="block mb-1.5 text-sm font-medium text-content/80">{{ label }}</span>
-    <details class="relative group">
+    <details class="relative group/multiselect">
       <summary
-        class="px-4 py-2.5 border rounded-xl border-border bg-background text-content cursor-pointer focus-visible:outline-primary"
+        class="flex items-center justify-between gap-2 px-4 py-2.5 border rounded-xl border-border bg-background text-content list-none cursor-pointer focus-visible:outline-primary [&::-webkit-details-marker]:hidden"
       >
-        {{ caption }}
+        <span>{{ caption }}</span>
+        <IconChevronDown
+          aria-hidden="true"
+          class="transition-transform size-4 shrink-0 text-content/40 group-open/multiselect:rotate-180 motion-reduce:transition-none"
+        />
       </summary>
       <div
         class="absolute z-20 w-full min-w-48 max-h-64 overflow-y-auto p-2 mt-1 border shadow-lg rounded-xl bg-surface border-border"
