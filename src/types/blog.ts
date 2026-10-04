@@ -46,6 +46,10 @@ export interface UpdateBlogMultipartRequest extends BlogMultipartRequest {
 
 export interface BlogQueryParams extends BaseQueryParams {
   search?: string;
+  slug?: string;
+  isPublished?: boolean;
+  minViews?: number;
+  maxViews?: number;
 }
 
 export type { Blog as default };

@@ -28,6 +28,10 @@ export interface BlogAttachmentRequest {
   fileType: FileType;
 }
 
-export type BlogAttachmentQueryParams = BaseQueryParams;
+export interface BlogAttachmentQueryParams extends BaseQueryParams {
+  search?: string;
+  blogId?: string;
+  fileType?: string;
+}
 
 export type { BlogAttachment as default };

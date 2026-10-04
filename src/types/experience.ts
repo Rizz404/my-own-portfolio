@@ -34,6 +34,8 @@ export interface ExperienceQueryParams extends BaseQueryParams {
   isCurrent?: boolean;
   startDate?: string;
   endDate?: string;
+  companyName?: string;
+  position?: string;
 }
 
 export type { Experience as default };

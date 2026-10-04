@@ -90,6 +90,10 @@ export interface UpdateProjectMultipartRequest extends ProjectMultipartRequest {
 export interface ProjectQueryParams extends BaseQueryParams {
   search?: string;
   status?: string;
+  slug?: string;
+  projectTypes?: string;
+  linkTypes?: string;
+  techStack?: string;
 }
 
 export type { Project as default };

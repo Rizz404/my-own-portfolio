@@ -33,6 +33,11 @@ export interface ErrorResponse<T = unknown> {
 }
 
 export interface BaseQueryParams {
+  ids?: string;
+  createdFrom?: string;
+  createdTo?: string;
+  updatedFrom?: string;
+  updatedTo?: string;
   cursor?: string;
   page?: number;
   size?: number;

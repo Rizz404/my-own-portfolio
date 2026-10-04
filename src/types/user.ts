@@ -65,6 +65,10 @@ export interface UserQueryParams extends BaseQueryParams {
   role?: string;
   provider?: string;
   gender?: string;
+  email?: string;
+  nickname?: string;
+  dateOfBirthFrom?: string;
+  dateOfBirthTo?: string;
 }
 
 export interface UserMultipartRequest {
