@@ -1,3 +1,4 @@
+import type { SortField } from "@/utils/sorting";
 import type { BaseQueryParams, LanguageCode } from "./api";
 
 export interface Skill {
@@ -42,7 +43,7 @@ export interface UpdateSkillMultipartRequest extends SkillMultipartRequest {
   id: string;
 }
 
-export interface SkillQueryParams extends BaseQueryParams {
+export interface SkillQueryParams extends BaseQueryParams<SortField<"skills">> {
   search?: string;
   category?: string;
 }

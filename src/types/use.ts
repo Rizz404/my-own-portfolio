@@ -1,3 +1,4 @@
+import type { SortField } from "@/utils/sorting";
 import type { BaseQueryParams, LanguageCode } from "./api";
 
 export interface Use {
@@ -35,7 +36,7 @@ export interface UseRequest {
   translations: UseTranslationRequest[];
 }
 
-export interface UseQueryParams extends BaseQueryParams {
+export interface UseQueryParams extends BaseQueryParams<SortField<"uses">> {
   search?: string;
   category?: string;
 }

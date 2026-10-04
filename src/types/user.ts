@@ -1,3 +1,4 @@
+import type { SortField } from "@/utils/sorting";
 import type { BaseQueryParams, LanguageCode } from "./api";
 
 export interface User {
@@ -60,7 +61,7 @@ export interface UserRequest {
   translations: UserTranslationRequest[];
 }
 
-export interface UserQueryParams extends BaseQueryParams {
+export interface UserQueryParams extends BaseQueryParams<SortField<"users">> {
   search?: string;
   role?: string;
   provider?: string;

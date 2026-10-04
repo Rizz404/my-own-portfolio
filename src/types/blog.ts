@@ -1,3 +1,4 @@
+import type { SortField } from "@/utils/sorting";
 import type BlogAttachment from "./blogAttachment";
 import type { BaseQueryParams, LanguageCode } from "./api";
 
@@ -44,7 +45,7 @@ export interface UpdateBlogMultipartRequest extends BlogMultipartRequest {
   newAttachments?: File[];
 }
 
-export interface BlogQueryParams extends BaseQueryParams {
+export interface BlogQueryParams extends BaseQueryParams<SortField<"blogs">> {
   search?: string;
   slug?: string;
   isPublished?: boolean;

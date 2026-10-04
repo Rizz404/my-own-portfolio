@@ -1,3 +1,4 @@
+import type { SortField } from "@/utils/sorting";
 import type { BaseQueryParams } from "./api";
 
 export interface BlogAttachment {
@@ -28,7 +29,7 @@ export interface BlogAttachmentRequest {
   fileType: FileType;
 }
 
-export interface BlogAttachmentQueryParams extends BaseQueryParams {
+export interface BlogAttachmentQueryParams extends BaseQueryParams<SortField<"blog-attachments">> {
   search?: string;
   blogId?: string;
   fileType?: string;

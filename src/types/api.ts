@@ -32,7 +32,9 @@ export interface ErrorResponse<T = unknown> {
   error?: T;
 }
 
-export interface BaseQueryParams {
+export type SortDirection = "asc" | "desc";
+
+export interface BaseQueryParams<SortField extends string = string> {
   ids?: string;
   createdFrom?: string;
   createdTo?: string;
@@ -41,8 +43,8 @@ export interface BaseQueryParams {
   cursor?: string;
   page?: number;
   size?: number;
-  sortBy?: string[];
-  sortDir?: string[];
+  sortBy?: [SortField];
+  sortDir?: [SortDirection];
 }
 
 // * String enum, BUKAN numeric - backend nge-serialize/deserialize enum ini pakai

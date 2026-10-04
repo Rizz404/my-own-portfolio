@@ -1,3 +1,4 @@
+import type { SortField } from "@/utils/sorting";
 import type { BaseQueryParams, LanguageCode } from "./api";
 
 export interface Project {
@@ -87,7 +88,7 @@ export interface UpdateProjectMultipartRequest extends ProjectMultipartRequest {
   newImageFiles?: File[];
 }
 
-export interface ProjectQueryParams extends BaseQueryParams {
+export interface ProjectQueryParams extends BaseQueryParams<SortField<"projects">> {
   search?: string;
   status?: string;
   slug?: string;

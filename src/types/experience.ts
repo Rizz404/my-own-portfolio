@@ -1,3 +1,4 @@
+import type { SortField } from "@/utils/sorting";
 import type { BaseQueryParams, LanguageCode } from "./api";
 
 export interface Experience {
@@ -29,7 +30,7 @@ export interface ExperienceRequest {
   translations: ExperienceTranslationRequest[];
 }
 
-export interface ExperienceQueryParams extends BaseQueryParams {
+export interface ExperienceQueryParams extends BaseQueryParams<SortField<"experiences">> {
   search?: string;
   isCurrent?: boolean;
   startDate?: string;
