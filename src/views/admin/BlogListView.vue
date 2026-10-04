@@ -13,7 +13,7 @@ import {
 import AppAdvancedFilters from "@/components/shared/AppAdvancedFilters.vue";
 import { advancedFilterDefaults } from "@/utils/advancedFilters";
 import AppButton from "@/components/shared/AppButton.vue";
-import AppSelect from "@/components/shared/AppSelect.vue";
+import AppSorting from "@/components/shared/AppSorting.vue";
 import AppCheckbox from "@/components/shared/AppCheckbox.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
@@ -47,33 +47,15 @@ useQuerySync(queryParams, { persistFilters: { resource: "blogs", exclude: [] } }
 
 const searchInput = ref(queryParams.value.search ?? "");
 const debouncedSearch = refDebounced(searchInput, 500);
-const sortByField = ref(queryParams.value.sortBy?.[0] ?? "createdAt");
-const sortDirField = ref(queryParams.value.sortDir?.[0] ?? "desc");
 
 watch(debouncedSearch, (value) => {
   queryParams.value.search = value;
   queryParams.value.page = 1;
 });
 
-watch([sortByField, sortDirField], ([field, dir]) => {
-  queryParams.value.sortBy = [field];
-  queryParams.value.sortDir = [dir];
-  queryParams.value.page = 1;
-});
-
 const { data: blogResponse, isLoading, isError, isFetching, error } = useBlogsQuery(queryParams);
 
 const deleteMutation = useDeleteBlogMutation();
-
-const sortByOptions = computed(() => [
-  { label: t("sort.createdAt"), value: "createdAt" },
-  { label: t("sort.updatedAt"), value: "updatedAt" },
-]);
-
-const sortDirOptions = computed(() => [
-  { label: t("sort.desc"), value: "desc" },
-  { label: t("sort.asc"), value: "asc" },
-]);
 
 // * Input manual buat page & size (bukan cuma prev/next) - disinkronin balik
 // tiap kali queryParams.page berubah (lewat prev/next) biar gak pernah keluar
@@ -264,8 +246,7 @@ async function handleBulkDelete() {
           class="w-full py-2.5 pl-10 pr-4 transition-all border outline-none bg-surface border-border rounded-xl text-content placeholder:text-content/40 focus:border-primary focus:ring-2 focus:ring-primary/50"
         />
       </div>
-      <AppSelect v-model="sortByField" :options="sortByOptions" class="sm:w-40" />
-      <AppSelect v-model="sortDirField" :options="sortDirOptions" class="sm:w-32" />
+      <AppSorting v-model="queryParams" resource="blogs" />
     </div>
 
     <AppAdvancedFilters v-model="queryParams" resource="blogs" />

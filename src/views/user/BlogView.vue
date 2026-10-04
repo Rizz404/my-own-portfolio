@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { refDebounced } from "@vueuse/core";
 import { useBlogsQuery } from "@/composables/queries/useBlogs";
 import type { BlogQueryParams } from "@/types/blog";
 import BlogCard from "@/components/user/BlogCard.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
+import AppSorting from "@/components/shared/AppSorting.vue";
 import AppAdvancedFilters from "@/components/shared/AppAdvancedFilters.vue";
 import { advancedFilterDefaults } from "@/utils/advancedFilters";
 import AppButton from "@/components/shared/AppButton.vue";
@@ -39,32 +40,7 @@ watch(debouncedSearch, (newVal) => {
   queryParams.value.page = 1;
 });
 
-// * Buat nge-restore pilihan <select> pas awal load dari URL (mis. ?sortBy=
-// viewsCount&sortDir=desc -> "popular") - selain itu select-nya "uncontrolled",
-// cuma nulis lewat handleSortChange pas di-ganti.
-const sortValue = computed(() => {
-  if (queryParams.value.sortBy?.[0] === "viewsCount") return "popular";
-  if (queryParams.value.sortDir?.[0] === "asc") return "oldest";
-  return "newest";
-});
-
 const { data: blogResponse, isLoading, isError, isFetching, error } = useBlogsQuery(queryParams);
-
-const handleSortChange = (event: Event) => {
-  const value = (event.target as HTMLSelectElement).value;
-  queryParams.value.page = 1;
-
-  if (value === "popular") {
-    queryParams.value.sortBy = ["viewsCount"];
-    queryParams.value.sortDir = ["desc"];
-  } else if (value === "oldest") {
-    queryParams.value.sortBy = ["createdAt"];
-    queryParams.value.sortDir = ["asc"];
-  } else {
-    queryParams.value.sortBy = ["createdAt"];
-    queryParams.value.sortDir = ["desc"];
-  }
-};
 
 const prevPage = () => {
   if (blogResponse.value?.pagination.hasPrevPage) {
@@ -84,16 +60,16 @@ const nextPage = () => {
 <template>
   <section class="mt-8 mb-20 md:mt-12">
     <div class="flex flex-col gap-6 mb-10 md:flex-row md:items-end md:justify-between">
-      <div>
+      <div class="flex-1 min-w-0">
         <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">{{ t("title") }}</h1>
         <p class="max-w-2xl text-lg text-content/80">
           {{ t("subtitle") }}
         </p>
       </div>
 
-      <div class="flex flex-col gap-4 sm:flex-row shrink-0">
+      <div class="flex items-center w-full gap-2 md:w-auto shrink-0">
         <!-- * Aksen maroon (danger) - identitas warna halaman Blog, biar beda dari Projects/Uses -->
-        <div class="relative group">
+        <div class="relative flex-1 min-w-0 sm:w-56 md:flex-none group">
           <div
             class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-content/50 group-focus-within:text-danger"
           >
@@ -103,19 +79,11 @@ const nextPage = () => {
             v-model="searchInput"
             type="text"
             :placeholder="t('searchPlaceholder')"
-            class="w-full sm:w-64 pl-10 pr-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-danger focus:ring-2 focus:ring-danger/50 transition-all text-content placeholder:text-content/40"
+            class="w-full pl-10 pr-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-danger focus:ring-2 focus:ring-danger/50 transition-all text-content placeholder:text-content/40"
           />
         </div>
 
-        <select
-          :value="sortValue"
-          @change="handleSortChange"
-          class="px-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-danger focus:ring-2 focus:ring-danger/50 transition-all text-content cursor-pointer appearance-none"
-        >
-          <option value="newest">{{ t("sort.newest") }}</option>
-          <option value="oldest">{{ t("sort.oldest") }}</option>
-          <option value="popular">{{ t("sort.popular") }}</option>
-        </select>
+        <AppSorting v-model="queryParams" resource="blogs" compact />
       </div>
     </div>
 

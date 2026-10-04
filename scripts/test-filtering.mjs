@@ -33,8 +33,8 @@ try {
     updatedTo: "2026-10-01T00:00:00Z",
     page: 2,
     size: 30,
-    sortBy: ["createdAt", "id"],
-    sortDir: ["desc", "asc"],
+    sortBy: ["createdAt"],
+    sortDir: ["desc"],
   };
   const cases = [
     [
@@ -90,12 +90,63 @@ try {
     const uri = client.getUri(config);
     assert.match(uri, /%2B07%3A00/, `${name}: encode timezone plus sign`);
     const query = new URL(uri, "https://example.com").searchParams;
-    assert.deepEqual(query.getAll("sortBy"), ["createdAt", "id"]);
+    assert.deepEqual(query.getAll("sortBy"), ["createdAt"]);
+    assert.deepEqual(query.getAll("sortDir"), ["desc"]);
     if ("isPublished" in filters) assert.equal(query.get("isPublished"), "false");
     if ("isCurrent" in filters) assert.equal(query.get("isCurrent"), "false");
     const schema = await server.ssrLoadModule(`/src/schemas/${name}.schema.ts`);
     assert.deepEqual(schema[`${name}QueryParamsSchema`].parse(request), request);
   }
+  const { resourceSortFields, getSortRule, applySortRule } =
+    await server.ssrLoadModule("/src/utils/sorting.ts");
+  const { createQueryParamsSchema } = await server.ssrLoadModule("/src/schemas/api.schema.ts");
+  for (const [resource, fields] of Object.entries(resourceSortFields)) {
+    const schema = createQueryParamsSchema(resource);
+    for (const field of fields)
+      assert.equal(schema.safeParse({ sortBy: [field], sortDir: ["asc"] }).success, true);
+    for (const invalid of [
+      { sortBy: ["projectTypes"] },
+      { sortBy: ["CreatedAt"] },
+      { sortBy: ["id", "id"] },
+      { sortBy: ["name", "createdAt"] },
+      { sortBy: [] },
+      { sortDir: ["ASC"] },
+      { sortDir: [] },
+      { sortBy: ["id"], sortDir: ["asc", "desc"] },
+      { sortBy: ["id", "createdAt", "updatedAt"], sortDir: ["asc", "desc"] },
+      { cursor: "10", sortBy: ["createdAt"] },
+      { cursor: "10", sortBy: ["id"], sortDir: ["asc"] },
+    ])
+      assert.equal(
+        schema.safeParse(invalid).success,
+        false,
+        `${resource}: reject ${JSON.stringify(invalid)}`,
+      );
+    assert.equal(
+      schema.safeParse({ cursor: "10", sortBy: ["id"], sortDir: ["desc"] }).success,
+      true,
+    );
+  }
+  assert.deepEqual(getSortRule({ sortBy: ["name", "createdAt"], sortDir: ["asc", "desc"] }), {
+    field: "name",
+    direction: "asc",
+  });
+  assert.deepEqual(
+    applySortRule({ page: 5, cursor: "10", search: "vue" }, { field: "name", direction: "asc" }),
+    { page: 1, cursor: undefined, search: "vue", sortBy: ["name"], sortDir: ["asc"] },
+  );
+  const stackedQuery = new URL(
+    client.getUri({
+      url: "/projects",
+      params: {
+        sortBy: ["name", "createdAt"],
+        sortDir: ["asc", "desc"],
+      },
+    }),
+    "https://example.com",
+  ).searchParams;
+  assert.deepEqual(stackedQuery.getAll("sortBy"), ["name"]);
+  assert.deepEqual(stackedQuery.getAll("sortDir"), ["asc"]);
   const { baseQueryParamsSchema } = await server.ssrLoadModule("/src/schemas/api.schema.ts");
   assert.equal(baseQueryParamsSchema.safeParse({ size: 101 }).success, false);
 
@@ -106,7 +157,7 @@ try {
     routes: [{ path: "/", component: { render: () => null } }],
   });
   await router.push(
-    "/?isCurrent=false&isPublished=false&minViews=0&maxViews=100&size=999&status=active&status=development&sortBy=createdAt&sortBy=id",
+    "/?isCurrent=false&isPublished=false&minViews=0&maxViews=100&size=999&status=active&status=development&sortBy=createdAt&sortBy=id&sortDir=asc,desc",
   );
   let restored;
   const syncApp = createSSRApp({
@@ -118,6 +169,7 @@ try {
         page: 1,
         size: 10,
         sortBy: ["createdAt"],
+        sortDir: ["desc"],
       });
       useQuerySync(params);
       restored = params.value;
@@ -132,7 +184,27 @@ try {
   assert.equal(restored.maxViews, 100);
   assert.equal(restored.size, 100);
   assert.equal(restored.status, "active,development");
-  assert.deepEqual(restored.sortBy, ["createdAt", "id"]);
+  assert.deepEqual(restored.sortBy, ["createdAt"]);
+  assert.deepEqual(restored.sortDir, ["asc"]);
+
+  await router.push("/?sortBy=projectTypes&sortDir=up");
+  let safeSorting;
+  const invalidSortApp = createSSRApp({
+    setup() {
+      const params = ref({ page: 1, sortBy: ["createdAt"], sortDir: ["desc"] });
+      useQuerySync(params, { persistFilters: { resource: "projects" } });
+      safeSorting = params.value;
+      return () => h("div");
+    },
+  });
+  invalidSortApp.use(router);
+  await renderToString(invalidSortApp);
+  assert.deepEqual(
+    safeSorting.sortBy,
+    ["createdAt"],
+    "invalid URL sorting falls back before fetching",
+  );
+  assert.deepEqual(safeSorting.sortDir, ["desc"]);
 
   // Mount and unmount real Vue scopes to test navigating away, mutations, and reloads.
   const renderer = createRenderer({
@@ -254,6 +326,62 @@ try {
     "/src/components/shared/AppAdvancedFilters.vue",
   );
   const { i18n } = await server.ssrLoadModule("/src/i18n/index.ts");
+  const { default: sorting } = await server.ssrLoadModule("/src/components/shared/AppSorting.vue");
+  const sortingEmitted = [];
+  const sortingApp = createSSRApp({
+    setup() {
+      const state = sorting.setup(
+        {
+          modelValue: {
+            sortBy: ["name", "createdAt"],
+            sortDir: ["asc"],
+            page: 3,
+            cursor: "10",
+            search: "vue",
+          },
+          resource: "projects",
+        },
+        { expose() {}, emit: (...args) => sortingEmitted.push(args) },
+      );
+      state.update("field", "projectTypes");
+      state.update("direction", "up");
+      assert.equal(sortingEmitted.length, 0, "invalid sorting cannot be selected");
+      state.toggleDirection();
+      assert.deepEqual(sortingEmitted.at(-1)[1].sortBy, ["name"]);
+      assert.deepEqual(sortingEmitted.at(-1)[1].sortDir, ["desc"]);
+      assert.equal(sortingEmitted.at(-1)[1].cursor, undefined);
+      assert.equal(sortingEmitted.at(-1)[1].page, 1);
+      assert.equal(sortingEmitted.at(-1)[1].search, "vue");
+      state.update("field", "createdAt");
+      assert.deepEqual(sortingEmitted.at(-1)[1].sortBy, ["createdAt"]);
+      assert.deepEqual(sortingEmitted.at(-1)[1].sortDir, ["asc"]);
+      return () => h("div");
+    },
+  });
+  sortingApp.use(i18n);
+  await renderToString(sortingApp);
+  for (const [direction, label] of [
+    ["asc", "Ascending. Switch to Descending."],
+    ["desc", "Descending. Switch to Ascending."],
+  ]) {
+    const directionApp = createSSRApp({
+      render: () =>
+        h(sorting, {
+          modelValue: { sortBy: ["name"], sortDir: [direction] },
+          resource: "projects",
+          compact: true,
+        }),
+    });
+    directionApp.use(i18n);
+    const html = await renderToString(directionApp);
+    assert.match(html, new RegExp(`aria-label="${label.replaceAll(".", "\\.")}"`));
+    assert.equal(
+      (html.match(/<select/g) ?? []).length,
+      1,
+      "direction uses an icon button instead of a second dropdown",
+    );
+  }
+
   const emitted = [];
   const panelApp = createSSRApp({
     setup() {
@@ -315,7 +443,7 @@ try {
     "hide header reset when no filters are active",
   );
   console.log(
-    "Filtering checks passed: 7 services, URL decoding, persistence across navigation/mutations, form validation, header reset, and request encoding.",
+    "Filtering and sorting checks passed: 7 services, all allowed sort fields, single-field sorting, cursor rules, URL decoding, persistence across navigation/mutations, form validation, header reset, and request encoding.",
   );
 } finally {
   globalThis.localStorage = previousStorage;

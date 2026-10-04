@@ -14,7 +14,7 @@ import AppAdvancedFilters from "@/components/shared/AppAdvancedFilters.vue";
 import { advancedFilterDefaults } from "@/utils/advancedFilters";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppMultiSelect from "@/components/shared/AppMultiSelect.vue";
-import AppSelect from "@/components/shared/AppSelect.vue";
+import AppSorting from "@/components/shared/AppSorting.vue";
 import AppCheckbox from "@/components/shared/AppCheckbox.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
@@ -55,8 +55,6 @@ useQuerySync(queryParams, { persistFilters: { resource: "users", exclude: ["role
 const searchInput = ref(queryParams.value.search ?? "");
 const debouncedSearch = refDebounced(searchInput, 500);
 const roleFilter = ref(queryParams.value.role ?? "");
-const sortByField = ref(queryParams.value.sortBy?.[0] ?? "createdAt");
-const sortDirField = ref(queryParams.value.sortDir?.[0] ?? "desc");
 
 watch(debouncedSearch, (value) => {
   queryParams.value.search = value;
@@ -65,12 +63,6 @@ watch(debouncedSearch, (value) => {
 
 watch(roleFilter, (value) => {
   queryParams.value.role = value || undefined;
-  queryParams.value.page = 1;
-});
-
-watch([sortByField, sortDirField], ([field, dir]) => {
-  queryParams.value.sortBy = [field];
-  queryParams.value.sortDir = [dir];
   queryParams.value.page = 1;
 });
 
@@ -90,17 +82,6 @@ function formatLabel(value: string | number) {
 const roleOptions = computed(() => [
   { label: t("filters.allRoles"), value: "" },
   ...enumStringKeys(Role).map((key) => ({ label: formatLabel(key), value: key })),
-]);
-
-const sortByOptions = computed(() => [
-  { label: t("sort.createdAt"), value: "createdAt" },
-  { label: t("sort.updatedAt"), value: "updatedAt" },
-  { label: t("sort.nickname"), value: "nickname" },
-]);
-
-const sortDirOptions = computed(() => [
-  { label: t("sort.desc"), value: "desc" },
-  { label: t("sort.asc"), value: "asc" },
 ]);
 
 // * Input manual buat page & size (bukan cuma prev/next) - disinkronin balik
@@ -293,8 +274,7 @@ async function handleBulkDelete() {
         />
       </div>
       <AppMultiSelect v-model="roleFilter" :options="roleOptions" class="sm:w-40" />
-      <AppSelect v-model="sortByField" :options="sortByOptions" class="sm:w-40" />
-      <AppSelect v-model="sortDirField" :options="sortDirOptions" class="sm:w-32" />
+      <AppSorting v-model="queryParams" resource="users" />
     </div>
 
     <AppAdvancedFilters v-model="queryParams" resource="users" :exclude="['role']" />

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useUsesQuery } from "@/composables/queries/useUses";
+import AppSorting from "@/components/shared/AppSorting.vue";
 import AppAdvancedFilters from "@/components/shared/AppAdvancedFilters.vue";
 import { advancedFilterDefaults } from "@/utils/advancedFilters";
 import { useQuerySync } from "@/composables/useQuerySync";
@@ -17,7 +18,13 @@ import { useT } from "@/composables/useT";
 // src/locales/<locale>/views/user/UseView.json
 const t = useT("views.user.UseView");
 
-const queryParams = ref<UseQueryParams>({ ...advancedFilterDefaults("uses"), page: 1, size: 100 });
+const queryParams = ref<UseQueryParams>({
+  ...advancedFilterDefaults("uses"),
+  page: 1,
+  size: 100,
+  sortBy: ["createdAt"],
+  sortDir: ["desc"],
+});
 useQuerySync(queryParams, { persistFilters: { resource: "uses" } });
 const { data: response, isLoading, isError, error } = useUsesQuery(queryParams);
 
@@ -37,33 +44,38 @@ const isEmpty = computed(() => hardwareList.value.length === 0 && softwareList.v
 <template>
   <section class="mt-8 mb-20 md:mt-12">
     <div class="flex flex-col gap-6 mb-12 md:flex-row md:items-end md:justify-between">
-      <div>
+      <div class="flex-1 min-w-0">
         <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">{{ t("title") }}</h1>
         <p class="max-w-3xl text-lg text-content/80">
           {{ t("subtitle") }}
         </p>
       </div>
 
-      <!-- * Pill jumlah item per kategori - ngisi ruang kanan yang tadinya kosong pas subtitle
+      <div class="flex flex-col items-start gap-3 md:items-end shrink-0">
+        <!-- * Pill jumlah item per kategori - ngisi ruang kanan yang tadinya kosong pas subtitle
            di kiri gak sampe selebar section, sekalian kasih info sekilas jumlah gear -->
-      <div v-if="!isLoading && !isError && !isEmpty" class="flex flex-wrap gap-3 shrink-0">
-        <div
-          v-if="hardwareList.length > 0"
-          class="flex items-center gap-2 px-4 py-2 border rounded-full border-danger/25 bg-danger/5"
-        >
-          <span class="rounded-full size-2 bg-danger shrink-0" aria-hidden="true"></span>
-          <span class="text-sm font-medium text-content/80">
-            {{ t("stats.hardware", { count: hardwareList.length }) }}
-          </span>
+        <div v-if="!isLoading && !isError && !isEmpty" class="flex flex-wrap gap-3 md:justify-end">
+          <div
+            v-if="hardwareList.length > 0"
+            class="flex items-center gap-2 px-4 py-2 border rounded-full border-danger/25 bg-danger/5"
+          >
+            <span class="rounded-full size-2 bg-danger shrink-0" aria-hidden="true"></span>
+            <span class="text-sm font-medium text-content/80">
+              {{ t("stats.hardware", { count: hardwareList.length }) }}
+            </span>
+          </div>
+          <div
+            v-if="softwareList.length > 0"
+            class="flex items-center gap-2 px-4 py-2 border rounded-full border-success/25 bg-success/5"
+          >
+            <span class="rounded-full size-2 bg-success shrink-0" aria-hidden="true"></span>
+            <span class="text-sm font-medium text-content/80">
+              {{ t("stats.software", { count: softwareList.length }) }}
+            </span>
+          </div>
         </div>
-        <div
-          v-if="softwareList.length > 0"
-          class="flex items-center gap-2 px-4 py-2 border rounded-full border-success/25 bg-success/5"
-        >
-          <span class="rounded-full size-2 bg-success shrink-0" aria-hidden="true"></span>
-          <span class="text-sm font-medium text-content/80">
-            {{ t("stats.software", { count: softwareList.length }) }}
-          </span>
+        <div class="flex items-center gap-2">
+          <AppSorting v-model="queryParams" resource="uses" compact />
         </div>
       </div>
     </div>

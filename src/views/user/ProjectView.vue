@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { refDebounced } from "@vueuse/core";
 import { useProjectsQuery } from "@/composables/queries/useProjects";
 import type { ProjectQueryParams } from "@/types/project";
 import ProjectCard from "@/components/user/ProjectCard.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
+import AppSorting from "@/components/shared/AppSorting.vue";
 import AppAdvancedFilters from "@/components/shared/AppAdvancedFilters.vue";
 import { advancedFilterDefaults } from "@/utils/advancedFilters";
 import AppButton from "@/components/shared/AppButton.vue";
@@ -39,12 +40,6 @@ watch(debouncedSearch, (newVal) => {
   queryParams.value.page = 1;
 });
 
-// * Restore the chronological sort selected in the shared URL.
-const sortValue = computed(() => {
-  if (queryParams.value.sortDir?.[0] === "asc") return "oldest";
-  return "newest";
-});
-
 const {
   data: projectResponse,
   isLoading,
@@ -52,19 +47,6 @@ const {
   isFetching,
   error,
 } = useProjectsQuery(queryParams);
-
-const handleSortChange = (event: Event) => {
-  const value = (event.target as HTMLSelectElement).value;
-  queryParams.value.page = 1;
-
-  if (value === "oldest") {
-    queryParams.value.sortBy = ["createdAt"];
-    queryParams.value.sortDir = ["asc"];
-  } else {
-    queryParams.value.sortBy = ["createdAt"];
-    queryParams.value.sortDir = ["desc"];
-  }
-};
 
 const prevPage = () => {
   if (projectResponse.value?.pagination.hasPrevPage) {
@@ -84,16 +66,16 @@ const nextPage = () => {
 <template>
   <section class="mt-8 mb-20 md:mt-12">
     <div class="flex flex-col gap-6 mb-10 md:flex-row md:items-end md:justify-between">
-      <div>
+      <div class="flex-1 min-w-0">
         <h1 class="mb-4 text-3xl font-extrabold md:text-5xl text-content">{{ t("title") }}</h1>
         <p class="max-w-2xl text-lg text-content/80">
           {{ t("subtitle") }}
         </p>
       </div>
 
-      <div class="flex flex-col gap-4 sm:flex-row shrink-0">
+      <div class="flex items-center w-full gap-2 md:w-auto shrink-0">
         <!-- * Aksen success (hijau-kuning) - identitas warna halaman Projects -->
-        <div class="relative group">
+        <div class="relative flex-1 min-w-0 sm:w-56 md:flex-none group">
           <div
             class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-content/50 group-focus-within:text-success"
           >
@@ -103,18 +85,11 @@ const nextPage = () => {
             v-model="searchInput"
             type="text"
             :placeholder="t('searchPlaceholder')"
-            class="w-full sm:w-64 pl-10 pr-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-success focus:ring-2 focus:ring-success/50 transition-all text-content placeholder:text-content/40"
+            class="w-full pl-10 pr-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-success focus:ring-2 focus:ring-success/50 transition-all text-content placeholder:text-content/40"
           />
         </div>
 
-        <select
-          :value="sortValue"
-          @change="handleSortChange"
-          class="px-4 py-2.5 bg-surface/50 border border-border/50 rounded-xl outline-none focus:border-success focus:ring-2 focus:ring-success/50 transition-all text-content cursor-pointer appearance-none"
-        >
-          <option value="newest">{{ t("sort.newest") }}</option>
-          <option value="oldest">{{ t("sort.oldest") }}</option>
-        </select>
+        <AppSorting v-model="queryParams" resource="projects" compact />
       </div>
     </div>
 
