@@ -6,6 +6,8 @@ import type { ProjectQueryParams } from "@/types/project";
 import ProjectCard from "@/components/user/ProjectCard.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
+import AppAdvancedFilters from "@/components/shared/AppAdvancedFilters.vue";
+import { advancedFilterDefaults } from "@/utils/advancedFilters";
 import AppButton from "@/components/shared/AppButton.vue";
 import { Search as IconSearch } from "@lucide/vue";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
@@ -17,6 +19,7 @@ import { useQuerySync } from "@/composables/useQuerySync";
 const t = useT("views.user.ProjectView");
 
 const queryParams = ref<ProjectQueryParams>({
+  ...advancedFilterDefaults("projects"),
   page: 1,
   size: 12,
   search: "",
@@ -36,11 +39,8 @@ watch(debouncedSearch, (newVal) => {
   queryParams.value.page = 1;
 });
 
-// * Buat nge-restore pilihan <select> pas awal load dari URL (mis. ?sortBy=
-// viewsCount&sortDir=desc -> "popular") - selain itu select-nya "uncontrolled",
-// cuma nulis lewat handleSortChange pas di-ganti.
+// * Restore the chronological sort selected in the shared URL.
 const sortValue = computed(() => {
-  if (queryParams.value.sortBy?.[0] === "viewsCount") return "popular";
   if (queryParams.value.sortDir?.[0] === "asc") return "oldest";
   return "newest";
 });
@@ -57,10 +57,7 @@ const handleSortChange = (event: Event) => {
   const value = (event.target as HTMLSelectElement).value;
   queryParams.value.page = 1;
 
-  if (value === "popular") {
-    queryParams.value.sortBy = ["viewsCount"];
-    queryParams.value.sortDir = ["desc"];
-  } else if (value === "oldest") {
+  if (value === "oldest") {
     queryParams.value.sortBy = ["createdAt"];
     queryParams.value.sortDir = ["asc"];
   } else {
@@ -117,10 +114,11 @@ const nextPage = () => {
         >
           <option value="newest">{{ t("sort.newest") }}</option>
           <option value="oldest">{{ t("sort.oldest") }}</option>
-          <option value="popular">{{ t("sort.popular") }}</option>
         </select>
       </div>
     </div>
+
+    <AppAdvancedFilters v-model="queryParams" resource="projects" />
 
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
       <AppSkeleton v-if="isLoading" variant="card" :count="8" />

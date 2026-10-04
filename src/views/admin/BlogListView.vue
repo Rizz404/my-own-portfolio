@@ -2,7 +2,16 @@
 import { computed, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
 import { refDebounced } from "@vueuse/core";
-import { Plus as IconPlus, Trash2 as IconTrash2, ListChecks as IconListChecks, Search as IconSearch, FileText as IconFileText, Loader2 as IconLoader } from "@lucide/vue";
+import {
+  Plus as IconPlus,
+  Trash2 as IconTrash2,
+  ListChecks as IconListChecks,
+  Search as IconSearch,
+  FileText as IconFileText,
+  Loader2 as IconLoader,
+} from "@lucide/vue";
+import AppAdvancedFilters from "@/components/shared/AppAdvancedFilters.vue";
+import { advancedFilterDefaults } from "@/utils/advancedFilters";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppSelect from "@/components/shared/AppSelect.vue";
 import AppCheckbox from "@/components/shared/AppCheckbox.vue";
@@ -24,6 +33,7 @@ const toast = useToast();
 const { confirm } = useConfirm();
 
 const queryParams = ref<BlogQueryParams>({
+  ...advancedFilterDefaults("blogs"),
   page: 1,
   size: 10,
   search: "",
@@ -58,7 +68,6 @@ const deleteMutation = useDeleteBlogMutation();
 const sortByOptions = computed(() => [
   { label: t("sort.createdAt"), value: "createdAt" },
   { label: t("sort.updatedAt"), value: "updatedAt" },
-  { label: t("sort.title"), value: "title" },
 ]);
 
 const sortDirOptions = computed(() => [
@@ -259,7 +268,12 @@ async function handleBulkDelete() {
       <AppSelect v-model="sortDirField" :options="sortDirOptions" class="sm:w-32" />
     </div>
 
-    <div v-if="blogResponse?.data.length" class="flex flex-wrap items-center justify-between gap-3 mb-4">
+    <AppAdvancedFilters v-model="queryParams" resource="blogs" />
+
+    <div
+      v-if="blogResponse?.data.length"
+      class="flex flex-wrap items-center justify-between gap-3 mb-4"
+    >
       <template v-if="isSelecting">
         <AppCheckbox
           :model-value="isAllSelectedOnPage"
@@ -323,7 +337,10 @@ async function handleBulkDelete() {
       />
     </div>
 
-    <div v-if="blogResponse?.data.length" class="flex flex-wrap items-center justify-center gap-4 mt-8">
+    <div
+      v-if="blogResponse?.data.length"
+      class="flex flex-wrap items-center justify-center gap-4 mt-8"
+    >
       <AppButton
         variant="secondary"
         size="sm"

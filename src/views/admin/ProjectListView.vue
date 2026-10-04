@@ -2,8 +2,18 @@
 import { computed, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
 import { refDebounced } from "@vueuse/core";
-import { Plus as IconPlus, Trash2 as IconTrash2, ListChecks as IconListChecks, Search as IconSearch, FolderKanban as IconFolderKanban, Loader2 as IconLoader } from "@lucide/vue";
+import {
+  Plus as IconPlus,
+  Trash2 as IconTrash2,
+  ListChecks as IconListChecks,
+  Search as IconSearch,
+  FolderKanban as IconFolderKanban,
+  Loader2 as IconLoader,
+} from "@lucide/vue";
+import AppAdvancedFilters from "@/components/shared/AppAdvancedFilters.vue";
+import { advancedFilterDefaults } from "@/utils/advancedFilters";
 import AppButton from "@/components/shared/AppButton.vue";
+import AppMultiSelect from "@/components/shared/AppMultiSelect.vue";
 import AppSelect from "@/components/shared/AppSelect.vue";
 import AppCheckbox from "@/components/shared/AppCheckbox.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
@@ -29,6 +39,7 @@ const { confirm } = useConfirm();
 // useQuerySync() sebagai field yang ikut di-sync ke URL - liat komentar di
 // useQuerySync.ts.
 const queryParams = ref<ProjectQueryParams>({
+  ...advancedFilterDefaults("projects"),
   page: 1,
   size: 10,
   search: "",
@@ -84,7 +95,6 @@ const statusOptions = computed(() => [
 const sortByOptions = computed(() => [
   { label: t("sort.createdAt"), value: "createdAt" },
   { label: t("sort.updatedAt"), value: "updatedAt" },
-  { label: t("sort.name"), value: "name" },
 ]);
 
 const sortDirOptions = computed(() => [
@@ -291,10 +301,12 @@ async function handleBulkDelete() {
           class="w-full py-2.5 pl-10 pr-4 transition-all border outline-none bg-surface border-border rounded-xl text-content placeholder:text-content/40 focus:border-primary focus:ring-2 focus:ring-primary/50"
         />
       </div>
-      <AppSelect v-model="statusFilter" :options="statusOptions" class="sm:w-44" />
+      <AppMultiSelect v-model="statusFilter" :options="statusOptions" class="sm:w-44" />
       <AppSelect v-model="sortByField" :options="sortByOptions" class="sm:w-40" />
       <AppSelect v-model="sortDirField" :options="sortDirOptions" class="sm:w-32" />
     </div>
+
+    <AppAdvancedFilters v-model="queryParams" resource="projects" :exclude="['status']" />
 
     <div
       v-if="projectResponse?.data.length"

@@ -2,8 +2,18 @@
 import { computed, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
 import { refDebounced } from "@vueuse/core";
-import { Plus as IconPlus, Trash2 as IconTrash2, ListChecks as IconListChecks, Search as IconSearch, Users as IconUsers, Loader2 as IconLoader } from "@lucide/vue";
+import {
+  Plus as IconPlus,
+  Trash2 as IconTrash2,
+  ListChecks as IconListChecks,
+  Search as IconSearch,
+  Users as IconUsers,
+  Loader2 as IconLoader,
+} from "@lucide/vue";
+import AppAdvancedFilters from "@/components/shared/AppAdvancedFilters.vue";
+import { advancedFilterDefaults } from "@/utils/advancedFilters";
 import AppButton from "@/components/shared/AppButton.vue";
+import AppMultiSelect from "@/components/shared/AppMultiSelect.vue";
 import AppSelect from "@/components/shared/AppSelect.vue";
 import AppCheckbox from "@/components/shared/AppCheckbox.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
@@ -29,6 +39,7 @@ const { confirm } = useConfirm();
 // useQuerySync() sebagai field yang ikut di-sync ke URL - liat komentar di
 // useQuerySync.ts.
 const queryParams = ref<UserQueryParams>({
+  ...advancedFilterDefaults("users"),
   page: 1,
   size: 10,
   search: "",
@@ -281,12 +292,17 @@ async function handleBulkDelete() {
           class="w-full py-2.5 pl-10 pr-4 transition-all border outline-none bg-surface border-border rounded-xl text-content placeholder:text-content/40 focus:border-primary focus:ring-2 focus:ring-primary/50"
         />
       </div>
-      <AppSelect v-model="roleFilter" :options="roleOptions" class="sm:w-40" />
+      <AppMultiSelect v-model="roleFilter" :options="roleOptions" class="sm:w-40" />
       <AppSelect v-model="sortByField" :options="sortByOptions" class="sm:w-40" />
       <AppSelect v-model="sortDirField" :options="sortDirOptions" class="sm:w-32" />
     </div>
 
-    <div v-if="userResponse?.data.length" class="flex flex-wrap items-center justify-between gap-3 mb-4">
+    <AppAdvancedFilters v-model="queryParams" resource="users" :exclude="['role']" />
+
+    <div
+      v-if="userResponse?.data.length"
+      class="flex flex-wrap items-center justify-between gap-3 mb-4"
+    >
       <template v-if="isSelecting">
         <AppCheckbox
           :model-value="isAllSelectedOnPage"
@@ -350,7 +366,10 @@ async function handleBulkDelete() {
       />
     </div>
 
-    <div v-if="userResponse?.data.length" class="flex flex-wrap items-center justify-center gap-4 mt-8">
+    <div
+      v-if="userResponse?.data.length"
+      class="flex flex-wrap items-center justify-center gap-4 mt-8"
+    >
       <AppButton
         variant="secondary"
         size="sm"

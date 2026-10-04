@@ -2,14 +2,26 @@
 import { computed, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
 import { refDebounced } from "@vueuse/core";
-import { Plus as IconPlus, Trash2 as IconTrash2, ListChecks as IconListChecks, Search as IconSearch, Briefcase as IconBriefcase, Loader2 as IconLoader } from "@lucide/vue";
+import {
+  Plus as IconPlus,
+  Trash2 as IconTrash2,
+  ListChecks as IconListChecks,
+  Search as IconSearch,
+  Briefcase as IconBriefcase,
+  Loader2 as IconLoader,
+} from "@lucide/vue";
+import AppAdvancedFilters from "@/components/shared/AppAdvancedFilters.vue";
+import { advancedFilterDefaults } from "@/utils/advancedFilters";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppSelect from "@/components/shared/AppSelect.vue";
 import AppCheckbox from "@/components/shared/AppCheckbox.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
 import AdminExperienceCard from "@/components/admin/AdminExperienceCard.vue";
-import { useExperiencesQuery, useDeleteExperienceMutation } from "@/composables/queries/useExperiences";
+import {
+  useExperiencesQuery,
+  useDeleteExperienceMutation,
+} from "@/composables/queries/useExperiences";
 import type { Experience, ExperienceQueryParams } from "@/types/experience";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
@@ -27,6 +39,7 @@ const { confirm } = useConfirm();
 // useQuerySync() sebagai field yang ikut di-sync ke URL - liat komentar di
 // useQuerySync.ts.
 const queryParams = ref<ExperienceQueryParams>({
+  ...advancedFilterDefaults("experiences"),
   page: 1,
   size: 10,
   search: "",
@@ -283,6 +296,8 @@ async function handleBulkDelete() {
       <AppSelect v-model="sortByField" :options="sortByOptions" class="sm:w-44" />
       <AppSelect v-model="sortDirField" :options="sortDirOptions" class="sm:w-32" />
     </div>
+
+    <AppAdvancedFilters v-model="queryParams" resource="experiences" :exclude="['isCurrent']" />
 
     <div
       v-if="experienceResponse?.data.length"

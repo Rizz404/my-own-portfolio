@@ -6,6 +6,8 @@ import type { BlogQueryParams } from "@/types/blog";
 import BlogCard from "@/components/user/BlogCard.vue";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
+import AppAdvancedFilters from "@/components/shared/AppAdvancedFilters.vue";
+import { advancedFilterDefaults } from "@/utils/advancedFilters";
 import AppButton from "@/components/shared/AppButton.vue";
 import { Search as IconSearch } from "@lucide/vue";
 import { fadeUp, staggerDelay } from "@/composables/useMotionPresets";
@@ -17,6 +19,7 @@ import { useQuerySync } from "@/composables/useQuerySync";
 const t = useT("views.user.BlogView");
 
 const queryParams = ref<BlogQueryParams>({
+  ...advancedFilterDefaults("blogs"),
   page: 1,
   size: 12,
   search: "",
@@ -115,6 +118,8 @@ const nextPage = () => {
         </select>
       </div>
     </div>
+
+    <AppAdvancedFilters v-model="queryParams" resource="blogs" />
 
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
       <AppSkeleton v-if="isLoading" variant="card" :count="8" />

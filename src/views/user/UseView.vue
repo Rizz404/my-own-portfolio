@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useUsesQuery } from "@/composables/queries/useUses";
+import AppAdvancedFilters from "@/components/shared/AppAdvancedFilters.vue";
+import { advancedFilterDefaults } from "@/utils/advancedFilters";
+import { useQuerySync } from "@/composables/useQuerySync";
+import type { UseQueryParams } from "@/types/use";
 import AppSkeleton from "@/components/shared/AppSkeleton.vue";
 import AppError from "@/components/shared/AppError.vue";
 import UseCard from "@/components/user/UseCard.vue";
@@ -13,7 +17,9 @@ import { useT } from "@/composables/useT";
 // src/locales/<locale>/views/user/UseView.json
 const t = useT("views.user.UseView");
 
-const { data: response, isLoading, isError, error } = useUsesQuery({ size: 100 });
+const queryParams = ref<UseQueryParams>({ ...advancedFilterDefaults("uses"), page: 1, size: 100 });
+useQuerySync(queryParams);
+const { data: response, isLoading, isError, error } = useUsesQuery(queryParams);
 
 const hardwareList = computed(() => {
   if (!response.value?.data) return [];
@@ -25,9 +31,7 @@ const softwareList = computed(() => {
   return response.value.data.filter((item) => String(item.category).toLowerCase() === "software");
 });
 
-const isEmpty = computed(
-  () => hardwareList.value.length === 0 && softwareList.value.length === 0,
-);
+const isEmpty = computed(() => hardwareList.value.length === 0 && softwareList.value.length === 0);
 </script>
 
 <template>
@@ -63,6 +67,8 @@ const isEmpty = computed(
         </div>
       </div>
     </div>
+
+    <AppAdvancedFilters v-model="queryParams" resource="uses" />
 
     <div v-if="isLoading" class="space-y-20">
       <div class="p-6 rounded-3xl bg-danger/8 md:p-8">
