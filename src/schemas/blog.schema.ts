@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { LanguageCode } from "@/types/api";
-import { baseQueryParamsSchema } from "./api.schema";
+import { createQueryParamsSchema } from "./api.schema";
 import { optionalFileArraySchema, optionalFileSchema } from "./shared";
 
 // * Mirror dari BlogTranslationRequest di src/types/blog.ts
@@ -42,7 +42,7 @@ export const updateBlogMultipartRequestSchema = blogMultipartRequestSchema.exten
 });
 
 // * Mirror dari BlogQueryParams di src/types/blog.ts
-export const blogQueryParamsSchema = baseQueryParamsSchema.extend({
+export const blogQueryParamsSchema = createQueryParamsSchema("blogs").safeExtend({
   search: z.string().optional(),
   slug: z.string().optional(),
   isPublished: z.boolean().optional(),

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { LanguageCode } from "@/types/api";
 import { SkillCategory } from "@/types/skill";
-import { baseQueryParamsSchema } from "./api.schema";
+import { createQueryParamsSchema } from "./api.schema";
 import { enumStringKeys, optionalFileSchema } from "./shared";
 
 // * Mirror dari SkillTranslationRequest di src/types/skill.ts
@@ -20,7 +20,8 @@ export const skillRequestSchema = z.object({
     .array(skillTranslationRequestSchema)
     .min(1, "At least one translation is required")
     .refine(
-      (translations) => new Set(translations.map((translation) => translation.locale)).size === translations.length,
+      (translations) =>
+        new Set(translations.map((translation) => translation.locale)).size === translations.length,
       { message: "Each locale can only be used once" },
     ),
 });
@@ -36,7 +37,7 @@ export const updateSkillMultipartRequestSchema = skillMultipartRequestSchema.ext
 });
 
 // * Mirror dari SkillQueryParams di src/types/skill.ts
-export const skillQueryParamsSchema = baseQueryParamsSchema.extend({
+export const skillQueryParamsSchema = createQueryParamsSchema("skills").safeExtend({
   search: z.string().optional(),
   category: z.string().optional(),
 });

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { LanguageCode } from "@/types/api";
 import { LinkType, ProjectStatus, ProjectType } from "@/types/project";
-import { baseQueryParamsSchema } from "./api.schema";
+import { createQueryParamsSchema } from "./api.schema";
 import { optionalFileArraySchema, optionalFileSchema } from "./shared";
 
 // * Mirror dari ProjectTranslationRequest di src/types/project.ts
@@ -43,7 +43,7 @@ export const updateProjectMultipartRequestSchema = projectMultipartRequestSchema
 });
 
 // * Mirror dari ProjectQueryParams di src/types/project.ts
-export const projectQueryParamsSchema = baseQueryParamsSchema.extend({
+export const projectQueryParamsSchema = createQueryParamsSchema("projects").safeExtend({
   search: z.string().optional(),
   status: z.string().optional(),
   slug: z.string().optional(),

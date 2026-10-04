@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { LanguageCode } from "@/types/api";
 import { Category } from "@/types/use";
-import { baseQueryParamsSchema } from "./api.schema";
+import { createQueryParamsSchema } from "./api.schema";
 import { enumStringKeys, optionalFileArraySchema, optionalFileSchema } from "./shared";
 
 // * Mirror dari UseTranslationRequest di src/types/use.ts
@@ -23,13 +23,14 @@ export const useRequestSchema = z.object({
     .array(useTranslationRequestSchema)
     .min(1, "At least one translation is required")
     .refine(
-      (translations) => new Set(translations.map((translation) => translation.locale)).size === translations.length,
+      (translations) =>
+        new Set(translations.map((translation) => translation.locale)).size === translations.length,
       { message: "Each locale can only be used once" },
     ),
 });
 
 // * Mirror dari UseQueryParams di src/types/use.ts
-export const useQueryParamsSchema = baseQueryParamsSchema.extend({
+export const useQueryParamsSchema = createQueryParamsSchema("uses").safeExtend({
   search: z.string().optional(),
   category: z.string().optional(),
 });

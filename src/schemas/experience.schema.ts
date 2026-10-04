@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { LanguageCode } from "@/types/api";
-import { baseQueryParamsSchema } from "./api.schema";
+import { createQueryParamsSchema } from "./api.schema";
 
 // * Mirror dari ExperienceTranslationRequest di src/types/experience.ts
 export const experienceTranslationRequestSchema = z.object({
@@ -35,7 +35,7 @@ export const experienceRequestSchema = z
   );
 
 // * Mirror dari ExperienceQueryParams di src/types/experience.ts
-export const experienceQueryParamsSchema = baseQueryParamsSchema.extend({
+export const experienceQueryParamsSchema = createQueryParamsSchema("experiences").safeExtend({
   search: z.string().optional(),
   isCurrent: z.boolean().optional(),
   startDate: z.iso.date().optional(),

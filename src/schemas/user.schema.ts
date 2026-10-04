@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { LanguageCode } from "@/types/api";
 import { AuthProvider, Gender, Role } from "@/types/user";
-import { baseQueryParamsSchema } from "./api.schema";
+import { createQueryParamsSchema } from "./api.schema";
 import { optionalFileSchema } from "./shared";
 
 // * Mirror dari UserTranslationRequest di src/types/user.ts
@@ -36,7 +36,7 @@ export const userRequestSchema = z.object({
 });
 
 // * Mirror dari UserQueryParams di src/types/user.ts
-export const userQueryParamsSchema = baseQueryParamsSchema.extend({
+export const userQueryParamsSchema = createQueryParamsSchema("users").safeExtend({
   search: z.string().optional(),
   role: z.string().optional(),
   provider: z.string().optional(),

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { FileType } from "@/types/blogAttachment";
-import { baseQueryParamsSchema } from "./api.schema";
+import { createQueryParamsSchema } from "./api.schema";
 
 // * Mirror dari BlogAttachmentRequest di src/types/blogAttachment.ts
 export const blogAttachmentRequestSchema = z.object({
@@ -11,7 +11,9 @@ export const blogAttachmentRequestSchema = z.object({
 });
 
 // * Mirror dari BlogAttachmentQueryParams di src/types/blogAttachment.ts
-export const blogAttachmentQueryParamsSchema = baseQueryParamsSchema.extend({
+export const blogAttachmentQueryParamsSchema = createQueryParamsSchema(
+  "blog-attachments",
+).safeExtend({
   search: z.string().optional(),
   blogId: z.string().optional(),
   fileType: z.string().optional(),

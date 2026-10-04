@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { resourceSortFields } from "@/utils/sorting";
+import type { FilterResource } from "@/utils/advancedFilters";
 import { LanguageCode } from "@/types/api";
 
 // * Mirror dari BaseQueryParams di src/types/api.ts. Semua field query params
@@ -17,8 +19,38 @@ export const baseQueryParamsSchema = z.object({
     .min(1, "Size must be at least 1")
     .max(100, "Size must be at most 100")
     .optional(),
-  sortBy: z.array(z.string()).optional(),
-  sortDir: z.array(z.string()).optional(),
+  sortBy: z.array(z.string()).length(1).optional(),
+  sortDir: z
+    .array(z.enum(["asc", "desc"]))
+    .length(1)
+    .optional(),
 });
 
 export const languageCodeSchema = z.enum(LanguageCode);
+
+export function createQueryParamsSchema(resource: FilterResource) {
+  return baseQueryParamsSchema
+    .extend({
+      sortBy: baseQueryParamsSchema.shape.sortBy.refine(
+        (fields) =>
+          !fields ||
+          fields.every((field) =>
+            (resourceSortFields[resource] as readonly string[]).includes(field),
+          ),
+        "Unsupported sort field",
+      ),
+    })
+    .superRefine((params, context) => {
+      if (
+        params.cursor !== undefined &&
+        (params.sortBy?.some((field) => field !== "id") ||
+          params.sortDir?.some((direction) => direction !== "desc"))
+      ) {
+        context.addIssue({
+          code: "custom",
+          path: ["cursor"],
+          message: "Cursor pagination only supports id DESC",
+        });
+      }
+    });
+}
