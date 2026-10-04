@@ -1,5 +1,15 @@
 {
   "back": "Back to all projects",
   "notFound": "Project not found",
-  "unknown": "Unknown"
+  "unknown": "Unknown",
+  "preview": {
+    "open": "Open image {index} in full screen",
+    "close": "Close image preview",
+    "previous": "Previous image",
+    "next": "Next image",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "resetZoom": "Fit image to screen",
+    "hint": "Scroll or pinch to zoom · Drag to pan · Swipe or use ← → to change image"
+  }
 }

@@ -1,10 +1,18 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, nextTick, ref } from "vue";
+import ProjectImageViewer from "@/components/user/ProjectImageViewer.vue";
 import { useRoute } from "vue-router";
 import { useProjectQuery } from "@/composables/queries/useProjects";
 import AppError from "@/components/shared/AppError.vue";
 import AppTechStackList from "@/components/shared/AppTechStackList.vue";
-import { ArrowLeft as IconArrowLeft, ExternalLink as IconExternalLink, Calendar as IconCalendar, ChevronLeft as IconChevronLeft, ChevronRight as IconChevronRight } from "@lucide/vue";
+import {
+  ArrowLeft as IconArrowLeft,
+  ExternalLink as IconExternalLink,
+  Calendar as IconCalendar,
+  ChevronLeft as IconChevronLeft,
+  ChevronRight as IconChevronRight,
+  Maximize2 as IconMaximize,
+} from "@lucide/vue";
 import { formatDate } from "@/utils/dateUtil";
 import { fadeUp } from "@/composables/useMotionPresets";
 import { useT } from "@/composables/useT";
@@ -70,7 +78,7 @@ const scrollImageStrip = (dir: "next" | "prev") => {
   const firstChild = el?.firstElementChild as HTMLElement | null;
   if (!el || !firstChild) return;
 
-  const gap = 16; // gap-4
+  const gap = parseFloat(getComputedStyle(el).columnGap) || 0;
   const step = firstChild.offsetWidth + gap;
   const maxScroll = el.scrollWidth - el.clientWidth;
 
@@ -86,10 +94,22 @@ const scrollImageStrip = (dir: "next" | "prev") => {
     });
   }
 };
+const previewIndex = ref<number | null>(null);
+const projectImages = computed(() => response.value?.data?.imageUrls ?? []);
+let previewTrigger: HTMLButtonElement | null = null;
+const openPreview = (index: number, event: MouseEvent) => {
+  previewTrigger = event.currentTarget as HTMLButtonElement;
+  previewIndex.value = index;
+};
+const closePreview = async () => {
+  previewIndex.value = null;
+  await nextTick();
+  previewTrigger?.focus({ preventScroll: true });
+};
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto mt-8 mb-20 md:mt-12">
+  <div class="w-full min-w-0 max-w-4xl mx-auto mt-6 mb-12 md:mt-12 md:mb-20">
     <RouterLink
       :to="withLocale('/projects')"
       class="inline-flex items-center gap-2 mb-8 text-sm font-medium transition-colors text-content/60 hover:text-success"
@@ -112,16 +132,20 @@ const scrollImageStrip = (dir: "next" | "prev") => {
     <AppError v-else-if="isError" :title="t('notFound')" :message="error?.message" />
 
     <article v-else-if="response?.data" v-motion="fadeUp()">
-      <header class="flex flex-col gap-6 mb-10 md:flex-row md:items-center md:justify-between">
-        <div class="flex items-center gap-4">
+      <header
+        class="flex flex-col gap-5 mb-6 md:gap-6 md:mb-10 md:flex-row md:items-center md:justify-between"
+      >
+        <div class="flex min-w-0 items-start gap-3 md:items-center md:gap-4">
           <img
             v-if="response.data.logoUrl"
             :src="response.data.logoUrl"
             :alt="`${response.data.name} logo`"
-            class="object-cover border shadow-sm size-16 rounded-2xl border-border/50 bg-surface"
+            class="object-cover border shadow-sm size-12 shrink-0 rounded-xl border-border/50 bg-surface md:size-16 md:rounded-2xl"
           />
-          <div>
-            <h1 class="mb-2 text-3xl font-extrabold leading-tight md:text-4xl text-content">
+          <div class="min-w-0">
+            <h1
+              class="mb-2 break-words text-2xl font-extrabold sm:text-3xl leading-tight md:text-4xl text-content"
+            >
               {{ response.data.name }}
             </h1>
             <div class="flex flex-wrap items-center gap-3 text-sm font-medium text-content/60">
@@ -151,20 +175,24 @@ const scrollImageStrip = (dir: "next" | "prev") => {
           </div>
         </div>
 
-        <div v-if="response.data.projectLinks" class="flex flex-wrap gap-3">
+        <div
+          v-if="response.data.projectLinks"
+          class="flex w-full shrink-0 flex-wrap gap-2 md:w-auto md:max-w-xs md:gap-3"
+        >
           <a
             v-for="(url, label) in response.data.projectLinks"
             :key="label"
             :href="url"
             target="_blank"
+            rel="noopener noreferrer"
             class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors border rounded-lg border-border/50 bg-surface/30 hover:border-success/50 hover:bg-surface text-content hover:text-success"
           >
-            {{ formatEnumText(label) }} <IconExternalLink class="w-4 h-4" />
+            {{ formatEnumText(label) }} <IconExternalLink class="w-4 h-4 shrink-0" />
           </a>
         </div>
       </header>
 
-      <div class="mb-12">
+      <div class="mb-8 md:mb-12">
         <div
           v-if="response.data.imageUrls && response.data.imageUrls.length > 0"
           class="relative group"
@@ -173,25 +201,39 @@ const scrollImageStrip = (dir: "next" | "prev") => {
             ref="imageStripRef"
             class="flex gap-4 pb-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
           >
-            <img
+            <button
               v-for="(img, index) in response.data.imageUrls"
               :key="index"
-              :src="img"
-              :alt="`${response.data.name} screenshot ${index + 1}`"
-              class="object-cover w-full border shadow-md shrink-0 snap-center aspect-video rounded-2xl border-border/30 md:w-4/5"
-            />
+              type="button"
+              :aria-label="t('preview.open', { index: index + 1 })"
+              class="relative w-full min-w-0 shrink-0 snap-center overflow-hidden rounded-xl border border-border/30 bg-surface shadow-sm cursor-zoom-in focus-visible:outline-2 focus-visible:outline-success md:w-4/5 md:rounded-2xl"
+              @click="openPreview(index, $event)"
+            >
+              <img
+                :src="img"
+                :alt="`${response.data.name} screenshot ${index + 1}`"
+                class="h-64 w-full object-contain sm:h-80 md:h-[28rem]"
+              />
+              <span class="absolute bottom-3 right-3 rounded-lg bg-[#0009] p-2 text-[#fff]">
+                <IconMaximize class="size-4" />
+              </span>
+            </button>
           </div>
           <button
             v-if="response.data.imageUrls.length > 1"
             @click="scrollImageStrip('prev')"
-            class="absolute left-2 top-1/2 -translate-y-1/2 -translate-x-3 scale-90 p-1.5 rounded-full bg-background text-content dark:bg-content dark:text-background shadow-md ring-1 ring-border opacity-0 pointer-events-none transition duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0 group-hover:scale-100 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-x-0 focus-visible:scale-100 focus-visible:pointer-events-auto hover:scale-110 active:scale-95 hidden md:block z-10"
+            type="button"
+            :aria-label="t('preview.previous')"
+            class="absolute left-2 top-1/2 z-10 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-background/90 text-content shadow-md ring-1 ring-border transition hover:bg-surface"
           >
             <IconChevronLeft class="w-5 h-5" />
           </button>
           <button
             v-if="response.data.imageUrls.length > 1"
             @click="scrollImageStrip('next')"
-            class="absolute right-2 top-1/2 -translate-y-1/2 translate-x-3 scale-90 p-1.5 rounded-full bg-background text-content dark:bg-content dark:text-background shadow-md ring-1 ring-border opacity-0 pointer-events-none transition duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0 group-hover:scale-100 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-x-0 focus-visible:scale-100 focus-visible:pointer-events-auto hover:scale-110 active:scale-95 hidden md:block z-10"
+            type="button"
+            :aria-label="t('preview.next')"
+            class="absolute right-2 top-1/2 z-10 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-background/90 text-content shadow-md ring-1 ring-border transition hover:bg-surface"
           >
             <IconChevronRight class="w-5 h-5" />
           </button>
@@ -204,8 +246,19 @@ const scrollImageStrip = (dir: "next" | "prev") => {
         />
       </div>
 
-      <div class="text-lg leading-relaxed rich-content text-content/90" v-html="descriptionHtml"></div>
+      <div
+        class="min-w-0 break-words text-base leading-relaxed rich-content text-content/90 md:text-lg"
+        v-html="descriptionHtml"
+      ></div>
     </article>
+
+    <ProjectImageViewer
+      :images="projectImages"
+      :index="previewIndex"
+      :title="response?.data?.name ?? ''"
+      @close="closePreview"
+      @navigate="previewIndex = $event"
+    />
   </div>
 </template>
 

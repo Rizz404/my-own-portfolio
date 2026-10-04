@@ -1,5 +1,15 @@
 {
   "back": "Kembali ke semua proyek",
   "notFound": "Proyek tidak ditemukan",
-  "unknown": "Tidak diketahui"
+  "unknown": "Tidak diketahui",
+  "preview": {
+    "open": "Buka gambar {index} dalam layar penuh",
+    "close": "Tutup preview gambar",
+    "previous": "Gambar sebelumnya",
+    "next": "Gambar berikutnya",
+    "zoomIn": "Perbesar gambar",
+    "zoomOut": "Perkecil gambar",
+    "resetZoom": "Sesuaikan gambar dengan layar",
+    "hint": "Scroll atau cubit untuk zoom · Geser gambar saat diperbesar · Swipe atau ← → untuk ganti gambar"
+  }
 }
