@@ -1,5 +1,10 @@
 import { useRoute, useRouter } from "vue-router";
-import { watch, type Ref } from "vue";
+import { onMounted, watch, type Ref } from "vue";
+import { getFilterFields, type FilterResource } from "@/utils/advancedFilters";
+
+interface QuerySyncOptions {
+  persistFilters?: { resource: FilterResource; exclude?: string[] };
+}
 
 /**
  * * Sinkronin ref query params (yang dipake buat manggil API - search/status/sort/
@@ -21,18 +26,32 @@ import { watch, type Ref } from "vue";
  *   `router.replace` (gak nambah history entry baru tiap ketik/klik).
  * - Query param yang gak dikenal (di luar key `params`, mis. `redirect` abis
  *   login) dibiarin apa adanya, gak ikut ke-strip.
+ * - `persistFilters` menyimpan filter lanjutan di localStorage per nama route.
+ *   Filter dipulihkan sebelum URL dibaca; URL dengan filter eksplisit mengganti
+ *   filter tersimpan. Reset menghapus filter dari storage. Pagination/sort tidak
+ *   ikut disimpan, dan halaman publik/admin punya penyimpanan terpisah.
  *
  * PENTING: panggil ini SEBELUM bikin ref UI lain yang nyontek initial value dari
  * `params.value` (mis. `searchInput = ref(queryParams.value.search ?? "")`),
  * soalnya proses baca-dari-URL di sini jalan sinkron (bukan di `onMounted`).
  */
-export function useQuerySync<T extends Record<string, unknown>>(params: Ref<T>) {
+export function useQuerySync<T extends Record<string, unknown>>(
+  params: Ref<T>,
+  options: QuerySyncOptions = {},
+) {
   const route = useRoute();
   const router = useRouter();
 
   // * Snapshot value awal buat nebak tipe tiap field & nentuin kapan suatu field
   // dianggap "balik ke default" (jadi boleh dibuang dari URL).
   const defaults = { ...params.value };
+  const routePath = route.path;
+  const persistedKeys = options.persistFilters
+    ? getFilterFields(options.persistFilters.resource, options.persistFilters.exclude)
+        .map(({ key }) => key)
+        .filter((key) => key in defaults)
+    : [];
+  const storageKey = `portfolio:advanced-filters:v1:${String(route.name ?? routePath)}`;
 
   function decodeValue(key: string, raw: string): unknown {
     const defaultValue = defaults[key];
@@ -57,6 +76,23 @@ export function useQuerySync<T extends Record<string, unknown>>(params: Ref<T>) 
     return String(value);
   }
 
+  const hasExplicitFilters = persistedKeys.some((key) => key in route.query);
+  if (persistedKeys.length && !hasExplicitFilters) {
+    try {
+      const saved: unknown = JSON.parse(localStorage.getItem(storageKey) ?? "null");
+      if (saved && typeof saved === "object" && !Array.isArray(saved)) {
+        const restored: Record<string, unknown> = {};
+        for (const key of persistedKeys) {
+          const value = (saved as Record<string, unknown>)[key];
+          if (typeof value === "string" && value !== "") restored[key] = decodeValue(key, value);
+        }
+        params.value = { ...params.value, ...restored };
+      }
+    } catch {
+      // Storage may be unavailable or contain invalid JSON; URL filters still work.
+    }
+  }
+
   // * Inisialisasi sekali dari query string yang ada pas komponen mount (mis. abis
   // reload / paste link yang ada query-nya).
   const patch: Partial<T> = {};
@@ -71,26 +107,45 @@ export function useQuerySync<T extends Record<string, unknown>>(params: Ref<T>) 
     params.value = { ...params.value, ...patch };
   }
 
-  watch(
-    params,
-    (value) => {
-      const query: Record<string, string> = {};
+  function persistFilters(value: T) {
+    if (!persistedKeys.length) return;
+    const saved: Record<string, string> = {};
+    for (const key of persistedKeys) {
+      const encoded = encodeValue(value[key]);
+      if (encoded !== undefined) saved[key] = encoded;
+    }
+    try {
+      if (Object.keys(saved).length) localStorage.setItem(storageKey, JSON.stringify(saved));
+      else localStorage.removeItem(storageKey);
+    } catch {
+      // Keep the filters usable even when browser storage is disabled.
+    }
+  }
+  persistFilters(params.value);
+  // Save immediately so navigating to a form cannot discard the latest filters.
+  watch(params, persistFilters, { deep: true, flush: "sync" });
 
-      for (const [key, raw] of Object.entries(route.query)) {
-        if (!(key in defaults) && typeof raw === "string") query[key] = raw;
-      }
+  function syncToUrl(value: T) {
+    // A queued search/filter update must not replace the destination page's URL.
+    if (route.path !== routePath) return;
+    const query: Record<string, string> = {};
 
-      for (const key of Object.keys(defaults)) {
-        const current = (value as Record<string, unknown>)[key];
-        const isDefault = JSON.stringify(current) === JSON.stringify(defaults[key]);
-        if (isDefault) continue;
+    for (const [key, raw] of Object.entries(route.query)) {
+      if (!(key in defaults) && typeof raw === "string") query[key] = raw;
+    }
 
-        const encoded = encodeValue(current);
-        if (encoded !== undefined) query[key] = encoded;
-      }
+    for (const key of Object.keys(defaults)) {
+      const current = (value as Record<string, unknown>)[key];
+      const isDefault = JSON.stringify(current) === JSON.stringify(defaults[key]);
+      if (isDefault) continue;
 
-      router.replace({ query });
-    },
-    { deep: true },
-  );
+      const encoded = encodeValue(current);
+      if (encoded !== undefined) query[key] = encoded;
+    }
+
+    // Also replace an unchanged URL: a restore may still be pending when Reset runs.
+    router.replace({ query });
+  }
+  watch(params, syncToUrl, { deep: true });
+  if (persistedKeys.length) onMounted(() => syncToUrl(params.value));
 }

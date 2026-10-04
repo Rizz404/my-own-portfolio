@@ -112,69 +112,77 @@ function reset() {
 }
 </script>
 <template>
-  <details ref="panelDetails" class="mb-6 border rounded-xl border-border bg-surface/50 group/filters">
-    <summary
-      class="flex items-center gap-2 px-4 py-3 text-sm font-medium list-none cursor-pointer text-content focus-visible:outline-primary [&::-webkit-details-marker]:hidden"
-    >
-      <IconChevronRight
-        aria-hidden="true"
-        class="transition-transform size-4 shrink-0 group-open/filters:rotate-90 motion-reduce:transition-none"
-      />
-      <span>{{ t("title") }}</span>
-      <span v-if="activeCount" class="text-primary">({{ activeCount }})</span>
-    </summary>
-    <form class="p-4 border-t border-border" @submit.prevent="apply">
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <template v-for="field in fields" :key="field.key">
-          <AppMultiSelect
-            v-if="field.type === 'multi'"
-            :model-value="String(draft[field.key] ?? '')"
-            :label="t(`fields.${field.key}`)"
-            :options="[
-              { label: t('all'), value: '' },
-              ...(field.values ?? []).map((value) => ({
-                label: value.split('_').join(' '),
-                value,
-              })),
-            ]"
-            @update:model-value="draft[field.key] = $event"
-          />
-          <AppSelect
-            v-else-if="field.type === 'boolean'"
-            v-model="draft[field.key]"
-            :label="t(`fields.${field.key}`)"
-            :options="[
-              { label: t('all'), value: '' },
-              { label: t('yes'), value: 'true' },
-              { label: t('no'), value: 'false' },
-            ]"
-          />
-          <AppInput
-            v-else
-            v-model="draft[field.key]"
-            :type="field.type ?? 'text'"
-            :label="t(`fields.${field.key}`)"
-            :min="field.type === 'number' ? 0 : undefined"
-            :step="
-              field.type === 'number' ? 1 : field.type === 'datetime-local' ? '0.001' : undefined
-            "
-            :hint="
-              field.key === 'ids'
-                ? t('idsHint')
-                : field.key === 'techStack'
-                  ? t('techHint')
-                  : undefined
-            "
-          />
-        </template>
-      </div>
-      <p v-if="error" role="alert" class="mt-3 text-sm text-danger">{{ error }}</p>
-      <div class="flex gap-2 mt-4">
-        <AppButton type="submit" size="sm">{{ t("apply") }}</AppButton>
-        <AppButton type="button" variant="secondary" size="sm" @click="reset">{{
-          t("reset")
-        }}</AppButton>
-      </div>
-    </form>
-  </details>
+  <div class="relative mb-6">
+    <details ref="panelDetails" class="border rounded-xl border-border bg-surface/50 group/filters">
+      <summary
+        :class="{ 'pr-36': activeCount > 0 }"
+        class="flex items-center h-12 gap-2 px-4 text-sm font-medium list-none cursor-pointer text-content focus-visible:outline-primary [&::-webkit-details-marker]:hidden"
+      >
+        <IconChevronRight
+          aria-hidden="true"
+          class="transition-transform size-4 shrink-0 group-open/filters:rotate-90 motion-reduce:transition-none"
+        />
+        <span class="truncate">{{ t("title") }}</span>
+        <span v-if="activeCount" class="shrink-0 text-primary">({{ activeCount }})</span>
+      </summary>
+      <form class="p-4 border-t border-border" @submit.prevent="apply">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <template v-for="field in fields" :key="field.key">
+            <AppMultiSelect
+              v-if="field.type === 'multi'"
+              :model-value="String(draft[field.key] ?? '')"
+              :label="t(`fields.${field.key}`)"
+              :options="[
+                { label: t('all'), value: '' },
+                ...(field.values ?? []).map((value) => ({
+                  label: value.split('_').join(' '),
+                  value,
+                })),
+              ]"
+              @update:model-value="draft[field.key] = $event"
+            />
+            <AppSelect
+              v-else-if="field.type === 'boolean'"
+              v-model="draft[field.key]"
+              :label="t(`fields.${field.key}`)"
+              :options="[
+                { label: t('all'), value: '' },
+                { label: t('yes'), value: 'true' },
+                { label: t('no'), value: 'false' },
+              ]"
+            />
+            <AppInput
+              v-else
+              v-model="draft[field.key]"
+              :type="field.type ?? 'text'"
+              :label="t(`fields.${field.key}`)"
+              :min="field.type === 'number' ? 0 : undefined"
+              :step="
+                field.type === 'number' ? 1 : field.type === 'datetime-local' ? '0.001' : undefined
+              "
+              :hint="
+                field.key === 'ids'
+                  ? t('idsHint')
+                  : field.key === 'techStack'
+                    ? t('techHint')
+                    : undefined
+              "
+            />
+          </template>
+        </div>
+        <p v-if="error" role="alert" class="mt-3 text-sm text-danger">{{ error }}</p>
+        <div class="flex gap-2 mt-4">
+          <AppButton type="submit" size="sm">{{ t("apply") }}</AppButton>
+          <AppButton type="button" variant="secondary" size="sm" @click="reset">{{
+            t("reset")
+          }}</AppButton>
+        </div>
+      </form>
+    </details>
+    <div v-if="activeCount" class="absolute flex items-center h-12 top-px right-3">
+      <AppButton type="button" variant="secondary" size="sm" @click="reset">
+        {{ t("reset") }}
+      </AppButton>
+    </div>
+  </div>
 </template>
