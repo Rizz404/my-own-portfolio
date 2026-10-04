@@ -1,5 +1,6 @@
 import { useRoute, useRouter } from "vue-router";
 import { onMounted, watch, type Ref } from "vue";
+import { createQueryParamsSchema } from "@/schemas/api.schema";
 import { getFilterFields, type FilterResource } from "@/utils/advancedFilters";
 
 interface QuerySyncOptions {
@@ -55,7 +56,11 @@ export function useQuerySync<T extends Record<string, unknown>>(
 
   function decodeValue(key: string, raw: string): unknown {
     const defaultValue = defaults[key];
-    if (Array.isArray(defaultValue)) return raw.split(",").filter(Boolean);
+    if (Array.isArray(defaultValue)) {
+      const values = raw.split(",").filter(Boolean);
+      // Older shared URLs may contain stacked sorting; preserve the first choice.
+      return key === "sortBy" || key === "sortDir" ? values.slice(0, 1) : values;
+    }
     if (typeof defaultValue === "number" || ["minViews", "maxViews"].includes(key)) {
       const num = Number(raw);
       if (!Number.isSafeInteger(num) || num < (["minViews", "maxViews"].includes(key) ? 0 : 1))
@@ -105,6 +110,24 @@ export function useQuerySync<T extends Record<string, unknown>>(
   }
   if (Object.keys(patch).length > 0) {
     params.value = { ...params.value, ...patch };
+  }
+
+  // Validate sorting restored from an external URL before the first query runs.
+  const resource = options.persistFilters?.resource;
+  if (
+    resource &&
+    !createQueryParamsSchema(resource).safeParse({
+      sortBy: params.value.sortBy,
+      sortDir: params.value.sortDir,
+      cursor: params.value.cursor,
+    }).success
+  ) {
+    params.value = {
+      ...params.value,
+      sortBy: defaults.sortBy,
+      sortDir: defaults.sortDir,
+      cursor: defaults.cursor,
+    };
   }
 
   function persistFilters(value: T) {

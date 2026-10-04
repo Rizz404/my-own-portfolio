@@ -10,14 +10,16 @@ export function setAcceptLanguage(locale: string) {
   currentAcceptLanguage = locale;
 }
 
-// * Spring @RequestParam List<String> butuh "sortBy=a&sortBy=b", bukan "sortBy[]=a&sortBy[]=b" (default axios)
+// Only one sorting field and direction are supported.
 function paramsSerializer(params: Record<string, unknown>) {
   const searchParams = new URLSearchParams();
 
   Object.entries(params).forEach(([key, value]) => {
     if (value === undefined || value === null) return;
 
-    if (Array.isArray(value)) {
+    if (Array.isArray(value) && (key === "sortBy" || key === "sortDir")) {
+      if (value.length) searchParams.append(key, String(value[0]));
+    } else if (Array.isArray(value)) {
       value.forEach((item) => {
         if (item !== undefined && item !== null) {
           searchParams.append(key, String(item));
@@ -93,7 +95,11 @@ axiosClient.interceptors.response.use(
 
     // * Jangan coba refresh buat request /auth/refresh itu sendiri (hindari infinite loop
     // waktu refreshToken-nya juga udah invalid) atau request yang udah pernah di-retry sekali.
-    if (!originalRequest || originalRequest._isRetry || originalRequest.url?.includes("/auth/refresh")) {
+    if (
+      !originalRequest ||
+      originalRequest._isRetry ||
+      originalRequest.url?.includes("/auth/refresh")
+    ) {
       unauthorizedHandler?.();
       return Promise.reject(error);
     }
