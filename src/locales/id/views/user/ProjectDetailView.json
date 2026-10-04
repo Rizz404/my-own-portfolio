@@ -10,6 +10,9 @@
     "zoomIn": "Perbesar gambar",
     "zoomOut": "Perkecil gambar",
     "resetZoom": "Sesuaikan gambar dengan layar",
-    "hint": "Scroll atau cubit untuk zoom · Geser gambar saat diperbesar · Swipe atau ← → untuk ganti gambar"
+    "hint": "Scroll atau cubit untuk zoom · Geser gambar saat diperbesar · Swipe atau ← → untuk ganti gambar",
+    "fullscreen": "Buka layar penuh",
+    "exitFullscreen": "Keluar dari layar penuh",
+    "fullscreenError": "Layar penuh tidak tersedia. Viewer tetap memenuhi jendela browser."
   }
 }

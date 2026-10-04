@@ -10,6 +10,9 @@
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
     "resetZoom": "Fit image to screen",
-    "hint": "Scroll or pinch to zoom · Drag to pan · Swipe or use ← → to change image"
+    "hint": "Scroll or pinch to zoom · Drag to pan · Swipe or use ← → to change image",
+    "fullscreen": "Enter fullscreen",
+    "exitFullscreen": "Exit fullscreen",
+    "fullscreenError": "Fullscreen is unavailable. The viewer still fills the browser window."
   }
 }
