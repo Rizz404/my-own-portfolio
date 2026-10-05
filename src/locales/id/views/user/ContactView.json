@@ -17,7 +17,7 @@
     "nameLabel": "Nama",
     "namePlaceholder": "Nama kamu",
     "emailLabel": "Email Kamu",
-    "emailPlaceholder": "kamu@contoh.com",
+    "emailPlaceholder": "kamu{'@'}contoh.com",
     "messageLabel": "Pesan",
     "messagePlaceholder": "Ceritain sedikit apa yang lagi kamu pikirkan...",
     "submit": "Kirim Pesan",
