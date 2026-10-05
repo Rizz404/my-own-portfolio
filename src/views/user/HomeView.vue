@@ -86,7 +86,7 @@ const myPicture: string | null = null;
                 {{ t("hero.moreButton") }}
               </AppButton>
             </RouterLink>
-            <a :href="cvUrl" download target="_blank" rel="noopener">
+            <a :href="cvUrl" target="_blank" rel="noopener noreferrer">
               <AppButton
                 variant="secondary"
                 size="lg"
