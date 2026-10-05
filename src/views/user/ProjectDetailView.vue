@@ -240,7 +240,7 @@ const closePreview = async () => {
         </div>
         <img
           v-else
-          src="https://i.pinimg.com/736x/76/0f/8e/760f8e5ff6cfa1b22ac33a8ae3705dbb.jpg"
+          src="/images/placeholder-project.svg"
           alt="Project Placeholder"
           class="object-cover w-full shadow-md aspect-video rounded-2xl"
         />

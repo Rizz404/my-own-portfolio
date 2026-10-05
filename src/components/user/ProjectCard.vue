@@ -22,7 +22,7 @@ const direction = ref<"next" | "prev">("next");
 const images = computed(() => {
   return props.project.imageUrls && props.project.imageUrls.length > 0
     ? props.project.imageUrls
-    : ["https://i.pinimg.com/736x/76/0f/8e/760f8e5ff6cfa1b22ac33a8ae3705dbb.jpg"];
+    : ["/images/placeholder-project.svg"];
 });
 
 const nextImage = () => {
