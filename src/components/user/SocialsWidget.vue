@@ -1,28 +1,28 @@
 <script setup lang="ts">
 import IconGithub from "~icons/lucide/github";
 import IconLinkedin from "~icons/lucide/linkedin";
-import IconTwitter from "~icons/lucide/twitter";
+import IconWhatsapp from "~icons/simple-icons/whatsapp";
 import IconInstagram from "~icons/lucide/instagram";
 
 const socials = [
   {
     name: "GitHub",
-    url: "https://github.com/username",
+    url: "https://github.com/rizz404",
     icon: IconGithub,
   },
   {
     name: "LinkedIn",
-    url: "https://linkedin.com/in/username",
+    url: "https://www.linkedin.com/in/rizqiansyah-ramadhan-37b0b9313",
     icon: IconLinkedin,
   },
   {
-    name: "Twitter",
-    url: "https://twitter.com/username",
-    icon: IconTwitter,
+    name: "WhatsApp",
+    url: "https://wa.me/+6287778206856",
+    icon: IconWhatsapp,
   },
   {
     name: "Instagram",
-    url: "https://instagram.com/username",
+    url: "https://www.instagram.com/better_call_rizz",
     icon: IconInstagram,
   },
 ];
@@ -35,7 +35,7 @@ const socials = [
       :key="social.name"
       :href="social.url"
       target="_blank"
-      rel="noopener noreferer"
+      rel="noopener noreferrer"
       class="flex items-center gap-2 transition-colors text-content/60 hover:text-primary group"
     >
       <component :is="social.icon" class="transition-transform size-5 group-hover:-translate-y-1" />
