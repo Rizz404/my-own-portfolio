@@ -5,7 +5,7 @@
       "destination": "http://31.97.109.89:8001/api/v1/:path*"
     },
     {
-      "source": "/((?!api/).*)",
+      "source": "/((?!api/|assets/).*)",
       "destination": "/index.html"
     }
   ]

@@ -77,4 +77,32 @@ router.beforeEach((to) => {
   return true;
 });
 
+// * Semua view (selain Home) di-lazy-load, nama chunk-nya pakai hash. Tiap deploy baru,
+// chunk lama ilang dari server - tab yang udah lama kebuka (masih jalanin bundle lama) bakal
+// gagal import chunk pas pindah halaman, navigasinya ke-abort diem-diem & nav keliatan
+// "gak bisa diklik". Solusinya: hard reload ke URL tujuan biar dapet index.html + bundle baru.
+// Ditahan pakai sessionStorage biar gak reload loop kalau chunk-nya emang beneran rusak.
+const CHUNK_RELOAD_KEY = "chunk-reload-at";
+const CHUNK_RELOAD_COOLDOWN_MS = 10_000;
+
+const isChunkLoadError = (error: unknown) =>
+  error instanceof Error &&
+  /Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed|is not a valid JavaScript MIME type/i.test(
+    error.message,
+  );
+
+router.onError((error, to) => {
+  if (!isChunkLoadError(error)) return;
+
+  try {
+    const lastReloadAt = Number(sessionStorage.getItem(CHUNK_RELOAD_KEY) ?? 0);
+    if (Date.now() - lastReloadAt < CHUNK_RELOAD_COOLDOWN_MS) return;
+    sessionStorage.setItem(CHUNK_RELOAD_KEY, String(Date.now()));
+  } catch {
+    // * sessionStorage bisa ke-block (private mode dll) - tetep reload aja
+  }
+
+  window.location.assign(router.resolve(to).href);
+});
+
 export default router;
