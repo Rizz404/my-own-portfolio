@@ -1,6 +1,6 @@
 {
   "title": "Blog",
-  "subtitle": "Thoughts, tutorials, and insights about software engineering, backend architecture, and my tech journey.",
+  "subtitle": "Articles, tutorials, and insights on software engineering, full-stack development, and the technologies I work with.",
   "searchPlaceholder": "Search articles...",
   "sort": {
     "newest": "Newest First",
@@ -13,7 +13,7 @@
     "subtitle": "Try adjusting your search keywords."
   },
   "pagination": {
-    "prev": "Prev",
+    "prev": "Previous",
     "next": "Next",
     "page": "Page",
     "of": "of"

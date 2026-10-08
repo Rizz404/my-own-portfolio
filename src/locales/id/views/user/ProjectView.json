@@ -1,6 +1,6 @@
 {
   "title": "Proyek",
-  "subtitle": "Lebih dari sekadar barisan kode. Ini adalah pameran dari dedikasi, seni, dan kerja keras saya dalam merajut perangkat lunak menjadi mahakarya yang bermakna.",
+  "subtitle": "Kumpulan proyek yang saya kerjakan, beserta teknologi yang digunakan dan solusi yang dikembangkan.",
   "searchPlaceholder": "Cari proyek...",
   "sort": {
     "newest": "Terbaru",
@@ -10,11 +10,11 @@
   "errorLoad": "Gagal memuat proyek",
   "empty": {
     "title": "Tidak ada proyek yang ditemukan.",
-    "subtitle": "Coba sesuaikan kata kunci pencarian Anda."
+    "subtitle": "Coba gunakan kata kunci pencarian lainnya."
   },
   "pagination": {
-    "prev": "Seb",
-    "next": "Lanjut",
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
     "page": "Halaman",
     "of": "dari"
   }

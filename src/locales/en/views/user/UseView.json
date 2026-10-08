@@ -1,15 +1,15 @@
 {
   "title": "Uses",
-  "subtitle": "A curated list of the tech stack, gadgets, and software I use every day to build code and stay productive.",
-  "errorLoad": "Failed to load gear",
+  "subtitle": "A look at the hardware, software, and development tools I use in my daily workflow.",
+  "errorLoad": "Failed to load items",
   "hardware": "Hardware",
   "software": "Software",
   "empty": {
-    "title": "No gear found.",
-    "subtitle": "Check back later for updates on my setup."
+    "title": "No items found.",
+    "subtitle": "Check back later for updates to my setup."
   },
   "stats": {
-    "hardware": "{count} Hardware",
-    "software": "{count} Software"
+    "hardware": "Hardware ({count})",
+    "software": "Software ({count})"
   }
 }

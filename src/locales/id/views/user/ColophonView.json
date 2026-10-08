@@ -1,50 +1,50 @@
 {
   "hero": {
     "title": "Kolofon",
-    "description": "Kolofon adalah catatan tentang bagaimana sebuah karya dibuat - font-nya, tool-nya, sampai keputusan-keputusan kecilnya. Ini sedikit bocoran di balik layar situs ini."
+    "description": "Penjelasan tentang bagaimana website ini dibangun, mulai dari teknologi yang digunakan, keputusan desain, hingga detail kecil di baliknya."
   },
   "intro": {
-    "paragraph1": "Situs ini adalah aplikasi Vue satu halaman (SPA), dibangun dengan pola pikir component-first: potongan-potongan kecil yang bisa dipakai ulang (tombol, input, card) disusun jadi halaman utuh, semuanya didukung API layer yang typed dan di-cache pakai TanStack Query.",
-    "paragraph2": "Setiap halaman tersedia dalam Bahasa Inggris dan Indonesia, menyesuaikan mode terang/gelap, dan menghormati pengaturan reduced-motion di perangkat kamu - animasi masuk yang kamu lihat itu cuma pemanis, bukan syarat buat bisa baca kontennya.",
-    "highlightsTitle": "Sekilas Info",
+    "paragraph1": "Portfolio ini dibangun sebagai single-page application (SPA) menggunakan Vue dengan pendekatan component-first. Setiap halaman disusun dari komponen reusable, didukung oleh typed API layer dan TanStack Query untuk proses data fetching dan caching yang lebih efisien.",
+    "paragraph2": "Website ini tersedia dalam bahasa Inggris dan Indonesia, mendukung light dan dark mode, serta menyesuaikan animasi dengan preferensi reduced-motion pengguna. Animasi digunakan untuk meningkatkan pengalaman tanpa mengorbankan accessibility dan usability.",
+    "highlightsTitle": "Sekilas",
     "highlights": {
-      "componentFirst": "Arsitektur component-first",
-      "typedAndCached": "API layer typed, di-cache pakai TanStack Query",
-      "bilingual": "Tersedia dalam Bahasa Inggris dan Indonesia",
-      "adaptive": "Mendukung mode terang/gelap dan reduced-motion"
+      "componentFirst": "Arsitektur component-first dengan komponen reusable",
+      "typedAndCached": "Typed API layer dengan TanStack Query",
+      "bilingual": "Dukungan bahasa Inggris dan Indonesia",
+      "adaptive": "Light/dark mode dan reduced-motion"
     }
   },
   "stack": {
-    "title": "Dibangun Dengan",
+    "title": "Teknologi yang Digunakan",
     "groups": {
       "framework": "Framework & Tooling",
       "styling": "Styling & UI",
       "dataState": "Data & State",
-      "motionI18n": "Motion & Internasionalisasi"
+      "motionI18n": "Motion & Internationalization"
     }
   },
   "design": {
     "typography": {
-      "title": "Tipografi",
-      "sans": "dipakai untuk judul dan teks isi - bersih, geometris, dan enak dipindai",
-      "mono": "dipakai untuk kode, tanggal, dan hal-hal yang enak dibaca dengan lebar karakter tetap"
+      "title": "Typography",
+      "sans": "digunakan untuk heading dan teks utama agar tampilan tetap bersih dan mudah dibaca",
+      "mono": "digunakan untuk kode, tanggal, dan elemen yang membutuhkan jarak karakter konsisten"
     },
     "palette": {
-      "title": "Palet Warna",
-      "description": "Warna aksen di seluruh situs ini diambil dari Ikuyo Kita dari Kessoku Band: rambut merah, mata hijau-kuning, kancing seragam emas, serta pita dan sepatu maroon.",
-      "primary": "Primary - rambut",
-      "success": "Success - mata",
-      "warning": "Warning - kancing seragam",
-      "danger": "Danger - pita & sepatu"
+      "title": "Color Palette",
+      "description": "Palet warna website ini terinspirasi dari Ikuyo Kita dari Kessoku Band, mulai dari rambut merah dan mata hijau kekuningan hingga detail kancing seragam emas, pita, dan sepatu maroon.",
+      "primary": "Primary - Rambut",
+      "success": "Success - Mata",
+      "warning": "Warning - Kancing Seragam",
+      "danger": "Danger - Pita & Sepatu"
     },
     "craft": {
-      "title": "Motion & Aksesibilitas",
-      "description": "Ganti tema pakai crossfade dari View Transitions API, bukan animasi manual di tiap elemen, dan animasi scroll/entrance-nya otomatis jadi instan tanpa gerakan begitu prefers-reduced-motion aktif."
+      "title": "Motion & Accessibility",
+      "description": "Transisi tema menggunakan View Transitions API agar pergantian tampilan terasa lebih smooth. Animasi scroll dan entrance juga mengikuti pengaturan prefers-reduced-motion, sehingga website tetap nyaman digunakan tanpa animasi."
     }
   },
   "source": {
     "title": "Open Source",
-    "description": "Penasaran gimana situs ini dirakit di baliknya? Kode sumbernya publik di GitHub, dari component library sampai ke color token di atas.",
-    "viewButton": "Lihat Kode Sumber"
+    "description": "Source code portfolio ini tersedia di GitHub, termasuk komponen, styling, dan design system yang digunakan. Kamu bisa melihat langsung bagaimana website ini dibangun.",
+    "viewButton": "Lihat Source Code"
   }
 }

@@ -2,7 +2,7 @@
   "hero": {
     "greeting": "Halo, saya",
     "role": "Software Developer",
-    "description": "Mahasiswa sarjana Software Engineering dengan spesialisasi backend development, berpengalaman dalam membangun dan mengelola API. Menguasai berbagai tech stack termasuk Go (Golang), Express, NestJS, Flask, dan Laravel. Terampil mengelola berbagai database dan familiar dengan mobile development menggunakan Flutter. Memiliki semangat tinggi untuk belajar dan berkontribusi pada proyek-proyek berdampak.",
+    "description": "Saya mengembangkan aplikasi web dan mobile, membangun backend API, serta menangani deployment dan maintenance di lingkungan production. Saya juga terbiasa mengelola server Linux, melakukan integrasi sistem, monitoring, dan troubleshooting agar aplikasi tetap stabil dan mudah dikembangkan.",
     "moreButton": "Lebih lanjut tentang saya",
     "downloadCVButton": "Unduh CV"
   },

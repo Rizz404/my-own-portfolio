@@ -1,43 +1,43 @@
 {
   "hero": {
     "title": "Mari Terhubung",
-    "description": "Punya tantangan backend, ide open-source, atau cuma mau ngobrol soal kode sambil ngopi? Kirim pesan lewat form di bawah, atau hubungi langsung - kotak masuk saya selalu terbuka, mau lewat cara yang mana pun."
+    "description": "Punya ide proyek, pertanyaan teknis, atau ingin berkolaborasi? Kirim pesan melalui form di bawah atau hubungi saya langsung lewat email."
   },
   "quickFacts": {
     "title": "Info Singkat",
     "items": {
-      "responseTime": "Biasanya balas dalam 24-48 jam",
+      "responseTime": "Biasanya membalas dalam 24–48 jam",
       "openTo": "Terbuka untuk freelance, full-time, dan kolaborasi",
       "location": "Berbasis di Indonesia (GMT+7)"
     }
   },
   "form": {
     "title": "Kirim Pesan",
-    "description": "Isi form ini dan aplikasi email kamu bakal kebuka otomatis, siap dikirim - tanpa server, tanpa tracking, cuma email biasa yang ditujukan ke saya.",
+    "description": "Isi form ini untuk membuat draft di aplikasi email. Pesan bisa diperiksa sebelum dikirim.",
     "nameLabel": "Nama",
     "namePlaceholder": "Nama kamu",
-    "emailLabel": "Email Kamu",
+    "emailLabel": "Email",
     "emailPlaceholder": "kamu{'@'}contoh.com",
     "messageLabel": "Pesan",
-    "messagePlaceholder": "Ceritain sedikit apa yang lagi kamu pikirkan...",
-    "submit": "Kirim Pesan",
+    "messagePlaceholder": "Tulis pesan atau topik yang ingin didiskusikan...",
+    "submit": "Buka Draft Email",
     "submitting": "Membuka aplikasi email...",
-    "mailClientToast": "Aplikasi email kamu terbuka dengan pesan yang siap dikirim."
+    "mailClientToast": "Membuka aplikasi email dengan draft pesan yang sudah disiapkan."
   },
   "email": {
     "title": "Email",
-    "description": "Lebih suka pakai aplikasi email sendiri? Ini alamatnya langsung.",
+    "description": "Lebih nyaman menghubungi langsung? Alamat email saya bisa disalin di bawah ini.",
     "copy": "Salin",
-    "copied": "Tersalin",
-    "copiedToast": "Email berhasil disalin!",
-    "copyError": "Gagal menyalin email, coba salin manual ya."
+    "copied": "Disalin",
+    "copiedToast": "Alamat email berhasil disalin!",
+    "copyError": "Gagal menyalin alamat email. Silakan salin secara manual."
   },
   "availability": {
-    "title": "Saat Ini",
-    "description": "Terbuka untuk peluang backend engineering, pekerjaan freelance API, dan kolaborasi open-source yang menarik."
+    "title": "Ketersediaan",
+    "description": "Terbuka untuk peluang software engineering, proyek freelance, dan kolaborasi open-source."
   },
   "socials": {
-    "title": "Temukan Saya di Tempat Lain",
-    "description": "Saya juga cukup aktif di platform-platform ini - jangan ragu buat follow, connect, atau kirim DM."
+    "title": "Temukan Saya",
+    "description": "Saya juga bisa dihubungi melalui platform berikut. Silakan terhubung atau kirim pesan."
   }
 }

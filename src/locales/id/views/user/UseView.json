@@ -1,15 +1,15 @@
 {
   "title": "Uses",
-  "subtitle": "Daftar kurasi tech stack, gadget, dan software yang saya gunakan setiap hari untuk menulis kode dan tetap produktif.",
-  "errorLoad": "Gagal memuat perlengkapan",
-  "hardware": "Perangkat Keras",
-  "software": "Perangkat Lunak",
+  "subtitle": "Hardware, software, dan development tools yang saya gunakan sehari-hari untuk bekerja dan mengembangkan software.",
+  "errorLoad": "Gagal memuat daftar",
+  "hardware": "Hardware",
+  "software": "Software",
   "empty": {
-    "title": "Belum ada perlengkapan yang ditemukan.",
-    "subtitle": "Cek lagi nanti untuk pembaruan seputar perlengkapan saya."
+    "title": "Belum ada item yang ditampilkan.",
+    "subtitle": "Cek kembali nanti untuk update terbaru seputar setup saya."
   },
   "stats": {
-    "hardware": "{count} Perangkat Keras",
-    "software": "{count} Perangkat Lunak"
+    "hardware": "Hardware ({count})",
+    "software": "Software ({count})"
   }
 }

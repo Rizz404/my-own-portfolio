@@ -1,6 +1,6 @@
 {
-  "title": "Project",
-  "subtitle": "It's more than just lines of code. It's a showcase of my dedication, artistry, and hard work in crafting software into a meaningful masterpiece.",
+  "title": "Projects",
+  "subtitle": "A collection of projects I've worked on, highlighting the technologies used and the problems they aim to solve.",
   "searchPlaceholder": "Search projects...",
   "sort": {
     "newest": "Newest First",
@@ -13,7 +13,7 @@
     "subtitle": "Try adjusting your search keywords."
   },
   "pagination": {
-    "prev": "Prev",
+    "prev": "Previous",
     "next": "Next",
     "page": "Page",
     "of": "of"

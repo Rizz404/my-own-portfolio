@@ -1,6 +1,6 @@
 {
   "title": "Blog",
-  "subtitle": "Pemikiran, tutorial, dan wawasan seputar software engineering, arsitektur backend, dan perjalanan teknologi saya.",
+  "subtitle": "Artikel, tutorial, dan insight seputar software engineering, full-stack development, serta teknologi yang saya gunakan.",
   "searchPlaceholder": "Cari artikel...",
   "sort": {
     "newest": "Terbaru",
@@ -10,11 +10,11 @@
   "errorLoad": "Gagal memuat artikel",
   "empty": {
     "title": "Tidak ada artikel yang ditemukan.",
-    "subtitle": "Coba sesuaikan kata kunci pencarian Anda."
+    "subtitle": "Coba gunakan kata kunci pencarian lainnya."
   },
   "pagination": {
-    "prev": "Seb",
-    "next": "Lanjut",
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
     "page": "Halaman",
     "of": "dari"
   }
