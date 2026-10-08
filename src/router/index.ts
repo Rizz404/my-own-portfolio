@@ -87,7 +87,7 @@ const CHUNK_RELOAD_COOLDOWN_MS = 10_000;
 
 const isChunkLoadError = (error: unknown) =>
   error instanceof Error &&
-  /Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed|is not a valid JavaScript MIME type/i.test(
+  /Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed|is not a valid JavaScript MIME type|Unable to preload CSS/i.test(
     error.message,
   );
 
