@@ -2,8 +2,10 @@
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import { isAxiosError } from "axios";
+import type { z } from "zod";
 import { ArrowLeft as IconArrowLeft, Loader2 as IconLoader, Image as IconImage } from "@lucide/vue";
 import AppAlert from "@/components/shared/AppAlert.vue";
+import AppJsonImport from "@/components/shared/AppJsonImport.vue";
 import AppFilePicker from "@/components/shared/AppFilePicker.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";
@@ -19,6 +21,7 @@ import { userService } from "@/services/userService";
 import { setAcceptLanguage } from "@/api/axiosClient";
 import { useI18nStore } from "@/stores/i18nStores";
 import { useZodForm } from "@/composables/useZodForm";
+import { fillLocales } from "@/utils/jsonImport";
 import { useT } from "@/composables/useT";
 import { useToast } from "@/composables/useToast";
 import { enumStringKeys } from "@/schemas/shared";
@@ -221,7 +224,60 @@ onMounted(() => {
   if (userId.value) loadUserForEdit(userId.value);
 });
 
-const createMutation = useUserMultipartMutation();
+// * Editor JSON (AppJsonImport): isi JSON = body UserRequest backend. "Apply" cuma ngisi form
+// ini, BUKAN nge-save ke backend.
+// * profilePictUrl sengaja di-omit: gak ada di template/export, dan kalaupun diisi di JSON
+// bakal dibuang zod & gak pernah nyentuh form.
+const jsonSchema = userRequestSchema.omit({ profilePictUrl: true });
+type UserJson = z.infer<typeof jsonSchema>;
+
+const jsonTemplate: UserJson = {
+  nickname: "rizz",
+  fullName: "Rizqiansyah Ramadhan",
+  email: "user@example.com",
+  password: null,
+  role: Role.USER,
+  provider: AuthProvider.LOCAL,
+  placeOfBirth: null,
+  dateOfBirth: "2000-01-01",
+  gender: null,
+  phoneNumber: null,
+  address: null,
+  translations: [
+    { locale: LanguageCode.en, bio: "Short bio" },
+    { locale: LanguageCode.id, bio: "Bio singkat" },
+  ],
+};
+
+// * Password sengaja gak ikut ke-export - isinya nilai ketikan, bukan data yang perlu dibawa-bawa.
+const jsonCurrent = computed(() => ({
+  nickname: values.nickname,
+  fullName: values.fullName,
+  email: values.email,
+  password: null,
+  role: values.role,
+  provider: values.provider,
+  placeOfBirth: values.placeOfBirth,
+  dateOfBirth: values.dateOfBirth,
+  gender: values.gender,
+  phoneNumber: values.phoneNumber,
+  address: values.address,
+  translations: values.translations,
+}));
+
+function applyJson(data: unknown) {
+  const request = data as UserJson;
+
+  // * Foto profil dibiarkan persis seperti kondisi form sekarang.
+  reset({
+    ...emptyUserRequest(),
+    ...request,
+    profilePictUrl: values.profilePictUrl,
+    translations: fillLocales(request.translations, (locale) => ({ locale, bio: "" })),
+  });
+}
+
+const createMutation =useUserMultipartMutation();
 const updateMutation = useUserUpdateMultipartMutation();
 const activeMutation = computed(() => (isEdit.value ? updateMutation : createMutation));
 const isSaving = computed(() => activeMutation.value.isPending.value);
@@ -276,6 +332,15 @@ const onSubmit = handleSubmit(async (data) => {
           {{ isEdit ? t("editSubtitle") : t("createSubtitle") }}
         </p>
       </div>
+      <AppJsonImport
+        class="ml-auto"
+        :schema="jsonSchema"
+        :template="jsonTemplate"
+        :current="jsonCurrent"
+        file-name="user"
+        :disabled="isLoadingUser"
+        @apply="applyJson"
+      />
     </div>
 
     <AppSkeleton v-if="isLoadingUser" variant="tile" :count="3" />

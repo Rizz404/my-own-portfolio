@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import { isAxiosError } from "axios";
+import type { z } from "zod";
 import {
   ArrowLeft as IconArrowLeft,
   Loader2 as IconLoader,
@@ -11,6 +12,7 @@ import {
   X as IconX,
 } from "@lucide/vue";
 import AppAlert from "@/components/shared/AppAlert.vue";
+import AppJsonImport from "@/components/shared/AppJsonImport.vue";
 import AppFilePicker from "@/components/shared/AppFilePicker.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";
@@ -26,6 +28,7 @@ import { useService } from "@/services/useService";
 import { setAcceptLanguage } from "@/api/axiosClient";
 import { useI18nStore } from "@/stores/i18nStores";
 import { useZodForm } from "@/composables/useZodForm";
+import { fillLocales } from "@/utils/jsonImport";
 import { useT } from "@/composables/useT";
 import { useToast } from "@/composables/useToast";
 import { enumStringKeys } from "@/schemas/shared";
@@ -196,7 +199,47 @@ onMounted(() => {
   if (useId.value) loadUseForEdit(useId.value);
 });
 
-const createMutation = useUseMultipartMutation();
+// * Editor JSON (AppJsonImport): isi JSON = body UseRequest backend. "Apply" cuma ngisi form
+// ini (termasuk baris link), BUKAN nge-save ke backend.
+// * Field terkait file (logoUrl, pictures, deletedPictures) sengaja di-omit: gak ada di template/
+// export, dan kalaupun diisi di JSON bakal dibuang zod & gak pernah nyentuh form.
+const jsonSchema = useRequestSchema.omit({ logoUrl: true, pictures: true, deletedPictures: true });
+type UseJson = z.infer<typeof jsonSchema>;
+
+const jsonTemplate: UseJson = {
+  itemName: "Keyboard",
+  category: "hardware",
+  links: ["https://example.com/product"],
+  translations: [
+    { locale: LanguageCode.en, reasons: "<p>Why I use it</p>" },
+    { locale: LanguageCode.id, reasons: "<p>Alasan saya memakainya</p>" },
+  ],
+};
+
+const jsonCurrent = computed(() => ({
+  itemName: values.itemName,
+  category: values.category,
+  links: linkRows.value.map((row) => row.url.trim()).filter(Boolean),
+  translations: values.translations,
+}));
+
+function applyJson(data: unknown) {
+  const request = data as UseJson;
+
+  // * Logo & gambar dibiarkan persis seperti kondisi form sekarang.
+  reset({
+    ...emptyUseRequest(),
+    ...request,
+    logoUrl: values.logoUrl,
+    pictures: values.pictures,
+    deletedPictures: values.deletedPictures,
+    translations: fillLocales(request.translations, (locale) => ({ locale, reasons: "" })),
+  });
+
+  linkRows.value = (request.links ?? []).map((url) => ({ url }));
+}
+
+const createMutation =useUseMultipartMutation();
 const updateMutation = useUseUpdateMultipartMutation();
 const activeMutation = computed(() => (isEdit.value ? updateMutation : createMutation));
 const isSaving = computed(() => activeMutation.value.isPending.value);
@@ -261,6 +304,15 @@ const onSubmit = (event?: Event) => {
           {{ isEdit ? t("editSubtitle") : t("createSubtitle") }}
         </p>
       </div>
+      <AppJsonImport
+        class="ml-auto"
+        :schema="jsonSchema"
+        :template="jsonTemplate"
+        :current="jsonCurrent"
+        file-name="use"
+        :disabled="isLoadingUse"
+        @apply="applyJson"
+      />
     </div>
 
     <AppSkeleton v-if="isLoadingUse" variant="tile" :count="3" />

@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import { isAxiosError } from "axios";
+import type { z } from "zod";
 import {
   ArrowLeft as IconArrowLeft,
   Loader2 as IconLoader,
@@ -9,6 +10,7 @@ import {
   X as IconX,
 } from "@lucide/vue";
 import AppAlert from "@/components/shared/AppAlert.vue";
+import AppJsonImport from "@/components/shared/AppJsonImport.vue";
 import AppFilePicker from "@/components/shared/AppFilePicker.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";
@@ -29,6 +31,7 @@ import { skillService } from "@/services/skillService";
 import { setAcceptLanguage } from "@/api/axiosClient";
 import { useI18nStore } from "@/stores/i18nStores";
 import { useZodForm } from "@/composables/useZodForm";
+import { fillLocales } from "@/utils/jsonImport";
 import { useT } from "@/composables/useT";
 import { useToast } from "@/composables/useToast";
 import { enumStringKeys } from "@/schemas/shared";
@@ -211,7 +214,41 @@ onMounted(() => {
   if (skillId.value) loadSkillForEdit(skillId.value);
 });
 
-const createMutation = useSkillMultipartMutation();
+// * Editor JSON (AppJsonImport): isi JSON = body SkillRequest backend. "Apply" cuma ngisi form
+// ini, BUKAN nge-save ke backend.
+// * logoUrl sengaja di-omit: gak ada di template/export, dan kalaupun diisi di JSON bakal
+// dibuang zod & gak pernah nyentuh form.
+const jsonSchema = skillRequestSchema.omit({ logoUrl: true });
+type SkillJson = z.infer<typeof jsonSchema>;
+
+const jsonTemplate: SkillJson = {
+  name: "Vue",
+  category: "framework",
+  translations: [
+    { locale: LanguageCode.en, description: "<p>Progressive JavaScript framework</p>" },
+    { locale: LanguageCode.id, description: "<p>Framework JavaScript progresif</p>" },
+  ],
+};
+
+const jsonCurrent = computed(() => ({
+  name: values.name,
+  category: values.category,
+  translations: values.translations,
+}));
+
+function applyJson(data: unknown) {
+  const request = data as SkillJson;
+
+  // * Logo dibiarkan persis seperti kondisi form sekarang.
+  reset({
+    ...emptySkillRequest(),
+    ...request,
+    logoUrl: values.logoUrl,
+    translations: fillLocales(request.translations, (locale) => ({ locale, description: "" })),
+  });
+}
+
+const createMutation =useSkillMultipartMutation();
 const updateMutation = useSkillUpdateMultipartMutation();
 const activeMutation = computed(() => (isEdit.value ? updateMutation : createMutation));
 const isSaving = computed(() => activeMutation.value.isPending.value);
@@ -266,6 +303,15 @@ const onSubmit = handleSubmit(async (data) => {
           {{ isEdit ? t("editSubtitle") : t("createSubtitle") }}
         </p>
       </div>
+      <AppJsonImport
+        class="ml-auto"
+        :schema="jsonSchema"
+        :template="jsonTemplate"
+        :current="jsonCurrent"
+        file-name="skill"
+        :disabled="isLoadingSkill"
+        @apply="applyJson"
+      />
     </div>
 
     <AppSkeleton v-if="isLoadingSkill" variant="tile" :count="3" />
