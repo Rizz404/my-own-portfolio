@@ -12,7 +12,7 @@
     "errorLoad": "Gagal memuat blog"
   },
   "selectedProjects": {
-    "title": "Proyek Pilihan",
+    "title": "Proyek Terbaru",
     "viewAll": "Lihat semua",
     "errorLoad": "Gagal memuat proyek"
   }

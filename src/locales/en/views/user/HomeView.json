@@ -12,7 +12,7 @@
     "errorLoad": "Failed to load blogs"
   },
   "selectedProjects": {
-    "title": "Selected Projects",
+    "title": "Latest Projects",
     "viewAll": "View all",
     "errorLoad": "Failed to load projects"
   }
