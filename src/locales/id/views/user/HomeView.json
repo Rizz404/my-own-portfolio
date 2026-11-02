@@ -11,7 +11,7 @@
     "viewAll": "Lihat semua",
     "errorLoad": "Gagal memuat blog"
   },
-  "selectedProjects": {
+  "latestProjects": {
     "title": "Proyek Terbaru",
     "viewAll": "Lihat semua",
     "errorLoad": "Gagal memuat proyek"

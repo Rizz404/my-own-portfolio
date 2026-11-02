@@ -11,7 +11,7 @@
     "viewAll": "View all",
     "errorLoad": "Failed to load blogs"
   },
-  "selectedProjects": {
+  "latestProjects": {
     "title": "Latest Projects",
     "viewAll": "View all",
     "errorLoad": "Failed to load projects"
