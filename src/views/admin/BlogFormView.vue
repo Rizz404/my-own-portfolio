@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import { isAxiosError } from "axios";
+import type { z } from "zod";
 import {
   ArrowLeft as IconArrowLeft,
   Loader2 as IconLoader,
@@ -10,6 +11,7 @@ import {
   X as IconX,
 } from "@lucide/vue";
 import AppAlert from "@/components/shared/AppAlert.vue";
+import AppJsonImport from "@/components/shared/AppJsonImport.vue";
 import AppFilePicker from "@/components/shared/AppFilePicker.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";
@@ -25,6 +27,7 @@ import { blogService } from "@/services/blogService";
 import { setAcceptLanguage } from "@/api/axiosClient";
 import { useI18nStore } from "@/stores/i18nStores";
 import { useZodForm } from "@/composables/useZodForm";
+import { fillLocales } from "@/utils/jsonImport";
 import { useT } from "@/composables/useT";
 import { useToast } from "@/composables/useToast";
 import { blogRequestSchema, type BlogRequestInput } from "@/schemas/blog.schema";
@@ -163,7 +166,50 @@ onMounted(() => {
   if (blogId.value) loadBlogForEdit(blogId.value);
 });
 
-const createMutation = useBlogMultipartMutation();
+// * Editor JSON (AppJsonImport): isi JSON = body BlogRequest backend. "Apply" cuma ngisi form
+// ini, BUKAN nge-save ke backend.
+// * Field terkait file (featuredImageUrl, deletedAttachmentIds) sengaja di-omit: gak ada di
+// template/export, dan kalaupun diisi di JSON bakal dibuang zod & gak pernah nyentuh form.
+const jsonSchema = blogRequestSchema.omit({ featuredImageUrl: true, deletedAttachmentIds: true });
+type BlogJson = z.infer<typeof jsonSchema>;
+
+const jsonTemplate: BlogJson = {
+  isPublished: false,
+  viewsCount: 0,
+  likesCount: 0,
+  dislikesCount: 0,
+  translations: [
+    { locale: LanguageCode.en, title: "My Post", content: "Post content" },
+    { locale: LanguageCode.id, title: "Tulisan Saya", content: "Isi tulisan" },
+  ],
+};
+
+const jsonCurrent = computed(() => ({
+  isPublished: values.isPublished,
+  viewsCount: values.viewsCount,
+  likesCount: values.likesCount,
+  dislikesCount: values.dislikesCount,
+  translations: values.translations,
+}));
+
+function applyJson(data: unknown) {
+  const request = data as BlogJson;
+
+  // * Gambar & lampiran dibiarkan persis seperti kondisi form sekarang.
+  reset({
+    ...emptyBlogRequest(),
+    ...request,
+    featuredImageUrl: values.featuredImageUrl,
+    deletedAttachmentIds: values.deletedAttachmentIds,
+    translations: fillLocales(request.translations, (locale) => ({
+      locale,
+      title: "",
+      content: "",
+    })),
+  });
+}
+
+const createMutation =useBlogMultipartMutation();
 const updateMutation = useBlogUpdateMultipartMutation();
 const activeMutation = computed(() => (isEdit.value ? updateMutation : createMutation));
 const isSaving = computed(() => activeMutation.value.isPending.value);
@@ -223,6 +269,15 @@ const onSubmit = handleSubmit(async (data) => {
           {{ isEdit ? t("editSubtitle") : t("createSubtitle") }}
         </p>
       </div>
+      <AppJsonImport
+        class="ml-auto"
+        :schema="jsonSchema"
+        :template="jsonTemplate"
+        :current="jsonCurrent"
+        file-name="blog"
+        :disabled="isLoadingBlog"
+        @apply="applyJson"
+      />
     </div>
 
     <AppSkeleton v-if="isLoadingBlog" variant="tile" :count="3" />

@@ -26,7 +26,7 @@ const toast = useToast();
 
 // * Placeholder sementara selagi email publik belum disiapkan, sama kayak URL "username"
 // di SocialsWidget.vue - tinggal ganti pas udah siap dipublish.
-const email = "hello@rizqiansyah.dev";
+const email = "rizqiansyah404@gmail.com";
 
 // * Gak ada endpoint backend buat contact message (lihat src/schemas & src/types - gak ada
 // yang mirror ini), jadi schema-nya dideklarasi lokal di sini aja, bukan di src/schemas/.

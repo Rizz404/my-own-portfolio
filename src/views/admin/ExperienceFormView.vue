@@ -4,6 +4,7 @@ import { useRoute, useRouter, RouterLink } from "vue-router";
 import { isAxiosError } from "axios";
 import { ArrowLeft as IconArrowLeft, Loader2 as IconLoader, Plus as IconPlus, Trash2 as IconTrash2 } from "@lucide/vue";
 import AppAlert from "@/components/shared/AppAlert.vue";
+import AppJsonImport from "@/components/shared/AppJsonImport.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";
 import AppTextarea from "@/components/shared/AppTextarea.vue";
@@ -15,6 +16,7 @@ import { experienceService } from "@/services/experienceService";
 import { setAcceptLanguage } from "@/api/axiosClient";
 import { useI18nStore } from "@/stores/i18nStores";
 import { useZodForm } from "@/composables/useZodForm";
+import { fillLocales } from "@/utils/jsonImport";
 import { useT } from "@/composables/useT";
 import { useToast } from "@/composables/useToast";
 import { experienceRequestSchema, type ExperienceRequestInput } from "@/schemas/experience.schema";
@@ -140,7 +142,49 @@ onMounted(() => {
   if (experienceId.value) loadExperienceForEdit(experienceId.value);
 });
 
-const createMutation = useExperienceMutation();
+// * Editor JSON (AppJsonImport): isi JSON = body ExperienceRequest backend. "Apply" cuma ngisi
+// form ini, BUKAN nge-save ke backend.
+const jsonTemplate: ExperienceRequestInput = {
+  companyName: "Acme Inc.",
+  startDate: "2022-01-01",
+  endDate: null,
+  isCurrent: true,
+  translations: [
+    {
+      locale: LanguageCode.en,
+      position: "Frontend Developer",
+      description: "<p>What I did here</p>",
+      jobdesks: ["Built UI components"],
+    },
+    {
+      locale: LanguageCode.id,
+      position: "Pengembang Frontend",
+      description: "<p>Apa yang saya kerjakan</p>",
+      jobdesks: ["Membangun komponen UI"],
+    },
+  ],
+};
+
+const jsonCurrent = computed(() => ({ ...values }));
+
+function applyJson(data: unknown) {
+  const request = data as ExperienceRequestInput;
+
+  reset({
+    ...emptyExperienceRequest(),
+    ...request,
+    // * Sama kayak onIsCurrentChange(): pekerjaan yang masih berjalan gak punya tanggal selesai.
+    endDate: request.isCurrent ? null : (request.endDate ?? null),
+    translations: fillLocales(request.translations, (locale) => ({
+      locale,
+      position: "",
+      description: "",
+      jobdesks: [],
+    })),
+  });
+}
+
+const createMutation =useExperienceMutation();
 const updateMutation = useExperienceUpdateMutation();
 const activeMutation = computed(() => (isEdit.value ? updateMutation : createMutation));
 const isSaving = computed(() => activeMutation.value.isPending.value);
@@ -187,6 +231,15 @@ const onSubmit = handleSubmit(async (data) => {
           {{ isEdit ? t("editSubtitle") : t("createSubtitle") }}
         </p>
       </div>
+      <AppJsonImport
+        class="ml-auto"
+        :schema="experienceRequestSchema"
+        :template="jsonTemplate"
+        :current="jsonCurrent"
+        file-name="experience"
+        :disabled="isLoadingExperience"
+        @apply="applyJson"
+      />
     </div>
 
     <AppSkeleton v-if="isLoadingExperience" variant="tile" :count="3" />

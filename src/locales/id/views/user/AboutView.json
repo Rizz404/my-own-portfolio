@@ -1,19 +1,19 @@
 {
   "hero": {
-    "titleLine1": "Saya membangun API yang andal dan",
-    "titleHighlight": "sistem yang scalable.",
-    "greeting": "👋 Halo! Saya Rizqiansyah Ramadhan, mahasiswa software engineering yang fokus di backend development.",
-    "paragraph1": "Perjalanan saya di dunia software development berawal dari rasa penasaran yang mendalam soal cara kerja sesuatu di balik layar. Saat orang lain terpukau dengan antarmuka yang indah, saya justru terpikat oleh database, logika server, dan tarian rumit API yang menghidupkan antarmuka itu. Saya fokus pada detail dan bersemangat membuat produk software yang andal, aman, dan mudah dirawat.",
-    "paragraph2": "Selama bertahun-tahun, saya berkesempatan bekerja dengan berbagai macam teknologi. Toolkit utama saya berputar di sekitar {techStack}. Baik itu merancang skema database yang ternormalisasi, mengoptimalkan performa query, atau membangun microservices, saya suka mendalami tantangan arsitektur yang kompleks.",
-    "techStack": "Go (Golang), Express, NestJS, Flask, dan Laravel",
-    "paragraph3": "Selain arsitektur backend, saya juga familiar dengan pengembangan mobile menggunakan Flutter, sehingga saya memahami keseluruhan siklus pengembangan produk dari server sampai ke tangan pengguna. Saya sangat mendukung open source, pembelajaran berkelanjutan, dan berkolaborasi dalam tim remote global yang menjunjung kepercayaan, kebaikan, dan inklusivitas.",
-    "usesPagePrefix": "Penasaran dengan hardware dan software spesifik yang saya pakai sehari-hari? Silakan cek",
-    "usesPageLink": "halaman /uses saya"
+    "titleLine1": "Membangun software yang andal,",
+    "titleHighlight": "dari development hingga production.",
+    "greeting": "Halo! Saya Rizqiansyah Ramadhan, seorang Software Engineer dengan pengalaman di bidang full-stack development, backend systems, dan pengelolaan infrastruktur production.",
+    "paragraph1": "Ketertarikan saya pada software development berawal dari rasa penasaran tentang bagaimana sebuah aplikasi bekerja, terutama bagaimana frontend, backend, dan database saling terhubung. Seiring waktu, ketertarikan tersebut berkembang menjadi pengalaman dalam membangun aplikasi web dan mobile, mengembangkan API, serta menangani sistem production.",
+    "paragraph2": "Dalam pekerjaan sehari-hari, saya menangani pengembangan aplikasi, integrasi API, pengelolaan database, hingga deployment. Beberapa teknologi yang saya gunakan antara lain {techStack}, serta PostgreSQL, MySQL, dan MongoDB sesuai kebutuhan proyek.",
+    "techStack": "Go, TypeScript, Laravel, Vue.js, dan Flutter",
+    "paragraph3": "Selain development, saya juga terbiasa mengelola server Linux dan infrastruktur production, termasuk monitoring, DNS, SSL/TLS, dan troubleshooting. Saya mengutamakan kode yang mudah di-maintain, pendekatan praktis dalam menyelesaikan masalah, serta terus mempelajari teknologi baru. Saya juga menggunakan AI tools untuk membantu riset teknis, debugging, dan meningkatkan efisiensi workflow development.",
+    "usesPagePrefix": "Penasaran dengan perangkat dan tools yang saya gunakan sehari-hari? Kunjungi",
+    "usesPageLink": "halaman /uses"
   },
   "gallery": {
     "workingSetupAlt": "Setup kerja",
     "codingSessionAlt": "Sesi coding",
-    "outdoorWorkspaceAlt": "Ruang kerja outdoor"
+    "outdoorWorkspaceAlt": "Area kerja luar ruangan"
   },
   "skills": {
     "title": "Keahlian",
@@ -21,11 +21,11 @@
   },
   "experience": {
     "title": "Pengalaman",
-    "downloadResume": "Unduh Resume",
+    "downloadResume": "Unduh CV",
     "loadError": "Gagal memuat data pengalaman"
   },
   "connect": {
-    "title": "Yuk Terhubung",
-    "description": "Saya selalu terbuka untuk diskusi soal arsitektur backend, proyek open-source, atau peluang baru."
+    "title": "Mari Terhubung",
+    "description": "Terbuka untuk diskusi seputar software engineering, berbagai proyek menarik, dan peluang kolaborasi."
   }
 }

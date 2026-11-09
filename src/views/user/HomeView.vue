@@ -86,7 +86,7 @@ const myPicture: string = "./images/profile.jpg";
                 {{ t("hero.moreButton") }}
               </AppButton>
             </RouterLink>
-            <a :href="cvUrl" download target="_blank" rel="noopener">
+            <a :href="cvUrl" target="_blank" rel="noopener noreferrer">
               <AppButton
                 variant="secondary"
                 size="lg"
@@ -173,13 +173,13 @@ const myPicture: string = "./images/profile.jpg";
         <!-- * Aksen success (hijau-kuning, mata Kita) khusus buat identitas section Projects -->
         <h2 class="flex items-center gap-2.5 text-2xl font-bold md:text-3xl">
           <span class="rounded-full size-2.5 bg-danger shrink-0" aria-hidden="true"></span>
-          {{ t("selectedProjects.title") }}
+          {{ t("latestProjects.title") }}
         </h2>
         <RouterLink
           :to="withLocale('/projects')"
           class="inline-flex items-center gap-1.5 text-sm font-medium transition-colors group text-danger hover:brightness-110"
         >
-          {{ t("selectedProjects.viewAll") }}
+          {{ t("latestProjects.viewAll") }}
           <IconArrowRight class="transition-transform size-4 group-hover:translate-x-1" />
         </RouterLink>
       </div>
@@ -188,7 +188,7 @@ const myPicture: string = "./images/profile.jpg";
         <AppSkeleton v-if="isProjectLoading" variant="card" :count="4" />
         <AppError
           v-else-if="isProjectError"
-          :title="t('selectedProjects.errorLoad')"
+          :title="t('latestProjects.errorLoad')"
           :message="projectError?.message"
         />
         <ProjectCard

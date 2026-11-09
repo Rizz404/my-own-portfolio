@@ -1,0 +1,13 @@
+{
+  "open": "JSON",
+  "title": "Fill form from JSON",
+  "description": "Use the same JSON as the backend request body. Applying only fills the form - nothing is saved until you press Save.",
+  "fileNotice": "File-related fields (logo, images, attachments, profile picture) are not part of this JSON. Anything you put there is ignored - pick those files with the file picker in the form.",
+  "upload": "Upload file",
+  "template": "Template",
+  "format": "Format",
+  "download": "Download",
+  "cancel": "Cancel",
+  "apply": "Apply to form",
+  "invalidJson": "Invalid JSON: {message}"
+}

@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import { isAxiosError } from "axios";
+import type { z } from "zod";
 import {
   ArrowLeft as IconArrowLeft,
   Loader2 as IconLoader,
@@ -12,6 +13,7 @@ import {
   GripVertical as IconGripVertical,
 } from "@lucide/vue";
 import AppAlert from "@/components/shared/AppAlert.vue";
+import AppJsonImport from "@/components/shared/AppJsonImport.vue";
 import AppFilePicker from "@/components/shared/AppFilePicker.vue";
 import AppButton from "@/components/shared/AppButton.vue";
 import AppInput from "@/components/shared/AppInput.vue";
@@ -33,6 +35,7 @@ import { projectService } from "@/services/projectService";
 import { setAcceptLanguage } from "@/api/axiosClient";
 import { useI18nStore } from "@/stores/i18nStores";
 import { useZodForm } from "@/composables/useZodForm";
+import { fillLocales } from "@/utils/jsonImport";
 import { useT } from "@/composables/useT";
 import { useToast } from "@/composables/useToast";
 import { enumStringKeys } from "@/schemas/shared";
@@ -346,7 +349,68 @@ onMounted(() => {
   if (projectId.value) loadProjectForEdit(projectId.value);
 });
 
-const createMutation = useProjectMultipartMutation();
+// * Editor JSON (AppJsonImport): isi JSON = body ProjectRequest backend. "Apply" cuma ngisi form
+// ini (termasuk state lokal kayak chip tech stack & baris link), BUKAN nge-save ke backend.
+// * Field terkait file (logoUrl, imageUrls, deletedImageUrls) sengaja di-omit: gak ada di template/
+// export, dan kalaupun diisi di JSON bakal dibuang zod & gak pernah nyentuh form.
+const jsonSchema = projectRequestSchema.omit({
+  logoUrl: true,
+  imageUrls: true,
+  deletedImageUrls: true,
+});
+type ProjectJson = z.infer<typeof jsonSchema>;
+
+const jsonTemplate: ProjectJson = {
+  translations: [
+    { locale: LanguageCode.en, name: "My Project", description: "<p>Short description</p>" },
+    { locale: LanguageCode.id, name: "Proyek Saya", description: "<p>Deskripsi singkat</p>" },
+  ],
+  status: ProjectStatus.active,
+  techStack: { Vue: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg" },
+  projectTypes: [ProjectType.frontend],
+  projectLinks: { [LinkType.github]: "https://github.com/user/repo" },
+};
+
+const jsonCurrent = computed(() => ({
+  translations: values.translations,
+  status: values.status,
+  projectTypes: values.projectTypes,
+  techStack: Object.fromEntries(techStackSelections.value.map((tech) => [tech.label, tech.iconUrl])),
+  projectLinks: Object.fromEntries(
+    projectLinkRows.value.filter((row) => row.url.trim()).map((row) => [row.type, row.url.trim()]),
+  ),
+}));
+
+function applyJson(data: unknown) {
+  const request = data as ProjectJson;
+
+  // * Logo & gambar dibiarkan persis seperti kondisi form sekarang.
+  reset({
+    ...emptyProjectRequest(),
+    ...request,
+    logoUrl: values.logoUrl,
+    imageUrls: values.imageUrls,
+    deletedImageUrls: values.deletedImageUrls,
+    translations: fillLocales(request.translations, (locale) => ({
+      locale,
+      name: "",
+      description: "",
+    })),
+  });
+
+  techStackSelections.value = Object.entries(request.techStack ?? {}).map(([label, iconUrl]) => ({
+    slug: label.toLowerCase(),
+    label,
+    iconUrl,
+    altnames: [],
+  }));
+  projectLinkRows.value = Object.entries(request.projectLinks ?? {}).map(([type, url]) => ({
+    type: type as LinkType,
+    url: url as string,
+  }));
+}
+
+const createMutation =useProjectMultipartMutation();
 const updateMutation = useProjectUpdateMultipartMutation();
 const activeMutation = computed(() => (isEdit.value ? updateMutation : createMutation));
 const isSaving = computed(() => activeMutation.value.isPending.value);
@@ -415,6 +479,15 @@ const onSubmit = (event?: Event) => {
           {{ isEdit ? t("editSubtitle") : t("createSubtitle") }}
         </p>
       </div>
+      <AppJsonImport
+        class="ml-auto"
+        :schema="jsonSchema"
+        :template="jsonTemplate"
+        :current="jsonCurrent"
+        file-name="project"
+        :disabled="isLoadingProject"
+        @apply="applyJson"
+      />
     </div>
 
     <AppSkeleton v-if="isLoadingProject" variant="tile" :count="3" />

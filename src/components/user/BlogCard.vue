@@ -16,10 +16,7 @@ const { withLocale } = useLocalizedPath();
     class="flex gap-4 p-4 transition-all duration-300 md:flex-col rounded-2xl border border-border/20 bg-surface/30 hover:border-primary/40 hover:bg-surface-raised hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 group"
   >
     <img
-      :src="
-        blog.featuredImage ||
-        'https://i.pinimg.com/736x/76/0f/8e/760f8e5ff6cfa1b22ac33a8ae3705dbb.jpg'
-      "
+      :src="blog.featuredImage || '/images/placeholder-blog.svg'"
       :alt="blog.title"
       class="object-cover rounded-md shrink-0 size-24 md:w-full md:h-auto md:aspect-video"
     />

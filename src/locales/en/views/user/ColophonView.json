@@ -1,17 +1,17 @@
 {
   "hero": {
     "title": "Colophon",
-    "description": "A colophon is a note on how a work was made - the fonts, the tools, the little decisions. Here's a peek behind the curtain of this site."
+    "description": "A closer look at how this website was built, from the technologies and design choices to the small details behind the experience."
   },
   "intro": {
-    "paragraph1": "This site is a single-page Vue app, built with a component-first mindset: small, reusable pieces (buttons, inputs, cards) composed into full pages, all backed by a typed API layer and cached with TanStack Query.",
-    "paragraph2": "Every screen ships in both English and Indonesian, adapts to light and dark mode, and respects your device's reduced-motion setting - the entrance animations you see are a nice-to-have, never a requirement to read the content.",
+    "paragraph1": "This portfolio is a single-page application built with Vue and a component-first approach. Each page is composed of small, reusable components, supported by a typed API layer and TanStack Query for efficient data fetching and caching.",
+    "paragraph2": "The website supports both English and Indonesian, adapts to light and dark themes, and respects reduced-motion preferences. Animations enhance the experience without compromising accessibility or usability.",
     "highlightsTitle": "At a Glance",
     "highlights": {
-      "componentFirst": "Component-first architecture",
-      "typedAndCached": "Typed API layer, cached with TanStack Query",
-      "bilingual": "Ships in English and Indonesian",
-      "adaptive": "Light/dark mode and reduced-motion aware"
+      "componentFirst": "Reusable, component-first architecture",
+      "typedAndCached": "Typed API layer with TanStack Query",
+      "bilingual": "English and Indonesian support",
+      "adaptive": "Light/dark themes and reduced-motion support"
     }
   },
   "stack": {
@@ -26,25 +26,25 @@
   "design": {
     "typography": {
       "title": "Typography",
-      "sans": "for headings and body copy - clean, geometric, and easy to scan",
-      "mono": "for code, dates, and anything that benefits from fixed-width alignment"
+      "sans": "used for headings and body text, providing a clean and readable interface",
+      "mono": "used for code, dates, and elements that benefit from consistent character spacing"
     },
     "palette": {
       "title": "Color Palette",
-      "description": "The accent colors throughout this site are drawn from Ikuyo Kita of Kessoku Band: red hair, green-yellow eyes, a gold uniform button, and a maroon ribbon and shoes.",
-      "primary": "Primary - hair",
-      "success": "Success - eyes",
-      "warning": "Warning - uniform button",
-      "danger": "Danger - ribbon & shoes"
+      "description": "The website's color palette is inspired by Ikuyo Kita from Kessoku Band, drawing from her red hair, yellow-green eyes, golden uniform button, and maroon ribbon and shoes.",
+      "primary": "Primary - Hair",
+      "success": "Success - Eyes",
+      "warning": "Warning - Uniform Button",
+      "danger": "Danger - Ribbon & Shoes"
     },
     "craft": {
       "title": "Motion & Accessibility",
-      "description": "Theme switching crossfades with the View Transitions API instead of animating every element by hand, and scroll/entrance animations fall back to an instant, motion-free state whenever prefers-reduced-motion is on."
+      "description": "Theme transitions use the View Transitions API for smooth visual changes. Scroll and entrance animations respect the prefers-reduced-motion setting, ensuring the website remains accessible and comfortable to navigate."
     }
   },
   "source": {
     "title": "Open Source",
-    "description": "Curious how it's put together under the hood? The full source code is public on GitHub, from the component library down to the color tokens above.",
+    "description": "The source code for this portfolio is available on GitHub, including its components, styling, and design system. Feel free to explore how everything works.",
     "viewButton": "View Source"
   }
 }

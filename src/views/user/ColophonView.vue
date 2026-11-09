@@ -57,7 +57,10 @@ const highlights = [
 
     <!-- * Intro - dua paragraf penjelas sebelum masuk ke daftar stack, ditemenin kartu "At
          a Glance" di kanan biar section-nya gak keliatan ngambang sendirian di layar lebar -->
-    <section v-motion="revealUp()" class="grid grid-cols-1 gap-8 mt-8 lg:grid-cols-3 lg:items-start">
+    <section
+      v-motion="revealUp()"
+      class="grid grid-cols-1 gap-8 mt-8 lg:grid-cols-3 lg:items-start"
+    >
       <div class="space-y-4 text-base leading-relaxed lg:col-span-2 text-content/80">
         <p>{{ t("intro.paragraph1") }}</p>
         <p>{{ t("intro.paragraph2") }}</p>
@@ -179,7 +182,7 @@ const highlights = [
           </h2>
           <p class="max-w-md text-sm text-content/70">{{ t("source.description") }}</p>
         </div>
-        <a href="https://github.com/username" target="_blank" rel="noopener noreferrer">
+        <a href="https://github.com/rizz404" target="_blank" rel="noopener noreferrer">
           <AppButton variant="secondary" class="gap-2 rounded-full shadow-sm hover:shadow-md">
             <IconGithub class="size-4" />
             {{ t("source.viewButton") }}

@@ -1,0 +1,13 @@
+{
+  "open": "JSON",
+  "title": "Isi form dari JSON",
+  "description": "Pakai JSON yang sama dengan body request backend. Apply hanya mengisi form - tidak ada yang tersimpan sampai kamu menekan Simpan.",
+  "fileNotice": "Field terkait file (logo, gambar, lampiran, foto profil) bukan bagian dari JSON ini. Apa pun yang diisi di sana diabaikan - pilih file-nya lewat file picker di form.",
+  "upload": "Upload file",
+  "template": "Template",
+  "format": "Format",
+  "download": "Unduh",
+  "cancel": "Batal",
+  "apply": "Terapkan ke form",
+  "invalidJson": "JSON tidak valid: {message}"
+}

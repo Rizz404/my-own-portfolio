@@ -1,16 +1,16 @@
 {
-  "description": "Mahasiswa Software Engineering dengan spesialisasi backend development, berpengalaman dalam membangun dan mengelola API. Membangun sistem yang scalable dengan kode dan kopi.",
+  "description": "Software Engineer yang mengembangkan aplikasi web dan mobile, membangun backend API, serta mengelola sistem production.",
   "navigate": "Navigasi",
-  "explore": "Eksplorasi",
+  "explore": "Jelajahi",
   "nav": {
     "home": "Beranda",
     "about": "Tentang",
     "blog": "Blog",
     "projects": "Proyek",
-    "uses": "Perlengkapan"
+    "uses": "Uses"
   },
   "colophon": "Kolofon",
   "contact": "Kontak",
-  "scrollToTop": "Kembali ke Atas",
-  "rightsReserved": "Hak cipta dilindungi undang-undang."
+  "scrollToTop": "Kembali ke atas",
+  "rightsReserved": "Seluruh hak dilindungi."
 }
