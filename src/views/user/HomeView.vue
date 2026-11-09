@@ -50,7 +50,7 @@ const { handleTap: handleAvatarTap } = useSecretTap(() => {
   router.push({ name: "AdminLogin" });
 });
 
-const myPicture: string = "./images/profile.jpg";
+const myPicture: string = "/images/profile.jpg";
 </script>
 
 <template>
@@ -112,6 +112,10 @@ const myPicture: string = "./images/profile.jpg";
             v-if="myPicture"
             :src="myPicture"
             alt="Rizqiansyah Ramadhan"
+            width="1024"
+            height="1024"
+            fetchpriority="high"
+            decoding="async"
             class="relative object-cover rounded-full shadow-xl size-40 md:size-72 ring-4 ring-background select-none"
             @click="handleAvatarTap"
           />

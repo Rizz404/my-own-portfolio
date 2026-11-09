@@ -13,7 +13,6 @@ import { computed, ref } from "vue";
 import { useT } from "@/composables/useT";
 import { useLocalizedPath } from "@/composables/useLocalizedPath";
 import { fadeUp, revealUp, staggerDelay } from "@/composables/useMotionPresets";
-import { User as IconUser } from "@lucide/vue";
 
 const params = ref<ExperienceQueryParams>({ page: 1, size: 10 });
 const { data, isLoading, isError, error } = useExperiencesQuery(params);
@@ -92,29 +91,32 @@ const { withLocale } = useLocalizedPath();
         </p>
       </div>
 
-      <!-- * Placeholder sementara selagi foto asli belum disiapkan -->
       <div v-motion="fadeUp(0.15)" class="grid grid-cols-2 gap-4 mt-8 lg:mt-0 lg:sticky lg:top-24">
-        <div
-          role="img"
-          :aria-label="t('gallery.workingSetupAlt')"
-          class="flex items-center justify-center w-full h-56 transition-transform duration-500 shadow-lg rounded-xl md:h-72 hover:scale-105 bg-surface"
-        >
-          <IconUser class="size-12 md:size-16 text-content/30" />
-        </div>
-        <div
-          role="img"
-          :aria-label="t('gallery.codingSessionAlt')"
-          class="flex items-center justify-center w-full h-56 transition-transform duration-500 shadow-lg rounded-xl md:h-72 hover:scale-105 bg-surface"
-        >
-          <IconUser class="size-12 md:size-16 text-content/30" />
-        </div>
-        <div
-          role="img"
-          :aria-label="t('gallery.outdoorWorkspaceAlt')"
-          class="flex items-center justify-center w-full h-48 col-span-2 transition-transform duration-500 shadow-lg rounded-xl md:h-64 hover:scale-105 bg-surface"
-        >
-          <IconUser class="size-12 md:size-16 text-content/30" />
-        </div>
+        <img
+          src="/images/about-workspace.webp"
+          :alt="t('gallery.workingSetupAlt')"
+          width="768"
+          height="768"
+          decoding="async"
+          class="w-full h-56 object-cover transition-transform duration-500 shadow-lg rounded-xl md:h-72 hover:scale-105 bg-surface"
+        />
+        <img
+          src="/images/about-coding.webp"
+          :alt="t('gallery.codingSessionAlt')"
+          width="768"
+          height="768"
+          decoding="async"
+          class="w-full h-56 object-cover transition-transform duration-500 shadow-lg rounded-xl md:h-72 hover:scale-105 bg-surface"
+        />
+        <img
+          src="/images/about-outdoor.webp"
+          :alt="t('gallery.outdoorWorkspaceAlt')"
+          width="1600"
+          height="800"
+          loading="lazy"
+          decoding="async"
+          class="w-full h-48 col-span-2 object-cover transition-transform duration-500 shadow-lg rounded-xl md:h-64 hover:scale-105 bg-surface"
+        />
       </div>
     </section>
 
