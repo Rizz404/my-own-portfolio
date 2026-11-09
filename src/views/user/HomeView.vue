@@ -50,7 +50,7 @@ const { handleTap: handleAvatarTap } = useSecretTap(() => {
   router.push({ name: "AdminLogin" });
 });
 
-const myPicture: string | null = null;
+const myPicture: string = "./images/profile.jpg";
 </script>
 
 <template>
